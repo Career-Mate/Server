@@ -8,13 +8,12 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.orm.jpa.EntityManagerFactoryInfo;
 
 @Configuration
 public class SwaggerConfig {
 
     @Bean
-    public OpenAPI openAPI(EntityManagerFactoryInfo entityManagerFactoryInfo) {
+    public OpenAPI openAPI() {
         String jwtSchemeName = "Authorization";
         SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwtSchemeName);
         Components components = new Components()
