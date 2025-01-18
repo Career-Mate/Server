@@ -3,11 +3,14 @@ package UMC.career_mate.domain.recruit.service;
 import UMC.career_mate.domain.recruit.Recruit;
 import UMC.career_mate.domain.recruit.converter.RecruitConverter;
 import UMC.career_mate.domain.recruit.dto.response.RecommendRecruitDTO;
+import UMC.career_mate.domain.recruit.dto.response.RecruitInfoDTO;
 import UMC.career_mate.domain.recruit.enums.EducationLevel;
 import UMC.career_mate.domain.recruit.enums.RecruitKeyword;
 import UMC.career_mate.domain.recruit.enums.RecruitSortType;
 import UMC.career_mate.domain.recruit.repository.RecruitRepository;
 import UMC.career_mate.global.common.PageResponseDto;
+import UMC.career_mate.global.response.exception.GeneralException;
+import UMC.career_mate.global.response.exception.code.CommonErrorCode;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -42,5 +45,12 @@ public class RecruitQueryService {
             .hasNext(hasNext)
             .result(recommendRecruitDTOList)
             .build();
+    }
+
+    public RecruitInfoDTO findRecruitInfo(Long recruitId) {
+        Recruit recruit = recruitRepository.findById(recruitId)
+            .orElseThrow(() -> new GeneralException(CommonErrorCode.NOT_FOUND_RECRUIT));
+
+        return RecruitConverter.toRecruitInfoDTO(recruit);
     }
 }

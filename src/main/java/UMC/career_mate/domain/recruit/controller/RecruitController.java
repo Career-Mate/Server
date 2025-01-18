@@ -1,6 +1,7 @@
 package UMC.career_mate.domain.recruit.controller;
 
 import UMC.career_mate.domain.recruit.dto.response.RecommendRecruitDTO;
+import UMC.career_mate.domain.recruit.dto.response.RecruitInfoDTO;
 import UMC.career_mate.domain.recruit.enums.EducationLevel;
 import UMC.career_mate.domain.recruit.enums.JobCode;
 import UMC.career_mate.domain.recruit.enums.RecruitKeyword;
@@ -12,7 +13,9 @@ import UMC.career_mate.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,5 +53,14 @@ public class RecruitController {
         return ApiResponse.onSuccess(
             recruitQueryService.getRecommendRecruitList(page, size, recruitKeyword,
                 educationLevel, careerYear, recruitSortType));
+    }
+
+    @Operation(summary = "채용 공고 요약 페이지 조회 API", description = "채용 공고 요약 페이지를 조회하는 API입니다.")
+    @GetMapping("/{recruitId}")
+    public ResponseEntity<ApiResponse<RecruitInfoDTO>> getRecruitInfo(
+        @PathVariable Long recruitId
+    ) {
+        return ResponseEntity.ok(
+            ApiResponse.onSuccess(recruitQueryService.findRecruitInfo(recruitId)));
     }
 }
