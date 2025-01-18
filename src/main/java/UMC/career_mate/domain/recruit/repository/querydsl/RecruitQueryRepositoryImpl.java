@@ -26,9 +26,6 @@ public class RecruitQueryRepositoryImpl implements RecruitQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    /**
-     * BooleanBuilder를 사용한 동적 쿼리
-     */
     @Override
     public Page<Recruit> findByKeywordWithBooleanBuilder(RecruitKeyword recruitKeyword,
         EducationLevel educationLevel, Integer careerYear, RecruitSortType recruitSortType,
