@@ -1,0 +1,46 @@
+package UMC.career_mate.domain.recruit.converter;
+
+import UMC.career_mate.domain.recruit.Recruit;
+import UMC.career_mate.domain.recruit.dto.api.SaraminResponseDTO.Job;
+import UMC.career_mate.domain.recruit.enums.EducationLevel;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Arrays;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringEscapeUtils;
+
+@Slf4j
+public class RecruitConverter {
+
+    public static Recruit toRecruit(Job job, String recruitUrl, String companyInfoUrl) {
+        String educationLevelName = job.position().requiredEducationLevel().name();
+        EducationLevel educationLevel = EducationLevel.fromDescription(educationLevelName);
+
+        return Recruit.builder()
+            .companyName(job.company().detail().name())
+            .title(job.position().title())
+            .imageUrl(null)
+            .deadLine(LocalDateTime.ofInstant(Instant.ofEpochSecond(job.expirationTimestamp()),
+                ZoneId.systemDefault()))
+            .companyInfoUrl(companyInfoUrl)
+            .recruitUrl(recruitUrl)
+            .experienceLevelCode(job.position().experienceLevel().code())
+            .experienceLevelMin(job.position().experienceLevel().min())
+            .experienceLevelMax(job.position().experienceLevel().max())
+            .experienceLevelName(job.position().experienceLevel().name())
+            .educationLevelCode(educationLevel.getCode())
+            .educationLevelName(educationLevel.getDescription())
+            .employmentName(job.position().jobType().name())
+            .salaryName(job.salary().name())
+            .jobNames(Arrays.asList(job.position().jobCode().name()))
+            .region(StringEscapeUtils.unescapeHtml4(
+                job.position().location().name()))
+            .industryName(job.position().industry().name())
+            .postingDate(LocalDateTime.ofInstant(Instant.ofEpochSecond(job.postingTimestamp()),
+                ZoneId.systemDefault()))
+            .openingDate(LocalDateTime.ofInstant(Instant.ofEpochSecond(job.openingTimestamp()),
+                ZoneId.systemDefault()))
+            .build();
+    }
+}

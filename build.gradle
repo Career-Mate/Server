@@ -42,6 +42,9 @@ dependencies {
 	//swagger
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 
+	//JSON 타입 사용
+	implementation 'io.hypersistence:hypersistence-utils-hibernate-62:3.7.0'
+
 }
 
 tasks.named('test') {
