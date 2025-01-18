@@ -1,4 +1,4 @@
-package UMC.career_mate.domain.Template.enums;
+package UMC.career_mate.domain.template.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

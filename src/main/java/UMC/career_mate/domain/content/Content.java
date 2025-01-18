@@ -1,28 +1,34 @@
-package UMC.career_mate.domain.Template;
+package UMC.career_mate.domain.content;
 
 import UMC.career_mate.domain.job.Job;
-import UMC.career_mate.domain.Template.enums.TemplateType;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "templates")
+@Table(name = "contents")
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Template {
+public class Content {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "template_id")
+    @Column(name = "content_id")
     private Long id;
 
-    @Column(name = "template_type")
-    @Enumerated(EnumType.STRING)
-    private TemplateType templateType;
+    @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
+    private String url;
+
+    @Column(nullable = false)
+    private String photo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_id")
     private Job job;
+
 }
+

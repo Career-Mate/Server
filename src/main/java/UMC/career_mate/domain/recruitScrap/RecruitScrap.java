@@ -1,24 +1,24 @@
-package UMC.career_mate.domain.ContentScrap;
+package UMC.career_mate.domain.recruitScrap;
 
-import UMC.career_mate.domain.Content.Content;
 import UMC.career_mate.domain.member.Member;
+import UMC.career_mate.domain.recruit.Recruit;
 import UMC.career_mate.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@Table(name = "content_scraps")
+@Table(name = "recruit_scraps")
 @SQLRestriction("deleted_at is NULL")
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class ContentScrap extends BaseEntity {
+public class RecruitScrap extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "content_scrap_id")
+    @Column(name = "recruit_scrap_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,6 +26,6 @@ public class ContentScrap extends BaseEntity {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "content_id")
-    private Content content;
+    @JoinColumn(name = "recruit_id")
+    private Recruit recruit;
 }

@@ -1,6 +1,6 @@
 package UMC.career_mate.domain.question;
 
-import UMC.career_mate.domain.Template.Template;
+import UMC.career_mate.domain.template.Template;
 import jakarta.persistence.*;
 import lombok.*;
 
