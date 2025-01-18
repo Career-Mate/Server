@@ -1,6 +1,9 @@
-package UMC.career_mate.domain.member.entity;
+package UMC.career_mate.domain.member;
 
-import UMC.career_mate.domain.job.entity.Job;
+import UMC.career_mate.domain.job.Job;
+import UMC.career_mate.domain.member.enums.EducationStatus;
+import UMC.career_mate.domain.member.enums.SocialType;
+import UMC.career_mate.domain.recruit.enums.EducationLevel;
 import UMC.career_mate.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,7 +21,7 @@ public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
-    private Long memberId;
+    private Long id;
 
     @Column(nullable = false)
     private String name;

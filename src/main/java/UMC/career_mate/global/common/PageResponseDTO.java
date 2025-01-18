@@ -3,7 +3,7 @@ package UMC.career_mate.global.common;
 import lombok.Builder;
 
 @Builder
-public record PageResponseDto<T>(
+public record PageResponseDTO<T>(
 
         int page,
         boolean hasNext,

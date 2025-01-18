@@ -1,14 +1,12 @@
-package UMC.career_mate.domain.member.entity;
+package UMC.career_mate.domain.Template.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum SocialType {
-
-    KAKAO,
-    NAVER,
+public enum TemplateType {
+    INTERN,
 
     ;
 }

@@ -1,4 +1,4 @@
-package UMC.career_mate.domain.job.entity;
+package UMC.career_mate.domain.job;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,7 +14,7 @@ public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "job_id")
-    private Long jobId;
+    private Long id;
 
     @Column(nullable = false)
     private String name;

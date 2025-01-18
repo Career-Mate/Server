@@ -1,11 +1,8 @@
 package UMC.career_mate.domain.recruit;
 
 import io.hypersistence.utils.hibernate.type.json.JsonType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AccessLevel;
@@ -16,6 +13,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
 @Entity
+@Table(name = "recruits")
 @Getter
 @Builder
 @AllArgsConstructor
@@ -24,6 +22,7 @@ public class Recruit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "recruit_id")
     private Long id;
 
     // 채용 공고 목록 조회 시 아래 4개만 반환
