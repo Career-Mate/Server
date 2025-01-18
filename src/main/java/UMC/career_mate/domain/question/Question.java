@@ -20,6 +20,7 @@ public class Question {
     @Column(nullable = false)
     private String content;
 
+    @Column(name = "question_order")
     private Integer order;
 
     @Column(name = "is_required", nullable = false)
