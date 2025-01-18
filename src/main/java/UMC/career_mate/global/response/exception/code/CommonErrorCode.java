@@ -12,7 +12,7 @@ public enum CommonErrorCode implements ErrorCode {
     FORBIDDEN(403, "EC002", "금지된 요청입니다."),
 
     // Recruit 관련
-    NOT_FOUND_RECRUIT(400, "RECRUIT400", "해당 채용 공고를 찾을 수 없습니다."),
+    NOT_FOUND_RECRUIT(400, "ERE001", "해당 채용 공고를 찾을 수 없습니다."),
 
     ;
     private final int status;
