@@ -2,6 +2,7 @@ package UMC.career_mate.domain.recruit.converter;
 
 import UMC.career_mate.domain.recruit.Recruit;
 import UMC.career_mate.domain.recruit.dto.api.SaraminResponseDTO.Job;
+import UMC.career_mate.domain.recruit.dto.response.RecommendRecruitDTO;
 import UMC.career_mate.domain.recruit.enums.EducationLevel;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -41,6 +42,24 @@ public class RecruitConverter {
                 ZoneId.systemDefault()))
             .openingDate(LocalDateTime.ofInstant(Instant.ofEpochSecond(job.openingTimestamp()),
                 ZoneId.systemDefault()))
+            .build();
+    }
+
+    public static RecommendRecruitDTO toRecommendRecruitDTO(Recruit recruit) {
+        return RecommendRecruitDTO.builder()
+            .recruitId(recruit.getId())
+            .companyName(recruit.getCompanyName())
+            .imageUrl(recruit.getImageUrl())
+            .title(recruit.getTitle())
+            .deadLine(recruit.getDeadLine())
+            .experienceLevelCode(recruit.getExperienceLevelCode())
+            .experienceLevelMin(recruit.getExperienceLevelMin())
+            .experienceLevelMax(recruit.getExperienceLevelMax())
+            .experienceLevelName(recruit.getExperienceLevelName())
+            .educationLevelCode(recruit.getEducationLevelCode())
+            .educationLevelName(recruit.getEducationLevelName())
+            .openingDate(recruit.getOpeningDate())
+            .postingDate(recruit.getPostingDate())
             .build();
     }
 }
