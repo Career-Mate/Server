@@ -3,6 +3,7 @@ package UMC.career_mate.domain.planner.converter;
 import UMC.career_mate.domain.member.Member;
 import UMC.career_mate.domain.planner.Planner;
 import UMC.career_mate.domain.planner.dto.request.CreatePlannerDTO;
+import UMC.career_mate.domain.planner.dto.response.PlannerResponseDTO;
 
 public class PlannerConverter {
 
@@ -12,7 +13,7 @@ public class PlannerConverter {
                     .activityName(createPlannerDTO.activityName())
                     .startTime(createPlannerDTO.startTime())
                     .endTime(createPlannerDTO.endTime())
-                    .specific(createPlannerDTO.specific())
+                    .specifics(createPlannerDTO.specifics())
                     .measurable(createPlannerDTO.measurable())
                     .achievable(createPlannerDTO.achievable())
                     .relevant(createPlannerDTO.relevant())
@@ -20,5 +21,19 @@ public class PlannerConverter {
                     .otherPlans(createPlannerDTO.otherPlans())
                     .member(member)
                     .build();
+    }
+
+    public static PlannerResponseDTO toPlannerResponseDTO(Planner planner){
+        return PlannerResponseDTO.builder()
+                .activityName(planner.getActivityName())
+                .startTime(planner.getStartTime())
+                .endTime(planner.getEndTime())
+                .specifics(planner.getSpecifics())
+                .measurable(planner.getMeasurable())
+                .achievable(planner.getAchievable())
+                .relevant(planner.getRelevant())
+                .timeBound(planner.getTimeBound())
+                .otherPlans(planner.getOtherPlans())
+                .build();
     }
 }

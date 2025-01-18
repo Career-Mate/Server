@@ -33,7 +33,7 @@ public class Planner extends BaseEntity {
     private LocalDateTime endTime;
 
     @Column
-    private String specific;
+    private String specifics;
 
     @Column
     private String measurable;
@@ -58,7 +58,7 @@ public class Planner extends BaseEntity {
         this.activityName = createPlannerDTO.activityName();
         this.startTime = createPlannerDTO.startTime();
         this.endTime = createPlannerDTO.endTime();
-        this.specific = createPlannerDTO.specific();
+        this.specifics = createPlannerDTO.specifics();
         this.measurable = createPlannerDTO.measurable();
         this.achievable = createPlannerDTO.achievable();
         this.relevant = createPlannerDTO.relevant();

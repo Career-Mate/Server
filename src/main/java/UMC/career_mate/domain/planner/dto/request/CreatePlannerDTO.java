@@ -13,7 +13,7 @@ public record CreatePlannerDTO(
         LocalDateTime startTime,
         LocalDateTime endTime,
         @Length(max=1000, message = "최대 1000자까지 입력 가능합니다.")
-        String specific,
+        String specifics,
         @Length(max=1000, message = "최대 1000자까지 입력 가능합니다.")
         String measurable,
         @Length(max=1000, message = "최대 1000자까지 입력 가능합니다.")
