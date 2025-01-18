@@ -8,5 +8,6 @@ import java.util.Optional;
 
 public interface PlannerRepository extends JpaRepository<Planner,Long> {
 
+    Boolean existsByMember(Member member);
     Optional<Planner> findPlannerByMember(Member member);
 }

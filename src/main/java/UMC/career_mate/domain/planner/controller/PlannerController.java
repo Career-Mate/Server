@@ -6,9 +6,6 @@ import UMC.career_mate.domain.planner.service.PlannerCommandService;
 import UMC.career_mate.global.annotation.LoginMember;
 import UMC.career_mate.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,5 +68,10 @@ public class PlannerController {
     public ApiResponse<String> editPlanner(@LoginMember Member member, @RequestBody CreatePlannerDTO createPlannerDTO) {
         plannerCommandService.editPlanner(member, createPlannerDTO);
         return ApiResponse.onSuccess("플래너 수정 완료");
+    }
+
+    public ApiResponse<String> deletePlanner(@LoginMember Member member){
+        plannerCommandService.deletePlanner(member);
+        return ApiResponse.onSuccess("플래너 삭제 완료");
     }
 }
