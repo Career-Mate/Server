@@ -32,7 +32,7 @@ public class Planner extends BaseEntity {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
-    @Column
+    @Column(nullable = false)
     private String specifics;
 
     @Column
