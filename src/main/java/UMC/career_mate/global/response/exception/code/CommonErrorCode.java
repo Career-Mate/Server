@@ -11,6 +11,9 @@ public enum CommonErrorCode implements ErrorCode {
     UNAUTHORIZED(401, "ECM001", "인증이 필요합니다."),
     FORBIDDEN(403, "ECM002", "금지된 요청입니다."),
 
+    // Recruit 관련
+    NOT_FOUND_RECRUIT(400, "ERE001", "해당 채용 공고를 찾을 수 없습니다."),
+
     ;
     private final int status;
     private final String code;
