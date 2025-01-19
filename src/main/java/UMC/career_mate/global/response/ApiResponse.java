@@ -39,7 +39,7 @@ public class ApiResponse<T> {
             .status(OK.getStatus())
             .code(OK.getCode())
             .message(OK.getMessage())
-            .data(null)
+            .data(data)
             .build();
     }
 
