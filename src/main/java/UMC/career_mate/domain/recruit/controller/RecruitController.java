@@ -8,7 +8,7 @@ import UMC.career_mate.domain.recruit.enums.RecruitKeyword;
 import UMC.career_mate.domain.recruit.enums.RecruitSortType;
 import UMC.career_mate.domain.recruit.service.RecruitCommandService;
 import UMC.career_mate.domain.recruit.service.RecruitQueryService;
-import UMC.career_mate.global.common.PageResponseDto;
+import UMC.career_mate.global.common.PageResponseDTO;
 import UMC.career_mate.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
@@ -42,7 +42,7 @@ public class RecruitController {
      */
     @Operation(summary = "추천 채용 공고 조회 API", description = "추천 채용 공고를 조회하는 API입니다.")
     @GetMapping
-    public ApiResponse<PageResponseDto<List<RecommendRecruitDTO>>> getRecommendRecruitList(
+    public ApiResponse<PageResponseDTO<List<RecommendRecruitDTO>>> getRecommendRecruitList(
         @RequestParam(defaultValue = "1", required = false) int page,
         @RequestParam(defaultValue = "6", required = false) int size,
         @RequestParam RecruitKeyword recruitKeyword,

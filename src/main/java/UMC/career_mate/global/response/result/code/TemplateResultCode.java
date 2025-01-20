@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum CommonResultCode implements ResultCode {
-    EXAMPLE_RESULT_CODE(200,"SE000", "엔티티 별로 이런식으로 작성해주세요"),
+public enum TemplateResultCode implements ResultCode {
+    GET_TEMPLATE(200,"ST000", "성공적으로 직무에 맞는 템플릿을 조회했습니다."),
     ;
 
     private final int status;
