@@ -34,6 +34,6 @@ public class TemplateController {
                     """
     )
     public ApiResponse<TemplateResponseDTO> getTemplate(@RequestParam Long jobId, @RequestParam TemplateType type) {
-        ApiResponse.onSuccess(GET_TEMPLATE, templateQueryService.getTemplate(jobId, type));
+        return ApiResponse.onSuccess(GET_TEMPLATE, templateQueryService.getTemplate(jobId, type));
     }
 }
