@@ -21,7 +21,7 @@ public class Question {
     private String content;
 
     @Column(name = "question_order")
-    private Integer order;;
+    private Integer order;
 
     @Column(name = "is_required", nullable = false)
     private Boolean isRequired;
