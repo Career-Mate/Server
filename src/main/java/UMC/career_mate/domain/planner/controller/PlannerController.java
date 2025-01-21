@@ -5,6 +5,7 @@ import UMC.career_mate.domain.planner.dto.request.CreatePlannerDTO;
 import UMC.career_mate.domain.planner.dto.response.PlannerResponseDTO;
 import UMC.career_mate.domain.planner.service.PlannerCommandService;
 import UMC.career_mate.domain.planner.service.PlannerQueryService;
+//import UMC.career_mate.global.annotation.LoginMember;
 import UMC.career_mate.global.annotation.LoginMember;
 import UMC.career_mate.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;

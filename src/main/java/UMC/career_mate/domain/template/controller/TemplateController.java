@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import static UMC.career_mate.global.response.result.code.TemplateResultCode.GET_TEMPLATE;
+import static UMC.career_mate.global.response.result.code.CommonResultCode.GET_TEMPLATE;
 
 @RestController
 @RequiredArgsConstructor

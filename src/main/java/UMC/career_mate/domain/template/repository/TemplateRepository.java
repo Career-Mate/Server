@@ -9,4 +9,6 @@ import java.util.Optional;
 
 public interface TemplateRepository extends JpaRepository<Template, Long> {
     Optional<Template> findByJobAndTemplateType(Job job, TemplateType templateType);
+
+    Optional<Template> findByTemplateType(TemplateType templateType);
 }
