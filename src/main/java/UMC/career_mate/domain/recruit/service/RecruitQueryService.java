@@ -8,15 +8,16 @@ import UMC.career_mate.domain.recruit.enums.EducationLevel;
 import UMC.career_mate.domain.recruit.enums.RecruitKeyword;
 import UMC.career_mate.domain.recruit.enums.RecruitSortType;
 import UMC.career_mate.domain.recruit.repository.RecruitRepository;
-import UMC.career_mate.global.common.PageResponseDto;
+import UMC.career_mate.global.common.PageResponseDTO;
 import UMC.career_mate.global.response.exception.GeneralException;
 import UMC.career_mate.global.response.exception.code.CommonErrorCode;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +26,7 @@ public class RecruitQueryService {
 
     private final RecruitRepository recruitRepository;
 
-    public PageResponseDto<List<RecommendRecruitDTO>> getRecommendRecruitList(int page, int size,
+    public PageResponseDTO<List<RecommendRecruitDTO>> getRecommendRecruitList(int page, int size,
         RecruitKeyword recruitKeyword, EducationLevel educationLevel,
         Integer careerYear, RecruitSortType recruitSortType) {
         PageRequest pageRequest = PageRequest.of(page - 1, size);
@@ -40,7 +41,7 @@ public class RecruitQueryService {
             .map(recruit -> RecruitConverter.toRecommendRecruitDTO(recruit))
             .toList();
 
-        return PageResponseDto.<List<RecommendRecruitDTO>>builder()
+        return PageResponseDTO.<List<RecommendRecruitDTO>>builder()
             .page(page)
             .hasNext(hasNext)
             .result(recommendRecruitDTOList)
