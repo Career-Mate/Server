@@ -24,17 +24,15 @@ public class Member extends BaseEntity {
     @Column(name = "member_id")
     private Long id;
 
-    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
     private String email;
 
-    @Column(name = "education_level", nullable = false)
+    @Column(name = "education_level")
     @Enumerated(EnumType.STRING)
     private MemberEducationLevel educationLevel;
 
-    @Column(name = "education_status", nullable = false)
+    @Column(name = "education_status")
     @Enumerated(EnumType.STRING)
     private EducationStatus educationStatus;
 
@@ -42,11 +40,13 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private SocialType socialType;
 
-    @Column(name = "client_id", nullable = false)
+    @Column(name = "client_id")
     private String clientId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_id")
     private Job job;
 
+    //profile 작성이 되었는지 확인하는 필드
+    private Boolean is_complete;
 }

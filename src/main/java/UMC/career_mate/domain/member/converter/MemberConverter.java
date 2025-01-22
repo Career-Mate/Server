@@ -21,6 +21,15 @@ public class MemberConverter {
                 .job(job)
                 .socialType(SocialType.valueOf(request.socialType()))
                 .clientId(request.clientId())
+                .is_complete(false)
+                .build();
+    }
+
+    public static Member toEmptyEntity(String clientId, SocialType socialType) {
+        return Member.builder()
+                .clientId(clientId)
+                .socialType(socialType)
+                .is_complete(false)
                 .build();
     }
 }

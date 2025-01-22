@@ -1,15 +1,16 @@
 package UMC.career_mate.domain.member.dto.request;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 @Builder
 public record JoinMemberDTO(
-    String name,
-    String email,
-    String educationLevel,
-    String educationStatus,
-    Long job,
-    String socialType,
-    String clientId
+        @NotNull String name,
+        @NotNull String email,
+        @NotNull String educationLevel,
+        @NotNull String educationStatus,
+        @NotNull Long job,
+        @NotNull String socialType,
+        @NotNull String clientId
 ) {
 }
