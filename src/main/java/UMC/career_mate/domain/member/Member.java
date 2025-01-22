@@ -34,6 +34,8 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private MemberEducationLevel educationLevel;
 
+    private String major;
+
     @Column(name = "education_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private EducationStatus educationStatus;
