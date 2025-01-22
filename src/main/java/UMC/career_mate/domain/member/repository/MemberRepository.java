@@ -12,4 +12,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Boolean existsMemberByClientIdAndSocialType(String clientId, SocialType socialType);
 
     Optional<Member> findMemberByClientIdAndSocialType(String clientId, SocialType socialType);
+
+    Optional<Member> findMemberByIdAndClientId(Long id, String clientId);
+
 }

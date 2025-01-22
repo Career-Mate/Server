@@ -1,14 +1,14 @@
 package UMC.career_mate.domain.member.controller;
 
 import UMC.career_mate.domain.member.Member;
-import UMC.career_mate.domain.member.dto.request.JoinMemberDTO;
+import UMC.career_mate.domain.member.dto.request.CreateProfileDTO;
 import UMC.career_mate.domain.member.service.MemberService;
+import UMC.career_mate.global.annotation.LoginMember;
 import UMC.career_mate.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,8 +19,8 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping("/join")
-    @Operation(summary = "회원가입 API",
+    @PostMapping("/profile")
+    @Operation(summary = "프로필 설정 API",
             description =
                     """
                     아래 두가지 요소에는 반드시 목록 중 하나를 입력해주세요
@@ -39,8 +39,10 @@ public class MemberController {
                     4. COMPLETED (수료) \s
                     """
     )
-    public ApiResponse<String> joinMember(JoinMemberDTO request) {
-        Member member = memberService.joinMember(request);
+    public ApiResponse<String> createProfile(@RequestBody CreateProfileDTO request,
+                                             @LoginMember Member member)
+    {
+        Member profile = memberService.makeProfile(request, member);
         return ApiResponse.onSuccess("프로필 설정 완료");
     }
 }

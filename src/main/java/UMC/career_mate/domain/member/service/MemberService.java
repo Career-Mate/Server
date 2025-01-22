@@ -4,7 +4,7 @@ import UMC.career_mate.domain.job.Job;
 import UMC.career_mate.domain.job.Service.JobService;
 import UMC.career_mate.domain.member.Member;
 import UMC.career_mate.domain.member.converter.MemberConverter;
-import UMC.career_mate.domain.member.dto.request.JoinMemberDTO;
+import UMC.career_mate.domain.member.dto.request.CreateProfileDTO;
 import UMC.career_mate.domain.member.enums.SocialType;
 import UMC.career_mate.domain.member.repository.MemberRepository;
 import UMC.career_mate.domain.planner.dto.request.CreatePlannerDTO;
@@ -14,6 +14,8 @@ import UMC.career_mate.global.response.exception.code.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -25,17 +27,19 @@ public class MemberService {
     private final PlannerCommandService plannerService;
 
     @Transactional
-    public Member joinMember(JoinMemberDTO request) {
+    public Member makeProfile(CreateProfileDTO request,Member member) {
         Job job = jobService.findJobById(request.job());
 
-        //새로운 회원 객체 생성
-        Member newMember = MemberConverter.toEntity(request, job);
+        Member profileMember = findMemberByMemberId(member.getId());
+        //회원 프로필 작성
+        profileMember.createProfile(request, job);
+        profileMember.completeProfile();
 
         //비어있는 플래너 생성
-        CreatePlannerDTO createPlannerDTO = CreatePlannerDTO.builder().build();
-        plannerService.savePlanner(newMember,createPlannerDTO);
+        CreatePlannerDTO createPlannerDTO = CreatePlannerDTO.builder().specifics("specifics").build();
+        plannerService.savePlanner(profileMember,createPlannerDTO);
 
-        return memberRepository.save(newMember);
+        return profileMember;
     }
 
     public Boolean checkExistMember(String clientId,SocialType socialType) {
@@ -60,4 +64,20 @@ public class MemberService {
                 () -> new GeneralException(CommonErrorCode.NOT_FOUND_BY_MEMBER_ID)
         );
     }
+
+    public Member findMemberByIdAndClientId(Long memberId, String clientId) {
+        return memberRepository.findMemberByIdAndClientId(memberId, clientId).orElseThrow(
+                () -> new GeneralException(CommonErrorCode.NOT_FOUND_BY_ID_AND_CLIENT_ID)
+        );
+    }
+
 }
+//{
+//        "name": "temp",
+//        "email": "temp",
+//        "educationLevel": "HIGH",
+//        "educationStatus": "GRADUATED",
+//        "job": 1,
+//        "socialType": "NAVER",
+//        "clientId": "string"
+//        }
