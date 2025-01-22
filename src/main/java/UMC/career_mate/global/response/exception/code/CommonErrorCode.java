@@ -31,7 +31,7 @@ public enum CommonErrorCode implements ErrorCode {
     NOT_FOUND_QUESTION(400, "ERQ000", "해당 질문을 찾을 수 없습니다."),
 
     // Answer 도메인
-    TOO_MANY_ANSWERS(400, "ERE", "커리어는 두개 이상 작성할 수 없습니다.")
+    TOO_MANY_ANSWERS(400, "EAN000", "커리어는 두개 이상 작성할 수 없습니다.")
     ;
     private final int status;
     private final String code;
