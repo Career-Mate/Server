@@ -14,6 +14,12 @@ public enum CommonResultCode implements ResultCode {
 
     //job
     GET_JOB_LIST(200, "SJO000", "모든 직무 조회에 성공하였습니다."),
+
+    // Template 도메인
+    GET_TEMPLATE(200,"ST000", "성공적으로 직무에 맞는 템플릿을 조회했습니다."),
+
+    // Answer 도메인
+    CREATE_ANSWER(200,"SA000", "성공적으로 답변을 저장했습니다."),
     ;
 
     private final int status;
