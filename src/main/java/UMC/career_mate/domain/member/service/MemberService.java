@@ -5,6 +5,7 @@ import UMC.career_mate.domain.job.Service.JobService;
 import UMC.career_mate.domain.member.Member;
 import UMC.career_mate.domain.member.converter.MemberConverter;
 import UMC.career_mate.domain.member.dto.request.JoinMemberDTO;
+import UMC.career_mate.domain.member.dto.response.MemberInfoDTO;
 import UMC.career_mate.domain.member.repository.MemberRepository;
 import UMC.career_mate.domain.planner.dto.request.CreatePlannerDTO;
 import UMC.career_mate.domain.planner.service.PlannerCommandService;
@@ -33,5 +34,9 @@ public class MemberService {
         plannerService.savePlanner(newMember,createPlannerDTO);
 
         return memberRepository.save(newMember);
+    }
+
+    public MemberInfoDTO getMemberInfo(Member member) {
+        return MemberConverter.toMemberInfo(member);
     }
 }
