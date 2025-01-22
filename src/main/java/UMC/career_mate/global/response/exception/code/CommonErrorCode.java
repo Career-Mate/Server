@@ -14,6 +14,8 @@ public enum CommonErrorCode implements ErrorCode {
     //member
     NOT_FOUND_BY_MEMBER_ID(400, "EME000", "해당 memberId를 가진 회원이 존재하지 않습니다."),
     NOT_FOUND_BY_CLIENT_ID(400, "EME001", "해당 clientId를 가진 회원이 존재하지 않습니다."),
+    NOT_FOUND_BY_ID_AND_CLIENT_ID(400, "EME002", "해당 memberId와 clientId를 가진 회원이 존재하지 않습니다."),
+
     //job
     NOT_FOUND_BY_JOB_ID(400, "EJB000", "해당 ID의 직무가 존재하지 않습니다."),
 

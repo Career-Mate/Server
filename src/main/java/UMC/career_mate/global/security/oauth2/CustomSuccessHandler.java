@@ -26,10 +26,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private static final String FRONTEND_BASE_URL = "http://localhost:3000";
     private static final String FRONTEND_PROFILE_PATH = "/profile";
 
-    @Value("${spring.jwt.access-token-validity-in-seconds}")
-    private Integer ACCESS_TOKEN_VALIDITY_IN_SECONDS;
-    @Value("${spring.jwt.refresh-token-validity-in-seconds}")
-    private Integer REFRESH_TOKEN_VALIDITY_IN_SECONDS;
+    private Integer ACCESS_TOKEN_VALIDITY_IN_SECONDS = 15 * 60;
+    private Integer REFRESH_TOKEN_VALIDITY_IN_SECONDS = 86400 ;
 
     private static final String ACCESS_TOKEN = "access-token";
     private static final String REFRESH_TOKEN = "refresh-token";
@@ -49,11 +47,11 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         if (!member.getIs_complete()) {
             //추가 정보가 입력되어 있지 않을 경우
-            response.sendRedirect(FRONTEND_BASE_URL);
+            response.sendRedirect(FRONTEND_BASE_URL + FRONTEND_PROFILE_PATH);
 
         } else {
             // 추가 정보가 입력된 경우
-            response.sendRedirect(FRONTEND_BASE_URL + FRONTEND_PROFILE_PATH);
+            response.sendRedirect(FRONTEND_BASE_URL);
         }
     }
 

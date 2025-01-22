@@ -100,7 +100,9 @@ public class JwtUtil {
 
     public Authentication getAuthentication(String token) {
         Long memberId = getMemberId(token);
-        Member member = memberService.findMemberByMemberId(memberId);
+        String clientId = getClientId(token);
+        System.out.println("jwtutil 104번줄");
+        Member member = memberService.findMemberByIdAndClientId(memberId, clientId);
 
         CustomOAuth2User customOAuth2User = new CustomOAuth2User(member);
         return new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());
