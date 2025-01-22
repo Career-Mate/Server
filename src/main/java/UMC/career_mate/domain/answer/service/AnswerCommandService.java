@@ -27,19 +27,16 @@ public class AnswerCommandService {
                 Question question = questionRepository.findById(answerInfo.questionId())
                         .orElseThrow(() -> new GeneralException(CommonErrorCode.NOT_FOUND_QUESTION));
 
-                // 질문에 대한 답변이 2개 초과인지 검증
-                validateAnswerLimit(answerInfo.questionId());
-
                 Answer answer = AnswerConverter.toAnswer(answerInfo, question);
                 answerRepository.save(answer);
             }
         }
     }
 
-    private void validateAnswerLimit(Long questionId) {
-        Integer existingAnswerCount = answerRepository.countByQuestionId(questionId);
-        if (existingAnswerCount >= 2) {
-            throw new GeneralException(CommonErrorCode.TOO_MANY_ANSWERS);
-        }
-    }
+//    private void validateAnswerLimit(Long questionId) {
+//        Integer existingAnswerCount = answerRepository.countByQuestionId(questionId);
+//        if (existingAnswerCount >= 2) {
+//            throw new GeneralException(CommonErrorCode.TOO_MANY_ANSWERS);
+//        }
+//    }
 }
