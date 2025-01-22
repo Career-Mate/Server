@@ -43,6 +43,9 @@ public enum CommonErrorCode implements ErrorCode {
     EXPIRED_TOKEN(401, "ETK001", "만료된 토큰입니다."),
     FAILED_SIGNATURE_TOKEN(401, "ETK002", "토큰 서명 검증에 실패했습니다."),
     NOT_FOUND_REFRESH_TOKEN_BY_MEMBER_ID(400, "ETK003", "해당 회원 ID의 refresh token이 존재하지 않습니다."),
+
+    // Answer 도메인
+    TOO_MANY_ANSWERS(400, "EAN000", "커리어는 두개 이상 작성할 수 없습니다.")
     ;
     private final int status;
     private final String code;

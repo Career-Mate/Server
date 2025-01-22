@@ -5,7 +5,6 @@ import UMC.career_mate.domain.member.dto.request.CreateProfileDTO;
 import UMC.career_mate.domain.member.enums.EducationStatus;
 import UMC.career_mate.domain.member.enums.MemberEducationLevel;
 import UMC.career_mate.domain.member.enums.SocialType;
-import UMC.career_mate.domain.recruit.enums.EducationLevel;
 import UMC.career_mate.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
