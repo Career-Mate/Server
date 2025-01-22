@@ -7,6 +7,8 @@ import UMC.career_mate.global.response.exception.code.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class JobService {
@@ -17,5 +19,9 @@ public class JobService {
         return jobRepository.findById(id).orElseThrow(
                 () -> new GeneralException(CommonErrorCode.NOT_FOUND_BY_JOB_ID)
         );
+    }
+
+    public List<Job> getJobList() {
+        return jobRepository.findAll();
     }
 }

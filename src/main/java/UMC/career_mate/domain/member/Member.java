@@ -42,7 +42,7 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private SocialType socialType;
 
-    @Column(name = "client_id")
+    @Column(name = "client_id", nullable = false)
     private String clientId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -65,4 +65,3 @@ public class Member extends BaseEntity {
         this.is_complete = true;
     }
 }
-

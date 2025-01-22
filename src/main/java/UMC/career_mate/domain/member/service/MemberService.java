@@ -6,6 +6,8 @@ import UMC.career_mate.domain.member.Member;
 import UMC.career_mate.domain.member.converter.MemberConverter;
 import UMC.career_mate.domain.member.dto.request.CreateProfileDTO;
 import UMC.career_mate.domain.member.enums.SocialType;
+import UMC.career_mate.domain.member.dto.request.JoinMemberDTO;
+import UMC.career_mate.domain.member.dto.response.MemberInfoDTO;
 import UMC.career_mate.domain.member.repository.MemberRepository;
 import UMC.career_mate.domain.planner.dto.request.CreatePlannerDTO;
 import UMC.career_mate.domain.planner.service.PlannerCommandService;
@@ -64,6 +66,11 @@ public class MemberService {
                 () -> new GeneralException(CommonErrorCode.NOT_FOUND_BY_MEMBER_ID)
         );
     }
+
+    public MemberInfoDTO getMemberInfo(Member member) {
+        return MemberConverter.toMemberInfo(member);
+    }
+}
 
     public Member findMemberByIdAndClientId(Long memberId, String clientId) {
         return memberRepository.findMemberByIdAndClientId(memberId, clientId).orElseThrow(
