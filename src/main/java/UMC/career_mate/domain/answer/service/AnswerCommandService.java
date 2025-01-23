@@ -55,15 +55,10 @@ public class AnswerCommandService {
                         .orElseThrow(() -> new GeneralException(CommonErrorCode.NOT_FOUND_QUESTION));
 
                 // 해당 회원, 질문, 시퀀스를 기준으로 기존 답변 조회
-                Optional<Answer> existingAnswerOpt = answerRepository.findByMemberAndQuestionAndSequence(member, question, answerList.sequence());
+                Answer existingAnswer = answerRepository.findByMemberAndQuestionAndSequence(member, question, answerList.sequence())
+                        .orElseThrow(() -> new GeneralException(CommonErrorCode.NOT_FOUND_ANSWER));
 
-                if (existingAnswerOpt.isPresent()) {
-                    // 질문에 대한 답변이 존재하면 수정
-                    Answer existingAnswer = existingAnswerOpt.get();
-                    existingAnswer.updateContent(answerInfo.content());
-                } else {
-                    throw new GeneralException(CommonErrorCode.NOT_FOUND_ANSWER);
-                }
+                existingAnswer.updateContent(answerInfo.content());
             }
         }
     }
