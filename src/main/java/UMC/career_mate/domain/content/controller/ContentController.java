@@ -3,6 +3,7 @@ package UMC.career_mate.domain.content.controller;
 import UMC.career_mate.domain.content.dto.request.ContentRequestDTO;
 import UMC.career_mate.domain.content.dto.response.ContentResponseDTO;
 import UMC.career_mate.domain.content.service.ContentService;
+import UMC.career_mate.global.common.PageResponseDTO;
 import UMC.career_mate.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +49,7 @@ public class ContentController {
                     - `size`: 페이지 크기 (기본값: 10)
                     """
     )
-    public ApiResponse<List<ContentResponseDTO>> getContentsByJobId(
+    public ApiResponse<PageResponseDTO<List<ContentResponseDTO>>> getContentsByJobId(
             @RequestParam Long jobId,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {
