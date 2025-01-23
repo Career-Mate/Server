@@ -6,6 +6,7 @@ import lombok.Builder;
 
 @Builder
 public record RecruitInfoDTO(
+    String comment,
     String companyName,
     String title,
     String industryName,

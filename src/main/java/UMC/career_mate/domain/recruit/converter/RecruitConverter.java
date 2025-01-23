@@ -64,8 +64,9 @@ public class RecruitConverter {
             .build();
     }
 
-    public static RecruitInfoDTO toRecruitInfoDTO(Recruit recruit) {
+    public static RecruitInfoDTO toRecruitInfoDTO(String comment, Recruit recruit) {
         return RecruitInfoDTO.builder()
+            .comment(comment)
             .companyName(recruit.getCompanyName())
             .title(recruit.getTitle())
             .industryName(recruit.getIndustryName())
