@@ -31,4 +31,15 @@ public class Answer extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     private Question question;
+
+    @Column(nullable = false)
+    private Long sequence;
+
+    public void updateSequence(Long sequence) {
+        this.sequence = sequence;
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
 }

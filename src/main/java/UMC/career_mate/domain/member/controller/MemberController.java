@@ -8,8 +8,6 @@ import UMC.career_mate.global.annotation.LoginMember;
 import UMC.career_mate.global.response.ApiResponse;
 import UMC.career_mate.global.response.result.code.CommonResultCode;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,7 +33,7 @@ public class MemberController {
                     4. UNIVERSITY (대학교) \s
                     5. MASTER (석사) \s
                     6. DOCTOR (박사) \s
-                    
+
                     educationStatus(수료 상태)에 들어가야 할 목록입니다.
                     1. ENROLLED (재학) \s
                     2. ON_LEAVE (휴학) \s

@@ -1,5 +1,6 @@
 package UMC.career_mate.domain.template.controller;
 
+import UMC.career_mate.domain.member.Member;
 import UMC.career_mate.domain.template.dto.response.TemplateResponseDTO;
 import UMC.career_mate.domain.template.enums.TemplateType;
 import UMC.career_mate.domain.template.service.TemplateQueryService;
@@ -33,7 +34,7 @@ public class TemplateController {
                     5. 최종 정리 (SUMMARY)
                     """
     )
-    public ApiResponse<TemplateResponseDTO> getTemplate(@RequestParam Long jobId, @RequestParam TemplateType type) {
-        return ApiResponse.onSuccess(GET_TEMPLATE, templateQueryService.getTemplate(jobId, type));
+    public ApiResponse<TemplateResponseDTO> getTemplate(@RequestParam Long memberId, @RequestParam TemplateType type) {
+        return ApiResponse.onSuccess(GET_TEMPLATE, templateQueryService.getTemplate(memberId, type));
     }
 }
