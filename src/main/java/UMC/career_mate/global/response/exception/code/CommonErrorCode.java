@@ -31,7 +31,12 @@ public enum CommonErrorCode implements ErrorCode {
     NOT_FOUND_QUESTION(400, "ERQ000", "해당 질문을 찾을 수 없습니다."),
 
     // Answer 도메인
-    TOO_MANY_ANSWERS(400, "EAN000", "커리어는 두개 이상 작성할 수 없습니다.")
+    TOO_MANY_ANSWERS(400, "EAN000", "커리어는 두개 이상 작성할 수 없습니다."),
+
+    // ContentScrap 도메인
+    NOT_FOUND_CONTENT(400, "ESC001", "해당 콘텐츠를 찾을 수 없습니다."),
+    DUPLICATE_SCRAP(400, "ESC002", "이미 스크랩된 콘텐츠입니다."),
+    NOT_FOUND_SCRAP(400, "ESC003", "스크랩이 존재하지 않습니다.");
     ;
     private final int status;
     private final String code;
