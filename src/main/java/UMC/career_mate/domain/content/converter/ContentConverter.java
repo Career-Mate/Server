@@ -4,12 +4,10 @@ import UMC.career_mate.domain.content.Content;
 import UMC.career_mate.domain.content.dto.request.ContentRequestDTO;
 import UMC.career_mate.domain.content.dto.response.ContentResponseDTO;
 import UMC.career_mate.domain.job.Job;
-import org.springframework.stereotype.Component;
 
-@Component
 public class ContentConverter {
 
-    public Content toContent(ContentRequestDTO contentRequestDTO, Job job) {
+    public static Content toContent(ContentRequestDTO contentRequestDTO, Job job) {
         return Content.builder()
                 .title(contentRequestDTO.title())
                 .url(contentRequestDTO.url())
@@ -18,7 +16,7 @@ public class ContentConverter {
                 .build();
     }
 
-    public ContentResponseDTO toContentResponseDTO(Content content) {
+    public static ContentResponseDTO toContentResponseDTO(Content content) {
         return ContentResponseDTO.builder()
                 .id(content.getId())
                 .title(content.getTitle())
