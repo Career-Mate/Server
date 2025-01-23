@@ -53,7 +53,7 @@ public enum EducationLevel {
                 if (EducationStatus.GRADUATED.equals(educationStatus)) {
                     yield UNIVERSITY_GRADUATE_4_YEAR;
                 } else {
-                    yield  HIGH_SCHOOL_GRADUATE;
+                    yield HIGH_SCHOOL_GRADUATE;
                 }
             }
             case MASTER -> {
