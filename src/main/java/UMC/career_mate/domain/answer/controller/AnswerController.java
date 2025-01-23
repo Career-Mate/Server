@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static UMC.career_mate.global.response.result.code.CommonResultCode.CREATE_ANSWER;
+import static UMC.career_mate.global.response.result.code.CommonResultCode.*;
 
 @RestController
 @RequestMapping("/answers")
@@ -109,7 +109,7 @@ public class AnswerController {
     public ApiResponse<CommonResultCode> saveAnswerList(@RequestParam Long memberId,
                                                         @Valid @RequestBody AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO) {
         answerCommandService.saveAnswerList(memberId, answerCreateOrUpdateDTO);
-        return ApiResponse.onSuccess(CREATE_ANSWER);
+        return ApiResponse.onSuccess(CREATE_ANSWER_LIST);
     }
 
     @GetMapping
@@ -125,11 +125,8 @@ public class AnswerController {
                             4. 보유 기술 (TECHNICAL_SKILLS)\s
                             5. 최종 정리 (SUMMARY)
                             """)
-    public PageResponseDTO<List<AnswerInfoListDTO>> getAnswerList(@RequestParam Long memberId,
-                                                                  @RequestParam(defaultValue = "1", required = false) int page,
-                                                                  @RequestParam(defaultValue = "14", required = false) int size,
-                                                                  @RequestParam("templateType") TemplateType templateType) {
-
-        return answerQueryService.getAnswersByTemplateType(memberId, page, size, templateType);
+    public ApiResponse<List<AnswerInfoListDTO>> getAnswerList(@RequestParam Long memberId,
+                                                              @RequestParam("templateType") TemplateType templateType) {
+        return ApiResponse.onSuccess(GET_ANSWER_LIST, answerQueryService.getAnswersByTemplateType(memberId, templateType));
     }
 }

@@ -27,27 +27,19 @@ public class AnswerQueryService {
     private final MemberRepository memberRepository;
 
     @Transactional(readOnly = true)
-    public PageResponseDTO<List<AnswerInfoListDTO>> getAnswersByTemplateType(Long memberId, int page, int size, TemplateType templateType) {
-        PageRequest pageRequest = PageRequest.of(page - 1, size);
+    public List<AnswerInfoListDTO> getAnswersByTemplateType(Long memberId, TemplateType templateType) {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new GeneralException(CommonErrorCode.BAD_REQUEST));
 
-        Page<Answer> answerPage = answerRepository.findByMemberAndTemplateType(member, templateType, pageRequest);
+        List<Answer> answerList = answerRepository.findByMemberAndTemplateType(member, templateType);
 
         // sequence 기준으로 그룹화
-        Map<Long, List<Answer>> groupedAnswers = answerPage.stream()
+        Map<Long, List<Answer>> groupedAnswers = answerList.stream()
                 .collect(Collectors.groupingBy(Answer::getSequence));
 
-        // 그룹화된 데이터를 DTO로 변환
-        List<AnswerInfoListDTO> answerListDTOList = groupedAnswers.entrySet().stream()
+        return groupedAnswers.entrySet().stream()
                 .map(entry -> AnswerConverter.toAnswerListResponseDTO(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
-
-        return PageResponseDTO.<List<AnswerInfoListDTO>>builder()
-                .page(pageRequest.getPageNumber() + 1)
-                .hasNext(answerPage.hasNext())
-                .result(answerListDTOList)
-                .build();
     }
 }
