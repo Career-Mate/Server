@@ -35,8 +35,7 @@ public class AnswerCommandService {
                 Question question = questionRepository.findById(answerInfo.questionId())
                         .orElseThrow(() -> new GeneralException(CommonErrorCode.NOT_FOUND_QUESTION));
 
-                Answer answer = AnswerConverter.toAnswer(answerInfo, member, question);
-                answer.updateSequence(start_sequence);
+                Answer answer = AnswerConverter.toAnswer(answerInfo, member, question, start_sequence);
                 answerRepository.save(answer);
             }
             start_sequence++;

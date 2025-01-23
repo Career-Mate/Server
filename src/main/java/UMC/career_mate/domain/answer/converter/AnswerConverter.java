@@ -12,11 +12,12 @@ import java.util.stream.Collectors;
 
 public class AnswerConverter {
 
-    public static Answer toAnswer(AnswerCreateOrUpdateDTO.AnswerInfo answerInfo, Member member, Question question) {
+    public static Answer toAnswer(AnswerCreateOrUpdateDTO.AnswerInfo answerInfo, Member member, Question question, long sequence) {
         return Answer.builder()
                 .content(answerInfo.content())
                 .member(member)
                 .question(question)
+                .sequence(sequence)
                 .build();
     }
 
