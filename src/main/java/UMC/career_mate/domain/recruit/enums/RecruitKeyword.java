@@ -75,6 +75,16 @@ public enum RecruitKeyword {
 
     ;
 
+    public static RecruitKeyword getRecruitKeyword(String name) {
+        for (RecruitKeyword recruitKeyword : RecruitKeyword.values()) {
+            if (recruitKeyword.toString().equals(name)) {
+                return recruitKeyword;
+            }
+        }
+        return null; // 일치하는거 없으면 일단 Null 반환 처리
+    }
+
+
     public abstract List<String> getIncludeKeywordList();
     public abstract List<String> getExcludeKeywordList();
 }
