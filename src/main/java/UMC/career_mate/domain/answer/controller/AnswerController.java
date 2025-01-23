@@ -13,7 +13,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -128,5 +130,85 @@ public class AnswerController {
     public ApiResponse<List<AnswerInfoListDTO>> getAnswerList(@RequestParam Long memberId,
                                                               @RequestParam("templateType") TemplateType templateType) {
         return ApiResponse.onSuccess(GET_ANSWER_LIST, answerQueryService.getAnswersByTemplateType(memberId, templateType));
+    }
+
+    @PatchMapping
+    @Operation(
+            summary = "커리어 수정 API",
+            description =
+                    """
+                            커리어를 수정하는 API 입니다.
+                            커리어를 수정할 때, 반드시 2개의  `answerInfoList` 데이터를 요청해야 합니다. 입력하지 않을 경우엔 빈 문자열로 요청을 할 수 있습니다.
+                            ### Example JSON:
+                            ```json
+                            {
+                              "answerList": [
+                                {
+                                  "sequence": 1,
+                                  "answerInfoList": [
+                                    {
+                                      "questionId": 30,
+                                      "content": "삼성전자 / IoT 개발팀"
+                                    },
+                                    {
+                                      "questionId": 31,
+                                      "content": "백엔드 개발자"
+                                    },
+                                    {
+                                      "questionId": 32,
+                                      "content": "2022.03.01~2022.08.01"
+                                    },
+                                    {
+                                      "questionId": 33,
+                                      "content": "IoT 디바이스 통신 프로토콜을 설계하며, 효율적인 데이터 전송 방식에 대해 배웠습니다."
+                                    },
+                                    {
+                                      "questionId": 34,
+                                      "content": "스마트 홈 서비스의 핵심 모듈을 개발하며, 사용자 경험 중심의 설계 중요성을 깨달았습니다."
+                                    },
+                                    {
+                                      "questionId": 35,
+                                      "content": "팀원들과의 코드 리뷰를 통해 문제를 다양한 시각으로 바라보는 법을 배웠습니다."
+                                    }
+                                  ]
+                                },
+                                {
+                                  "sequence": 2,
+                                  "answerInfoList": [
+                                    {
+                                      "questionId": 30,
+                                      "content": "LG CNS / 클라우드 플랫폼 개발팀"
+                                    },
+                                    {
+                                      "questionId": 31,
+                                      "content": "풀스택 개발자"
+                                    },
+                                    {
+                                      "questionId": 32,
+                                      "content": "2021.09.01~2022.02.01"
+                                    },
+                                    {
+                                      "questionId": 33,
+                                      "content": "클라우드 기반 서비스 배포 자동화를 구현하며 DevOps의 핵심 개념을 익혔습니다."
+                                    },
+                                    {
+                                      "questionId": 34,
+                                      "content": "대규모 사용자 트래픽을 처리하며 안정적인 시스템 운영 경험을 쌓았습니다."
+                                    },
+                                    {
+                                      "questionId": 35,
+                                      "content": "다양한 클라우드 서비스를 연동하며 기술적 시야를 넓힐 수 있었습니다."
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                            ```
+                            """
+    )
+    public ApiResponse<CommonResultCode> updateAnswerList(@RequestParam Long memberId,
+                                                          @Valid @RequestBody AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO) {
+        answerCommandService.updateAnswerList(memberId, answerCreateOrUpdateDTO);
+        return ApiResponse.onSuccess(UPDATE_ANSWER_LIST);
     }
 }
