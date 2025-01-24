@@ -15,6 +15,8 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @Component
 @RequiredArgsConstructor
@@ -51,7 +53,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         } else {
             // 추가 정보가 입력된 경우
-            CookieUtil.addCookieNoAge(response, "name", member.getName());
+            String memberName = URLEncoder.encode(member.getName(), StandardCharsets.UTF_8.toString());
+            CookieUtil.addCookieNoAge(response, "name", memberName);
             response.sendRedirect(FRONTEND_BASE_URL);
         }
     }
