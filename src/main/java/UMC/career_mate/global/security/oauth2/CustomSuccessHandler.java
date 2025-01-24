@@ -39,7 +39,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         Member member = customOAuth2User.getMember();
 
         String accessToken = jwtUtil.createJwt(member.getId(), member.getClientId(), member.getSocialType(), true);
-        CookieUtil.addCookie(response, ACCESS_TOKEN, accessToken, ACCESS_TOKEN_VALIDITY_IN_SECONDS);
+        CookieUtil.addCookie(response, ACCESS_TOKEN, accessToken, -1);
 
         String refreshToken = jwtUtil.createJwt(member.getId(), member.getClientId(), member.getSocialType(), false);
         refreshTokenService.saveRefreshToken(member.getId(),refreshToken);
