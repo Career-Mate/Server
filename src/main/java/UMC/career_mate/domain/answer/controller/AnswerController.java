@@ -230,28 +230,31 @@ public class AnswerController {
                               "status": 200,
                               "code": "SA000",
                               "message": "성공적으로 답변 작성 여부를 조회했습니다.",
-                              "data": [
-                                {
-                                  "templateType": "INTERN_EXPERIENCE",
-                                  "isComplete": true
-                                },
-                                {
-                                  "templateType": "PROJECT_EXPERIENCE",
-                                  "isComplete": false
-                                },
-                                {
-                                  "templateType": "OTHER_ACTIVITIES",
-                                  "isComplete": false
-                                },
-                                {
-                                  "templateType": "TECHNICAL_SKILLS",
-                                  "isComplete": false
-                                },
-                                {
-                                  "templateType": "SUMMARY",
-                                  "isComplete": false
-                                }
-                              ]
+                              "data": {
+                                "isAllCompleted": false,
+                                "answerCompletionStatusInfoDTOList": [
+                                  {
+                                    "templateType": "INTERN_EXPERIENCE",
+                                    "isComplete": true
+                                  },
+                                  {
+                                    "templateType": "PROJECT_EXPERIENCE",
+                                    "isComplete": false
+                                  },
+                                  {
+                                    "templateType": "OTHER_ACTIVITIES",
+                                    "isComplete": false
+                                  },
+                                  {
+                                    "templateType": "TECHNICAL_SKILLS",
+                                    "isComplete": false
+                                  },
+                                  {
+                                    "templateType": "SUMMARY",
+                                    "isComplete": false
+                                  }
+                                ]
+                              }
                             }
                             ```
                             """
