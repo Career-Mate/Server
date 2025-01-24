@@ -22,7 +22,7 @@ public enum CommonErrorCode implements ErrorCode {
     NOT_FOUND_RECRUIT(400, "ERE001", "해당 채용 공고를 찾을 수 없습니다."),
 
     // Job 도메인
-    NOT_FOUND_JOB(400, "ERJ000", "해당 직무을 찾을 수 없습니다."),
+    NOT_FOUND_JOB(400, "ERJ000", "해당 직업을 찾을 수 없습니다."),
 
     // Template 도메인
     NOT_FOUND_TEMPLATE(400, "ERT000", "해당 템플릿을 찾을 수 없습니다."),
@@ -32,8 +32,14 @@ public enum CommonErrorCode implements ErrorCode {
 
     // Answer 도메인
     NOT_FOUND_ANSWER(400, "EAN000", "해당 답변을 찾을 수 없습니다."),
-    TOO_MANY_ANSWERS(400, "EAN001", "커리어는 두개 이상 작성할 수 없습니다.")
+    TOO_MANY_ANSWERS(400, "EAN001", "커리어는 두개 이상 작성할 수 없습니다."),
+
+    // ContentScrap 도메인
+    NOT_FOUND_CONTENT(400, "ESC001", "해당 콘텐츠를 찾을 수 없습니다."),
+    DUPLICATE_SCRAP(400, "ESC002", "이미 스크랩된 콘텐츠입니다."),
+    NOT_FOUND_SCRAP(400, "ESC003", "스크랩이 존재하지 않습니다.");
     ;
+
     private final int status;
     private final String code;
     private final String message;
