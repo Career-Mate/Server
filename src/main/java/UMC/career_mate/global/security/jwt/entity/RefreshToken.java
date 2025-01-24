@@ -36,4 +36,8 @@ public class RefreshToken implements Serializable {
         return this;
     }
 
+    public void resetExpiration() {
+        this.expiration = 86400L;
+    }
+
 }
