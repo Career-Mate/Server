@@ -30,7 +30,7 @@ public class MemberController {
                     4. UNIVERSITY (대학교) \s
                     5. MASTER (석사) \s
                     6. DOCTOR (박사) \s
-                    
+
                     educationStatus(수료 상태)에 들어가야 할 목록입니다.
                     1. ENROLLED (재학) \s
                     2. ON_LEAVE (휴학) \s

@@ -20,7 +20,9 @@ public enum CommonResultCode implements ResultCode {
     GET_TEMPLATE(200,"ST000", "성공적으로 직무에 맞는 템플릿을 조회했습니다."),
 
     // Answer 도메인
-    CREATE_ANSWER(200,"SA000", "성공적으로 답변을 저장했습니다."),
+    CREATE_ANSWER_LIST(200,"SA000", "성공적으로 답변을 저장했습니다."),
+    GET_ANSWER_LIST(200,"SA000", "성공적으로 답변을 조회했습니다."),
+    UPDATE_ANSWER_LIST(200,"SA000", "성공적으로 답변을 수정했습니다."),
     ;
 
     private final int status;
