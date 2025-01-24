@@ -26,6 +26,21 @@ public class CookieUtil {
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
 
+    public static void addCookieNoAge(HttpServletResponse response, String name, String value) {
+        ResponseCookie cookie = ResponseCookie.from(name, value)
+                .path("/")
+                .domain(COOKIE_DOMAIN)
+                .httpOnly(true)
+//                .secure(true)
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+    }
+
+    public static String getCookieValue(HttpServletRequest request, HttpServletResponse response, String name) {
+        Cookie cookie = WebUtils.getCookie(request, name);
+        return (cookie != null) ? cookie.getValue() : null;
+    }
+
     public static void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
         Cookie getCookie = WebUtils.getCookie(request, name);
         if (getCookie != null) {

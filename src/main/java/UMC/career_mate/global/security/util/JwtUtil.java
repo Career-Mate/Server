@@ -82,6 +82,10 @@ public class JwtUtil {
         return Long.parseLong(getPayload(token).get(PAYLOAD_MEMBER_ID_KEY, String.class));
     }
 
+    public SocialType getSocialType(String token) {
+        return SocialType.valueOf(getPayload(token).get(PAYLOAD_SOCIAL_TYPE, String.class));
+    }
+
     public Boolean isExpired(String token) {
         return getPayload(token).getExpiration().before(new Date());
     }

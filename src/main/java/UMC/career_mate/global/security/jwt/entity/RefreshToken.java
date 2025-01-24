@@ -1,6 +1,7 @@
 package UMC.career_mate.global.security.jwt.entity;
 
 
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
@@ -17,6 +18,7 @@ public class RefreshToken implements Serializable {
     @Indexed
     private Long memberId;
 
+    @Getter
     @Indexed
     private String refreshToken;
 
@@ -33,4 +35,5 @@ public class RefreshToken implements Serializable {
         this.refreshToken = refreshToken;
         return this;
     }
+
 }
