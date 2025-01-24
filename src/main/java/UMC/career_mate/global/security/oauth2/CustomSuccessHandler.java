@@ -26,7 +26,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private static final String FRONTEND_BASE_URL = "http://localhost:3000";
     private static final String FRONTEND_PROFILE_PATH = "/profile";
 
-    private Integer ACCESS_TOKEN_VALIDITY_IN_SECONDS = 15 * 60;
+    private Integer ACCESS_TOKEN_VALIDITY_IN_SECONDS = 30 * 60 + 5 * 60; //쿠키 유효기간 30분 + 재발급 5분
     private Integer REFRESH_TOKEN_VALIDITY_IN_SECONDS = 86400 ;
 
     private static final String ACCESS_TOKEN = "access-token";
@@ -51,6 +51,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         } else {
             // 추가 정보가 입력된 경우
+            CookieUtil.addCookieNoAge(response, "name", member.getName());
             response.sendRedirect(FRONTEND_BASE_URL);
         }
     }
