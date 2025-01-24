@@ -30,6 +30,8 @@ public class RefreshTokenService {
         RefreshToken updatedRefreshToken = refreshTokenRepository.findByMemberId(memberId)
                 .map(originalRefreshToken -> originalRefreshToken.update(refreshToken))
                 .orElse(new RefreshToken(memberId, refreshToken));
+        //토큰을 저장할때 TTL을 초기화
+        updatedRefreshToken.resetExpiration();
 
         refreshTokenRepository.save(updatedRefreshToken);
     }
@@ -58,7 +60,7 @@ public class RefreshTokenService {
         String newRefreshToken = jwtUtil.createJwt(memberId, clientId, socialType, false);
         saveRefreshToken(memberId, newRefreshToken);
 
-        CookieUtil.addCookie(response, "access-token", newAccessToken, 30 * 60);
+        CookieUtil.addCookie(response, "access-token", newAccessToken, -1);
         CookieUtil.addCookie(response, "refresh-token", newRefreshToken, 86400);
     }
 }
