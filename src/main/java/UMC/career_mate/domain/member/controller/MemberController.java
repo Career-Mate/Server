@@ -2,7 +2,6 @@ package UMC.career_mate.domain.member.controller;
 
 import UMC.career_mate.domain.member.Member;
 import UMC.career_mate.domain.member.dto.request.CreateProfileDTO;
-import UMC.career_mate.domain.member.dto.request.JoinMemberDTO;
 import UMC.career_mate.domain.member.dto.response.MemberInfoDTO;
 import UMC.career_mate.domain.member.service.MemberService;
 import UMC.career_mate.global.annotation.LoginMember;

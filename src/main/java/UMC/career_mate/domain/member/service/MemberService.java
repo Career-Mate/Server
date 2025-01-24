@@ -5,9 +5,8 @@ import UMC.career_mate.domain.job.Service.JobService;
 import UMC.career_mate.domain.member.Member;
 import UMC.career_mate.domain.member.converter.MemberConverter;
 import UMC.career_mate.domain.member.dto.request.CreateProfileDTO;
-import UMC.career_mate.domain.member.enums.SocialType;
-import UMC.career_mate.domain.member.dto.request.JoinMemberDTO;
 import UMC.career_mate.domain.member.dto.response.MemberInfoDTO;
+import UMC.career_mate.domain.member.enums.SocialType;
 import UMC.career_mate.domain.member.repository.MemberRepository;
 import UMC.career_mate.domain.planner.dto.request.CreatePlannerDTO;
 import UMC.career_mate.domain.planner.service.PlannerCommandService;
@@ -16,8 +15,6 @@ import UMC.career_mate.global.response.exception.code.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -38,7 +35,7 @@ public class MemberService {
         profileMember.completeProfile();
 
         //비어있는 플래너 생성
-        CreatePlannerDTO createPlannerDTO = CreatePlannerDTO.builder().specifics("specifics").build();
+        CreatePlannerDTO createPlannerDTO = CreatePlannerDTO.builder().build();
         plannerService.savePlanner(profileMember,createPlannerDTO);
 
         return profileMember;
@@ -70,21 +67,10 @@ public class MemberService {
     public MemberInfoDTO getMemberInfo(Member member) {
         return MemberConverter.toMemberInfo(member);
     }
-}
 
     public Member findMemberByIdAndClientId(Long memberId, String clientId) {
         return memberRepository.findMemberByIdAndClientId(memberId, clientId).orElseThrow(
                 () -> new GeneralException(CommonErrorCode.NOT_FOUND_BY_ID_AND_CLIENT_ID)
         );
     }
-
 }
-//{
-//        "name": "temp",
-//        "email": "temp",
-//        "educationLevel": "HIGH",
-//        "educationStatus": "GRADUATED",
-//        "job": 1,
-//        "socialType": "NAVER",
-//        "clientId": "string"
-//        }
