@@ -39,8 +39,9 @@ public enum CommonErrorCode implements ErrorCode {
     INVALID_SOCIAL_PLATFORM(403, "ELO000", "지원하지 않는 로그인 플랫폼임니다."),
 
     // token 관련
-    INVALID_TOKEN(401, "ETK000", "유효하지 않은 토큰입니다."),
-    EXPIRED_TOKEN(401, "ETK001", "만료된 토큰입니다."),
+    INVALID_TOKEN(4001, "ETK000", "유효하지 않은 토큰입니다."),
+    EXPIRED_TOKEN(4002, "ETK001", "만료된 토큰입니다."),
+    NO_ACCESS_TOKEN(4003, "ETK004", "access 토큰이 존재하지 않습니다."),
     FAILED_SIGNATURE_TOKEN(401, "ETK002", "토큰 서명 검증에 실패했습니다."),
     NOT_FOUND_REFRESH_TOKEN_BY_MEMBER_ID(400, "ETK003", "해당 회원 ID의 refresh token이 존재하지 않습니다."),
 

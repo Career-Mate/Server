@@ -31,6 +31,7 @@ public class CustomOAuth2User implements OAuth2User {
 
     @Override
     public String getName() {
+        // getName이 null을 반환하면 안되기 때문에 clientId로 반환
         return member.getClientId();
     }
 
