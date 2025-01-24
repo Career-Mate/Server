@@ -45,7 +45,7 @@ public class Member extends BaseEntity {
     @Column(name = "client_id", nullable = false)
     private String clientId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "job_id")
     private Job job;
 
