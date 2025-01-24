@@ -1,19 +1,17 @@
 package UMC.career_mate.domain.answer.controller;
 
 import UMC.career_mate.domain.answer.dto.request.AnswerCreateOrUpdateDTO;
+import UMC.career_mate.domain.answer.dto.response.AnswerCompletionStatusInfoListDTO;
 import UMC.career_mate.domain.answer.dto.response.AnswerInfoListDTO;
 import UMC.career_mate.domain.answer.service.AnswerCommandService;
 import UMC.career_mate.domain.answer.service.AnswerQueryService;
 import UMC.career_mate.domain.template.enums.TemplateType;
-import UMC.career_mate.global.common.PageResponseDTO;
 import UMC.career_mate.global.response.ApiResponse;
 import UMC.career_mate.global.response.result.code.CommonResultCode;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +26,7 @@ import static UMC.career_mate.global.response.result.code.CommonResultCode.*;
 
 @RestController
 @RequestMapping("/answers")
+@Tag(name = "05. 답변 API", description = "답변 도메인의 API 입니다.")
 @RequiredArgsConstructor
 public class AnswerController {
     private final AnswerCommandService answerCommandService;
@@ -41,7 +40,7 @@ public class AnswerController {
                             커리어를 작성하는 API 입니다.
                             커리어를 처음 작성할 때, 반드시 2개의  `answerInfoList` 데이터를 요청해야 합니다. 입력하지 않을 경우엔 빈 문자열로 요청을 할 수 있습니다.
                             ## 하나의 커리어만 작성하는 경우
-                            ### Example JSON:
+                            ### Example REQUEST JSON:
                             ```json
                             {
                               "answerList": [
@@ -139,7 +138,7 @@ public class AnswerController {
                     """
                             커리어를 수정하는 API 입니다.
                             커리어를 수정할 때, 반드시 2개의  `answerInfoList` 데이터를 요청해야 합니다. 입력하지 않을 경우엔 빈 문자열로 요청을 할 수 있습니다.
-                            ### Example JSON:
+                            ### Example REQUEST JSON:
                             ```json
                             {
                               "answerList": [
@@ -210,5 +209,54 @@ public class AnswerController {
                                                           @Valid @RequestBody AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO) {
         answerCommandService.updateAnswerList(memberId, answerCreateOrUpdateDTO);
         return ApiResponse.onSuccess(UPDATE_ANSWER_LIST);
+    }
+
+    @GetMapping("/completion-status")
+    @Operation(
+            summary = "커리어 작성 진행 상태 API",
+            description =
+                    """
+                            특정 템플릿 타입에 대해 커리어 작성이 완료되었는지 확인하는 API입니다.
+                            템플릿 타입은 다음과 같습니다.\s
+                            1. 인턴 경험 (INTERN_EXPERIENCE)\s
+                            2. 프로젝트 경험 (PROJECT_EXPERIENCE)\s
+                            3. 기타 활동 (OTHER_ACTIVITIES)\s
+                            4. 보유 기술 (TECHNICAL_SKILLS)\s
+                            5. 최종 정리 (SUMMARY)
+                            
+                            ### Example Response JSON:
+                            ```json
+                            {
+                              "status": 200,
+                              "code": "SA000",
+                              "message": "성공적으로 답변 작성 여부를 조회했습니다.",
+                              "data": [
+                                {
+                                  "templateType": "INTERN_EXPERIENCE",
+                                  "isComplete": true
+                                },
+                                {
+                                  "templateType": "PROJECT_EXPERIENCE",
+                                  "isComplete": false
+                                },
+                                {
+                                  "templateType": "OTHER_ACTIVITIES",
+                                  "isComplete": false
+                                },
+                                {
+                                  "templateType": "TECHNICAL_SKILLS",
+                                  "isComplete": false
+                                },
+                                {
+                                  "templateType": "SUMMARY",
+                                  "isComplete": false
+                                }
+                              ]
+                            }
+                            ```
+                            """
+    )
+    public ApiResponse<AnswerCompletionStatusInfoListDTO> getAnswerCompletionStatus(@RequestParam Long memberId) {
+        return ApiResponse.onSuccess(GET_ANSWER_COMPLETION_STATUS, answerQueryService.getAnswerCompletionStatus(memberId));
     }
 }

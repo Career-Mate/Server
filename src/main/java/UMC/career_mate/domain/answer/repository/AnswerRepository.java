@@ -19,4 +19,11 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
     List<Answer> findByMemberAndTemplateType(@Param("member") Member member, @Param("templateType") TemplateType templateType);
 
     Optional<Answer> findByMemberAndQuestionAndSequence(Member member, Question question, Long sequence);
+
+    @Query("""
+        SELECT COUNT(a) > 0 FROM Answer a
+        WHERE a.member = :member AND a.question.template.templateType = :templateType
+    """)
+    boolean existsByMemberAndTemplateType(@Param("member") Member member, @Param("templateType") TemplateType templateType);
+
 }
