@@ -24,18 +24,23 @@ public class Member extends BaseEntity {
     @Column(name = "member_id")
     private Long id;
 
+    @Setter
     private String name;
 
+    @Setter
     private String email;
 
     @Column(name = "education_level")
     @Enumerated(EnumType.STRING)
+    @Setter
     private MemberEducationLevel educationLevel;
 
+    @Setter
     private String major;
 
     @Column(name = "education_status")
     @Enumerated(EnumType.STRING)
+    @Setter
     private EducationStatus educationStatus;
 
     @Column(name = "social_type")
@@ -47,9 +52,11 @@ public class Member extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "job_id")
+    @Setter
     private Job job;
 
     //profile 작성이 되었는지 확인하는 필드
+    @Setter
     private Boolean is_complete;
 
     public void createProfile(CreateProfileDTO createProfileDTO, Job job) {

@@ -73,4 +73,13 @@ public class MemberService {
                 () -> new GeneralException(CommonErrorCode.NOT_FOUND_BY_ID_AND_CLIENT_ID)
         );
     }
+
+    @Transactional
+    public Member changeProfile(Long memberId, CreateProfileDTO request) {
+        Member member = findMemberByMemberId(memberId);
+        Job job = jobService.findJobById(request.job());
+        member.createProfile(request, job);
+
+        return member;
+    }
 }
