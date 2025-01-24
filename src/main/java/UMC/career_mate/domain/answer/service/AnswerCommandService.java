@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AnswerCommandService {
@@ -39,6 +41,25 @@ public class AnswerCommandService {
                 answerRepository.save(answer);
             }
             start_sequence++;
+        }
+    }
+
+    @Transactional
+    public void updateAnswerList(Long memberId, AnswerCreateOrUpdateDTO request) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new GeneralException(CommonErrorCode.BAD_REQUEST));
+
+        for (AnswerList answerList : request.answerList()) {
+            for (AnswerInfo answerInfo : answerList.answerInfoList()) {
+                Question question = questionRepository.findById(answerInfo.questionId())
+                        .orElseThrow(() -> new GeneralException(CommonErrorCode.NOT_FOUND_QUESTION));
+
+                // 해당 회원, 질문, 시퀀스를 기준으로 기존 답변 조회
+                Answer existingAnswer = answerRepository.findByMemberAndQuestionAndSequence(member, question, answerList.sequence())
+                        .orElseThrow(() -> new GeneralException(CommonErrorCode.NOT_FOUND_ANSWER));
+
+                existingAnswer.updateContent(answerInfo.content());
+            }
         }
     }
 }
