@@ -53,8 +53,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         } else {
             // 추가 정보가 입력된 경우
-            String memberName = URLEncoder.encode(member.getName(), StandardCharsets.UTF_8.toString());
-            CookieUtil.addCookieNoAge(response, "name", memberName);
             response.sendRedirect(FRONTEND_BASE_URL);
         }
     }
