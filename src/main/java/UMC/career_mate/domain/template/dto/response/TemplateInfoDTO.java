@@ -6,7 +6,7 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record TemplateDTO (
+public record TemplateInfoDTO(
         Long templateId,
         String templateType,
         List<QuestionDTO> questionDTOList
