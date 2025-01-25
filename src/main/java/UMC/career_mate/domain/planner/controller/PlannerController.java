@@ -19,10 +19,12 @@ public class PlannerController {
     private final PlannerCommandService plannerCommandService;
     private final PlannerQueryService plannerQueryService;
 
+    @Deprecated
     @PostMapping
     @Operation(
-            summary = "플래너 생성",
+            summary = "[관리자용 API] 플래너 생성",
             description = """
+                    [관리자용 API입니다]
                     새로운 플래너를 생성합니다.
                     값이 비어있어도 상관 없습니다.
                     ### Example JSON:
@@ -31,7 +33,7 @@ public class PlannerController {
                         "activityName": "React.js로 커리어 메이트 00파트 개발",
                         "startTime": "2025-12-23T09:00:00",
                         "endTime": "2025-12-23T18:00:00",
-                        "specific": "React.js를 활용한 프로젝트 5개 기능 구현",
+                        "specifics": "React.js를 활용한 프로젝트 5개 기능 구현",
                         "measurable": "개인 프로젝트를 GitHub에 배포 + 최소 5개 기능 구현",
                         "achievable": "하루에 최소 3시간 이상 투자하기",
                         "relevant": "프로젝트 경험을 통한 기술 및 협업 역량 향상 기대",
@@ -50,6 +52,7 @@ public class PlannerController {
     @Operation(
             summary = "플래너 수정",
             description = """
+                    [프로필 작성 완료시 플래너가 자동 생성되기 때문에, 해당 API를 사용해주시면 되겠습니다]
                     플래너를 수정합니다.
                     값이 비어있어도 상관 없습니다.
                     ### Example JSON:
@@ -58,7 +61,7 @@ public class PlannerController {
                         "activityName": "React.js로 커리어 메이트 00파트 개발",
                         "startTime": "2025-12-23T09:00:00",
                         "endTime": "2025-12-23T18:00:00",
-                        "specific": "React.js를 활용한 프로젝트 5개 기능 구현",
+                        "specifics": "React.js를 활용한 프로젝트 5개 기능 구현",
                         "measurable": "개인 프로젝트를 GitHub에 배포 + 최소 5개 기능 구현",
                         "achievable": "하루에 최소 3시간 이상 투자하기",
                         "relevant": "프로젝트 경험을 통한 기술 및 협업 역량 향상 기대",
@@ -96,7 +99,7 @@ public class PlannerController {
                         "activityName": "React.js로 커리어 메이트 00파트 개발",
                         "startTime": "2025-12-23T09:00:00",
                         "endTime": "2025-12-23T18:00:00",
-                        "specific": "React.js를 활용한 프로젝트 5개 기능 구현",
+                        "specifics": "React.js를 활용한 프로젝트 5개 기능 구현",
                         "measurable": "개인 프로젝트를 GitHub에 배포 + 최소 5개 기능 구현",
                         "achievable": "하루에 최소 3시간 이상 투자하기",
                         "relevant": "프로젝트 경험을 통한 기술 및 협업 역량 향상 기대",
