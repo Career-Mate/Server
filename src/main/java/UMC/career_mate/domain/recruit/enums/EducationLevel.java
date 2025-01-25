@@ -1,5 +1,7 @@
 package UMC.career_mate.domain.recruit.enums;
 
+import UMC.career_mate.domain.member.enums.EducationStatus;
+import UMC.career_mate.domain.member.enums.MemberEducationLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -27,6 +29,48 @@ public enum EducationLevel {
             }
         }
         return null;
+    }
+
+    public static EducationLevel getEducationLevelFromMemberInfo(
+        MemberEducationLevel memberEducationLevel, EducationStatus educationStatus) {
+        return switch (memberEducationLevel) {
+            case MIDDLE -> NO_REQUIREMENT;
+            case HIGH -> {
+                if (EducationStatus.GRADUATED.equals(educationStatus)) {
+                    yield HIGH_SCHOOL_GRADUATE;
+                } else {
+                    yield NO_REQUIREMENT;
+                }
+            }
+            case JUNIOR_COLLEGE -> {
+                if (EducationStatus.GRADUATED.equals(educationStatus)) {
+                    yield COLLEGE_2_3_YEAR_OR_HIGHER;
+                } else {
+                    yield HIGH_SCHOOL_GRADUATE;
+                }
+            }
+            case UNIVERSITY -> {
+                if (EducationStatus.GRADUATED.equals(educationStatus)) {
+                    yield UNIVERSITY_GRADUATE_4_YEAR;
+                } else {
+                    yield HIGH_SCHOOL_GRADUATE;
+                }
+            }
+            case MASTER -> {
+                if (EducationStatus.GRADUATED.equals(educationStatus)) {
+                    yield MASTER_GRADUATE;
+                } else {
+                    yield UNIVERSITY_GRADUATE_4_YEAR;
+                }
+            }
+            case DOCTOR -> {
+                if (EducationStatus.GRADUATED.equals(educationStatus)) {
+                    yield DOCTOR_GRADUATE;
+                } else {
+                    yield MASTER_GRADUATE;
+                }
+            }
+        };
     }
 }
 
