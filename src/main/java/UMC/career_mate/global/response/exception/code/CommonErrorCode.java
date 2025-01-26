@@ -56,8 +56,7 @@ public enum CommonErrorCode implements ErrorCode {
 
     // RecruitScrap 도메인
     DUPLICATE_RECRUIT_SCRAP(400, "ERSC001", "이미 스크랩된 채용 공고입니다."),
-    NOT_FOUND_RECRUIT_SCRAP(400, "ERSC002", "해당 채용 공고를 찾을 수 없습니다."),
-
+    NOT_FOUND_RECRUIT_SCRAP(400, "ERSC002", "해당 채용 공고 스크랩을 찾을 수 없습니다."),
 
     ;
 
