@@ -35,9 +35,10 @@ public class RecruitController {
             추천 채용 공고를 조회하는 API입니다.\n\n
             page의 값은 1부터 시작이고, 기본 값은 1입니다.\n\n
             size의 기본값은 6입니다.\n\n
-            정렬의 경우 전체 -> POSTING_DESC, (기본 값)\n\n
-            마감 빠른 순 -> DEADLINE_ASC,\n\n
-            마감 늦은  -> DEADLINE_DESC
+            정렬의 경우\n\n
+            전체 (기본 값) -> POSTING_DESC\n\n
+            마감 빠른 순 -> DEADLINE_ASC\n\n
+            마감 늦은 순 -> DEADLINE_DESC
             """)
     @GetMapping
     public ApiResponse<PageResponseDTO<List<RecommendRecruitDTO>>> getRecommendRecruitList(
