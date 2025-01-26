@@ -10,6 +10,7 @@ public record RecommendRecruitDTO(
     String imageUrl,
     String title,
     LocalDateTime deadLine,
+    boolean isScraped,
 
     /**
      * TODO: 아래로는 (필터링, 정렬) 잘 되는지 확인용 데이터, 나중에 삭제 예정

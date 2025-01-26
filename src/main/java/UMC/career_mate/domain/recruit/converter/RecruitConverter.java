@@ -46,13 +46,14 @@ public class RecruitConverter {
             .build();
     }
 
-    public static RecommendRecruitDTO toRecommendRecruitDTO(Recruit recruit) {
+    public static RecommendRecruitDTO toRecommendRecruitDTO(Recruit recruit, boolean isScraped) {
         return RecommendRecruitDTO.builder()
             .recruitId(recruit.getId())
             .companyName(recruit.getCompanyName())
             .imageUrl(recruit.getImageUrl())
             .title(recruit.getTitle())
             .deadLine(recruit.getDeadLine())
+            .isScraped(isScraped)
             .experienceLevelCode(recruit.getExperienceLevelCode())
             .experienceLevelMin(recruit.getExperienceLevelMin())
             .experienceLevelMax(recruit.getExperienceLevelMax())

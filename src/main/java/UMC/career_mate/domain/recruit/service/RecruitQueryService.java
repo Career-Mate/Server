@@ -11,9 +11,11 @@ import UMC.career_mate.domain.recruit.dto.response.RecruitInfoDTO;
 import UMC.career_mate.domain.recruit.enums.EducationLevel;
 import UMC.career_mate.domain.recruit.enums.RecruitSortType;
 import UMC.career_mate.domain.recruit.repository.RecruitRepository;
+import UMC.career_mate.domain.recruitScrap.repository.RecruitScrapRepository;
 import UMC.career_mate.global.common.PageResponseDTO;
 import UMC.career_mate.global.response.exception.GeneralException;
 import UMC.career_mate.global.response.exception.code.CommonErrorCode;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +31,7 @@ public class RecruitQueryService {
 
     private final RecruitRepository recruitRepository;
     private final ChatGptService chatGptService;
+    private final RecruitScrapRepository recruitScrapRepository;
 
     public PageResponseDTO<List<RecommendRecruitDTO>> getRecommendRecruitList(int page, int size,
         RecruitSortType recruitSortType, Member member) {
@@ -48,7 +51,7 @@ public class RecruitQueryService {
             filterCondition.recruitKeyword(), educationLevel, filterCondition.careerYear(),
             recruitSortType, pageRequest);
 
-        return createPageResponseDTO(page, size, findRecruitPage);
+        return createPageResponseDTO(page, size, findRecruitPage, member);
     }
 
     public RecruitInfoDTO findRecruitInfo(Member member, Long recruitId) {
@@ -64,12 +67,15 @@ public class RecruitQueryService {
     }
 
     private PageResponseDTO<List<RecommendRecruitDTO>> createPageResponseDTO(int page,
-        int size, Page<Recruit> findRecruitPage) {
+        int size, Page<Recruit> findRecruitPage, Member member) {
+        Set<Long> scrapedRecruitIds = recruitScrapRepository.findRecruitIdsByMember(member);
+
         boolean hasNext = findRecruitPage.getSize() == size + 1;
 
         List<RecommendRecruitDTO> recommendRecruitDTOList = findRecruitPage.stream()
             .limit(size)
-            .map(recruit -> RecruitConverter.toRecommendRecruitDTO(recruit))
+            .map(recruit -> RecruitConverter.toRecommendRecruitDTO(recruit,
+                scrapedRecruitIds.contains(recruit.getId())))
             .toList();
 
         return PageResponseDTO.<List<RecommendRecruitDTO>>builder()
