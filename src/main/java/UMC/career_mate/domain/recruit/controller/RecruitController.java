@@ -29,15 +29,12 @@ public class RecruitController {
     private final RecruitCommandService recruitCommandService;
     private final RecruitQueryService recruitQueryService;
 
-    /**
-     * TODO: MemberEducationLevel, EducationStatus 멤버 완성 삭제 후 서비스에서 처리
-     */
     @Operation(summary = "추천 채용 공고 조회 API", description = "추천 채용 공고를 조회하는 API입니다.")
     @GetMapping
     public ApiResponse<PageResponseDTO<List<RecommendRecruitDTO>>> getRecommendRecruitList(
         @RequestParam(defaultValue = "1", required = false) int page,
         @RequestParam(defaultValue = "6", required = false) int size,
-        @RequestParam RecruitSortType recruitSortType,
+        @RequestParam(defaultValue = "POSTING_DESC", required = false) RecruitSortType recruitSortType,
         @LoginMember Member member
         ) {
         return ApiResponse.onSuccess(

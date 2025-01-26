@@ -60,7 +60,6 @@ public class RecruitConverter {
             .experienceLevelName(recruit.getExperienceLevelName())
             .educationLevelCode(recruit.getEducationLevelCode())
             .educationLevelName(recruit.getEducationLevelName())
-            .openingDate(recruit.getOpeningDate())
             .postingDate(recruit.getPostingDate())
             .build();
     }
