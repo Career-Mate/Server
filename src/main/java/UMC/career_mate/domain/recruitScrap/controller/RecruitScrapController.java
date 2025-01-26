@@ -24,7 +24,12 @@ public class RecruitScrapController {
     private final RecruitScrapCommandService recruitScrapCommandService;
     private final RecruitScrapQueryService recruitScrapQueryService;
 
-    @Operation(summary = "채용 공고 스크랩 API", description = "")
+    @Operation(
+        summary = "채용 공고 스크랩 API",
+        description = """
+            채용 공고를 스크랩하는 API입니다.\n\n
+            recruitId : 스크랩하려는 채용 공고 pk 값
+            """)
     @PostMapping("/{recruitId}")
     public ApiResponse<String> createRecruitScrap(@LoginMember Member member,
         @PathVariable Long recruitId) {
@@ -32,7 +37,12 @@ public class RecruitScrapController {
         return ApiResponse.onSuccess("스크랩 완료");
     }
 
-    @Operation(summary = "채용 공고 스크랩 삭제 API", description = "")
+    @Operation(
+        summary = "채용 공고 스크랩 삭제 API",
+        description = """
+            스크랩을 삭제하는 API입니다.\n\n
+            recruitId : 삭제하려는 스크랩의 채용 공고 pk 값
+            """)
     @DeleteMapping("/{recruitId}")
     public ApiResponse<String> deleteRecruitScrap(@LoginMember Member member,
         @PathVariable Long recruitId) {
@@ -40,7 +50,12 @@ public class RecruitScrapController {
         return ApiResponse.onSuccess("스크랩 삭제 완료");
     }
 
-    @Operation(summary = "채용 공고 스크랩 목록 조회 API", description = "")
+    @Operation(
+        summary = "채용 공고 스크랩 목록 조회 API",
+        description = """
+            스크랩한 채용 공고 목록을 조회하는 API입니다.\n\n
+            로그인 인증만을 요구합니다.
+            """)
     @GetMapping
     public ApiResponse<List<RecruitScrapResponseDTO>> getRecruitScrapList(
         @LoginMember Member member) {
