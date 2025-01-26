@@ -54,7 +54,7 @@ public class RecruitController {
         summary = "채용 공고 요약 페이지 조회 API",
         description = """
         채용 공고 요약 페이지를 조회하는 API입니다.\n\n
-        recruitId : 조회하려는 채용 공고의 pk 값
+        recruitId : 조회하려는 채용 공고 pk 값
         """)
     @GetMapping("/{recruitId}")
     public ResponseEntity<ApiResponse<RecruitInfoDTO>> getRecruitInfo(@PathVariable Long recruitId, @LoginMember Member member) {
