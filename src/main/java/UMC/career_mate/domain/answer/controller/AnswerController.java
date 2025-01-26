@@ -5,7 +5,9 @@ import UMC.career_mate.domain.answer.dto.response.AnswerCompletionStatusInfoList
 import UMC.career_mate.domain.answer.dto.response.AnswerInfoListDTO;
 import UMC.career_mate.domain.answer.service.AnswerCommandService;
 import UMC.career_mate.domain.answer.service.AnswerQueryService;
+import UMC.career_mate.domain.member.Member;
 import UMC.career_mate.domain.template.enums.TemplateType;
+import UMC.career_mate.global.annotation.LoginMember;
 import UMC.career_mate.global.response.ApiResponse;
 import UMC.career_mate.global.response.result.code.CommonResultCode;
 import io.swagger.v3.oas.annotations.Operation;
@@ -107,9 +109,9 @@ public class AnswerController {
                             ```
                             """
     )
-    public ApiResponse<CommonResultCode> saveAnswerList(@RequestParam Long memberId,
+    public ApiResponse<CommonResultCode> saveAnswerList(@LoginMember Member member,
                                                         @Valid @RequestBody AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO) {
-        answerCommandService.saveAnswerList(memberId, answerCreateOrUpdateDTO);
+        answerCommandService.saveAnswerList(member, answerCreateOrUpdateDTO);
         return ApiResponse.onSuccess(CREATE_ANSWER_LIST);
     }
 
@@ -205,9 +207,9 @@ public class AnswerController {
                             ```
                             """
     )
-    public ApiResponse<CommonResultCode> updateAnswerList(@RequestParam Long memberId,
+    public ApiResponse<CommonResultCode> updateAnswerList(@LoginMember Member member,
                                                           @Valid @RequestBody AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO) {
-        answerCommandService.updateAnswerList(memberId, answerCreateOrUpdateDTO);
+        answerCommandService.updateAnswerList(member, answerCreateOrUpdateDTO);
         return ApiResponse.onSuccess(UPDATE_ANSWER_LIST);
     }
 
@@ -259,7 +261,7 @@ public class AnswerController {
                             ```
                             """
     )
-    public ApiResponse<AnswerCompletionStatusInfoListDTO> getAnswerCompletionStatus(@RequestParam Long memberId) {
-        return ApiResponse.onSuccess(GET_ANSWER_COMPLETION_STATUS, answerQueryService.getAnswerCompletionStatus(memberId));
+    public ApiResponse<AnswerCompletionStatusInfoListDTO> getAnswerCompletionStatus(@LoginMember Member member) {
+        return ApiResponse.onSuccess(GET_ANSWER_COMPLETION_STATUS, answerQueryService.getAnswerCompletionStatus(member));
     }
 }

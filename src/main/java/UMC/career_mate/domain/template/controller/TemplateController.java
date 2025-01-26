@@ -1,9 +1,10 @@
 package UMC.career_mate.domain.template.controller;
 
 import UMC.career_mate.domain.member.Member;
-import UMC.career_mate.domain.template.dto.response.TemplateResponseDTO;
+import UMC.career_mate.domain.template.dto.response.TemplateInfoListDTO;
 import UMC.career_mate.domain.template.enums.TemplateType;
 import UMC.career_mate.domain.template.service.TemplateQueryService;
+import UMC.career_mate.global.annotation.LoginMember;
 import UMC.career_mate.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class TemplateController {
                     5. 최종 정리 (SUMMARY)
                     """
     )
-    public ApiResponse<TemplateResponseDTO> getTemplate(@RequestParam Long memberId, @RequestParam TemplateType type) {
-        return ApiResponse.onSuccess(GET_TEMPLATE, templateQueryService.getTemplate(memberId, type));
+    public ApiResponse<TemplateInfoListDTO> getTemplate(@LoginMember Member member, @RequestParam TemplateType templateType) {
+        return ApiResponse.onSuccess(GET_TEMPLATE, templateQueryService.getTemplate(member, templateType));
     }
 }

@@ -43,10 +43,7 @@ public class AnswerQueryService {
     }
 
     @Transactional(readOnly = true)
-    public AnswerCompletionStatusInfoListDTO getAnswerCompletionStatus(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new GeneralException(CommonErrorCode.BAD_REQUEST));
-
+    public AnswerCompletionStatusInfoListDTO getAnswerCompletionStatus(Member member) {
         List<AnswerCompletionStatusInfoDTO> answerCompletionStatusInfoDTOList = new ArrayList<>();
         boolean isAllCompleted = true;
 

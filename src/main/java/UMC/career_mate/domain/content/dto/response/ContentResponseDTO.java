@@ -11,4 +11,5 @@ public record ContentResponseDTO(
         Long jobId,
         boolean isScrapped // 추가
 ) {
+
 }

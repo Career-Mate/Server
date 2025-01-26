@@ -24,11 +24,8 @@ public class AnswerCommandService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void saveAnswerList(Long memberId, AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO) {
+    public void saveAnswerList(Member member, AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO) {
         long start_sequence = 1L;
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new GeneralException(CommonErrorCode.BAD_REQUEST));
 
         for (AnswerList answerList : answerCreateOrUpdateDTO.answerList()) {
             for (AnswerInfo answerInfo : answerList.answerInfoList()) {
@@ -43,10 +40,7 @@ public class AnswerCommandService {
     }
 
     @Transactional
-    public void updateAnswerList(Long memberId, AnswerCreateOrUpdateDTO request) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new GeneralException(CommonErrorCode.BAD_REQUEST));
-
+    public void updateAnswerList(Member member, AnswerCreateOrUpdateDTO request) {
         for (AnswerList answerList : request.answerList()) {
             for (AnswerInfo answerInfo : answerList.answerInfoList()) {
                 Question question = questionRepository.findById(answerInfo.questionId())
