@@ -29,7 +29,16 @@ public class RecruitController {
     private final RecruitCommandService recruitCommandService;
     private final RecruitQueryService recruitQueryService;
 
-    @Operation(summary = "추천 채용 공고 조회 API", description = "추천 채용 공고를 조회하는 API입니다.")
+    @Operation(
+        summary = "추천 채용 공고 조회 API",
+        description = """
+            추천 채용 공고를 조회하는 API입니다.\n\n
+            page의 값은 1부터 시작이고, 기본 값은 1입니다.\n\n
+            size의 기본값은 6입니다.\n\n
+            정렬의 경우 전체 -> POSTING_DESC, (기본 값)\n\n
+            마감 빠른 순 -> DEADLINE_ASC,\n\n
+            마감 늦은  -> DEADLINE_DESC
+            """)
     @GetMapping
     public ApiResponse<PageResponseDTO<List<RecommendRecruitDTO>>> getRecommendRecruitList(
         @RequestParam(defaultValue = "1", required = false) int page,
@@ -41,7 +50,12 @@ public class RecruitController {
             recruitQueryService.getRecommendRecruitList(page, size, recruitSortType, member));
     }
 
-    @Operation(summary = "채용 공고 요약 페이지 조회 API", description = "채용 공고 요약 페이지를 조회하는 API입니다.")
+    @Operation(
+        summary = "채용 공고 요약 페이지 조회 API",
+        description = """
+        채용 공고 요약 페이지를 조회하는 API입니다.\n\n
+        recruitId : 조회하려는 채용 공고의 pk 값
+        """)
     @GetMapping("/{recruitId}")
     public ResponseEntity<ApiResponse<RecruitInfoDTO>> getRecruitInfo(@PathVariable Long recruitId, @LoginMember Member member) {
         return ResponseEntity.ok(
