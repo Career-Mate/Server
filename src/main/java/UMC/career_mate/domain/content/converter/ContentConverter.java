@@ -25,4 +25,15 @@ public class ContentConverter {
                 .jobId(content.getJob().getId())
                 .build();
     }
+
+    public static ContentResponseDTO toContentResponseDTOWithScrapStatus(Content content, boolean isScrapped) {
+        return ContentResponseDTO.builder()
+                .id(content.getId())
+                .title(content.getTitle())
+                .url(content.getUrl())
+                .photo(content.getPhoto())
+                .jobId(content.getJob().getId())
+                .isScrapped(isScrapped)
+                .build();
+    }
 }

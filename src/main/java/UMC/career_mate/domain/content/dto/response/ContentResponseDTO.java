@@ -8,6 +8,8 @@ public record ContentResponseDTO(
         String title,
         String url,
         String photo,
-        Long jobId
+        Long jobId,
+        boolean isScrapped // 추가
 ) {
+
 }

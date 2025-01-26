@@ -47,18 +47,20 @@ public class ContentController {
     @Operation(
             summary = "직무별 컨텐츠 조회 API",
             description = """
-                    특정 직무 ID에 해당하는 컨텐츠를 조회합니다.
-                    Query Parameters:
-                    - `jobId`: 직무 ID (필수)
-                    - `page`: 페이지 번호 (기본값: 1)
-                    - `size`: 페이지 크기 (기본값: 10)
-                    """
+                특정 직무 ID에 해당하는 컨텐츠를 조회합니다.
+                이때 사용자가 해당 컨텐츠를 스크랩했는지 여부가 담겨 조회됩니다.
+                Query Parameters:
+                - `jobId`: 직무 ID (필수)
+                - `page`: 페이지 번호 (기본값: 1)
+                - `size`: 페이지 크기 (기본값: 10)
+                """
     )
     public ApiResponse<PageResponseDTO<List<ContentResponseDTO>>> getContentsByJobId(
             @RequestParam Long jobId,
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        return ApiResponse.onSuccess(contentService.getContentsByJobId(jobId, page, size));
+            @RequestParam(defaultValue = "10") int size,
+            @LoginMember Member member) {
+        return ApiResponse.onSuccess(contentService.getContentsByJobId(jobId, page, size, member));
     }
 
     @PostMapping("/{contentId}/scrap")
