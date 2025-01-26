@@ -9,7 +9,7 @@ public record RecommendRecruitDTO(
     String companyName,
     String imageUrl,
     String title,
-    LocalDateTime deadLine,
+    String deadLine,
     boolean isScraped,
 
     /**

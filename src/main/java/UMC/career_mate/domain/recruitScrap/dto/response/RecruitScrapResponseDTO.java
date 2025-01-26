@@ -9,7 +9,7 @@ public record RecruitScrapResponseDTO(
     String companyName,
     String imageUrl,
     String title,
-    LocalDateTime deadLine,
+    String deadLine,
     boolean isScraped
 ) {
 
