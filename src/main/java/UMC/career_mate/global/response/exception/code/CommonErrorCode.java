@@ -52,7 +52,12 @@ public enum CommonErrorCode implements ErrorCode {
     // ContentScrap 도메인
     NOT_FOUND_CONTENT(400, "ESC001", "해당 콘텐츠를 찾을 수 없습니다."),
     DUPLICATE_SCRAP(400, "ESC002", "이미 스크랩된 콘텐츠입니다."),
-    NOT_FOUND_SCRAP(400, "ESC003", "스크랩이 존재하지 않습니다.");
+    NOT_FOUND_SCRAP(400, "ESC003", "스크랩이 존재하지 않습니다."),
+
+    // RecruitScrap 도메인
+    DUPLICATE_RECRUIT_SCRAP(400, "ERSC001", "이미 스크랩된 채용 공고입니다."),
+    NOT_FOUND_RECRUIT_SCRAP(400, "ERSC002", "해당 채용 공고 스크랩을 찾을 수 없습니다."),
+
     ;
 
     private final int status;

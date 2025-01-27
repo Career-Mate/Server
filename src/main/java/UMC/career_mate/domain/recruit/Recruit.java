@@ -28,7 +28,6 @@ public class Recruit {
     // 채용 공고 목록 조회 시 아래 4개만 반환
     private String companyName; // 회사명
     private String title; // 공고 제목
-    private String imageUrl; // 공고 이미지
     private LocalDateTime deadLine; // 마감일
 
     // 요약 페이지 조회 시 아래 데이터 추가 반환
