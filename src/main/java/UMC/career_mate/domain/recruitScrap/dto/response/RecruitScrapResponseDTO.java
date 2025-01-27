@@ -7,7 +7,6 @@ import lombok.Builder;
 public record RecruitScrapResponseDTO(
     Long recruitId,
     String companyName,
-    String imageUrl,
     String title,
     String deadLine,
     boolean isScraped

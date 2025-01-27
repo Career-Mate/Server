@@ -20,7 +20,6 @@ public class RecruitScrapConverter {
         return RecruitScrapResponseDTO.builder()
             .recruitId(recruit.getId())
             .companyName(recruit.getCompanyName())
-            .imageUrl(null)
             .title(recruit.getTitle())
             .deadLine(formatDeadLine(recruit))
             .isScraped(true)

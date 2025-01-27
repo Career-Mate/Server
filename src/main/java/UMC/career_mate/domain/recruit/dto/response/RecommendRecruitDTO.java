@@ -7,7 +7,6 @@ import lombok.Builder;
 public record RecommendRecruitDTO(
     Long recruitId,
     String companyName,
-    String imageUrl,
     String title,
     String deadLine,
     boolean isScraped,

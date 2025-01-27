@@ -24,7 +24,6 @@ public class RecruitConverter {
         return Recruit.builder()
             .companyName(job.company().detail().name())
             .title(job.position().title())
-            .imageUrl(null)
             .deadLine(LocalDateTime.ofInstant(Instant.ofEpochSecond(job.expirationTimestamp()),
                 ZoneId.systemDefault()))
             .companyInfoUrl(companyInfoUrl)
@@ -52,7 +51,6 @@ public class RecruitConverter {
         return RecommendRecruitDTO.builder()
             .recruitId(recruit.getId())
             .companyName(recruit.getCompanyName())
-            .imageUrl(recruit.getImageUrl())
             .title(recruit.getTitle())
             .deadLine(formatDeadLine(recruit))
             .isScraped(isScraped)
