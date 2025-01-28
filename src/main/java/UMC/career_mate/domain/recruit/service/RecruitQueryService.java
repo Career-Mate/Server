@@ -61,15 +61,7 @@ public class RecruitQueryService {
 
     public PageResponseDTO<List<RecommendRecruitDTO>> getRecommendRecruitList(int page, int size,
         RecruitSortType recruitSortType, Member member) {
-        Optional<GptAnswer> findGptAnswer = gptAnswerRepository.findByMember(member);
-
-        // 질문의 order 1번이고 인턴 템플릿 답변 데이터와 프로젝트 템플릿 답변 데이터의 1번을 조회 -> 최대 2개 조회. (updated_at 확인)
-        List<Answer> internAndProjectAnswersFromFirstQuestion = answerRepository.findByMemberAndTemplateTypesAndOrderAndJob(
-            member, List.of(TemplateType.INTERN_EXPERIENCE, TemplateType.PROJECT_EXPERIENCE), 1, 1,
-            member.getJob());
-
-        FilterConditionDTO filterCondition = createFilterCondition(member, findGptAnswer,
-            internAndProjectAnswersFromFirstQuestion);
+        FilterConditionDTO filterCondition = createFilterCondition(member);
 
         // 사용자 프로필의 학력과 상태로 검색에서 사용할 EducationLevel로 치환한다.
         EducationLevel educationLevel = EducationLevel.getEducationLevelFromMemberInfo(
@@ -96,9 +88,13 @@ public class RecruitQueryService {
         return RecruitConverter.toRecruitInfoDTO(comment, recruit);
     }
 
-    private FilterConditionDTO createFilterCondition(Member member,
-        Optional<GptAnswer> findGptAnswer,
-        List<Answer> internAndProjectAnswersFromFirstQuestion) {
+    private FilterConditionDTO createFilterCondition(Member member) {
+        Optional<GptAnswer> findGptAnswer = gptAnswerRepository.findByMember(member);
+
+        // 질문의 order 1번이고 인턴 템플릿 답변 데이터와 프로젝트 템플릿 답변 데이터의 1번을 조회 -> 최대 2개 조회. (updated_at 확인)
+        List<Answer> internAndProjectAnswersFromFirstQuestion = answerRepository.findByMemberAndTemplateTypesAndOrderAndJob(
+            member, List.of(TemplateType.INTERN_EXPERIENCE, TemplateType.PROJECT_EXPERIENCE), 1, 1,
+            member.getJob());
 
         int careerYear;
         RecruitKeyword recruitKeyword;
@@ -115,7 +111,8 @@ public class RecruitQueryService {
         } else {
             GptAnswer gptAnswer = findGptAnswer.get();
 
-            log.info("internAndProjectAnswersFromFirstQuestion 크기 : {}", internAndProjectAnswersFromFirstQuestion.size());
+            log.info("internAndProjectAnswersFromFirstQuestion 크기 : {}",
+                internAndProjectAnswersFromFirstQuestion.size());
 
             List<Answer> updatedAnswerList = internAndProjectAnswersFromFirstQuestion.stream()
                 .filter(answer -> answer.getUpdatedAt().isAfter(gptAnswer.getUpdatedAt()))
