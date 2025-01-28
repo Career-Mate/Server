@@ -61,10 +61,9 @@ public class RecruitQueryService {
 
     public PageResponseDTO<List<RecommendRecruitDTO>> getRecommendRecruitList(int page, int size,
         RecruitSortType recruitSortType, Member member) {
-        // GptAnswer 엔티티를 조회한다.
         Optional<GptAnswer> findGptAnswer = gptAnswerRepository.findByMember(member);
 
-        // 인턴 템플릿 답변 데이터와 프로젝트 템플릿 답변 데이터의 질문의 order, sequence 1번을 조회해서 마지막 수정일을 확인한다. -> 최대 2개 조회.
+        // 질문의 order 1번이고 인턴 템플릿 답변 데이터와 프로젝트 템플릿 답변 데이터의 1번을 조회 -> 최대 2개 조회. (updated_at 확인)
         List<Answer> internAndProjectAnswersFromFirstQuestion = answerRepository.findByMemberAndTemplateTypesAndOrderAndJob(
             member, List.of(TemplateType.INTERN_EXPERIENCE, TemplateType.PROJECT_EXPERIENCE), 1, 1,
             member.getJob());
@@ -103,8 +102,8 @@ public class RecruitQueryService {
 
         int careerYear;
         RecruitKeyword recruitKeyword;
-        if (findGptAnswer.isEmpty()) { // GptAnswer이 없는 경우 (Gpt 요청 한번도 안한 경우)
-            log.info("GptAnswer가 없는 유저인 상황, GptAnswer의 insert가 발생한다");
+        if (findGptAnswer.isEmpty()) { // GptAnswer이 없는 경우
+            log.info("GptAnswer가 없는 유저인 상황, GptAnswer에 대해 insert가 발생한다");
 
             // 인턴 템플릿 근무기간 답변 데이터에 한해서 경력을 계산한다.
             careerYear = calculateCareerYear(member);
@@ -116,7 +115,7 @@ public class RecruitQueryService {
         } else {
             GptAnswer gptAnswer = findGptAnswer.get();
 
-            log.info("internAndProjectAnswersFromFirstQuestion의 크기 : {}", internAndProjectAnswersFromFirstQuestion.size());
+            log.info("internAndProjectAnswersFromFirstQuestion 크기 : {}", internAndProjectAnswersFromFirstQuestion.size());
 
             List<Answer> updatedAnswerList = internAndProjectAnswersFromFirstQuestion.stream()
                 .filter(answer -> answer.getUpdatedAt().isAfter(gptAnswer.getUpdatedAt()))
@@ -150,8 +149,8 @@ public class RecruitQueryService {
         List<Answer> periodAnswerList = answerRepository.findAnswersByMemberAndQuestionContentAndTemplateTypeAndJob(
             member, INTERN_QUESTION_CONTENT_PERIOD, TemplateType.INTERN_EXPERIENCE, job);
 
-        // 아직 답변을 안한 상태 (템플릿 답변 작성 없이 바로 공고 조회를 한 경우) -> 경력 0년 반환
         if (periodAnswerList.isEmpty()) {
+            log.info("아직 답변을 안한 상태 (템플릿 답변 작성 없이 바로 공고 조회를 한 경우) -> 경력 0년 반환");
             return NO_INTERN_EXPERIENCE;
         }
 
@@ -161,7 +160,6 @@ public class RecruitQueryService {
             answer -> contentBuilder.append(answer.getContent() + "\n")
         );
 
-        // 인턴 근무 기간이 빈 문자열인 경우 -> 경력 0년 반환
         if (contentBuilder.length() == ONLY_ENTER_LENGTH) {
             log.info("인턴 근무 기간이 빈 문자열인 경우 -> 경력 0년 반환");
             return NO_INTERN_EXPERIENCE;
@@ -183,8 +181,8 @@ public class RecruitQueryService {
         List<Answer> internAnswers = templateTypeByAnswers.getOrDefault(
             TemplateType.INTERN_EXPERIENCE, List.of());
 
-        // (프로젝트, 인턴) 템플릿 답변 없이, 바로 채용 공고 조회하는 경우 -> answer 생성 안된 경우
         if (projectAnswers.isEmpty() && internAnswers.isEmpty()) {
+            log.info("(프로젝트, 인턴) 템플릿 답변 없이, 바로 채용 공고 조회하는 경우 -> answer 생성 안된 경우");
             return RecruitKeyword.getRecruitKeywordFromProfileJob(job);
         }
 
@@ -194,7 +192,6 @@ public class RecruitQueryService {
         int internEnterCnt = createChatGptRequestContent(contentBuilder, internAnswers,
             INTERN_PREFIX, INTERN_QUESTION_CONTENT_PERIOD);
 
-        // 최종 데이터가 기본 틀을 제외한 빈 문자열인 경우
         if (isEmptyContentBuilder(contentBuilder, projectEnterCnt, internEnterCnt)) {
             log.info("최종 데이터가 기본 틀 데이터를 제외하고 빈 문자열인 경우");
             return RecruitKeyword.getRecruitKeywordFromProfileJob(job);
@@ -202,9 +199,8 @@ public class RecruitQueryService {
 
         RecruitKeyword recruitKeyword = chatGptService.getRecruitKeyword(contentBuilder.toString());
 
-        // chatgpt 응답이 똑바로 오지 않은 경우, 기존 프로필 job으로 대체
         if (Objects.isNull(recruitKeyword)) {
-            log.info("gpt 답변이 RecruitKeyword에 없는 값이라서 null인 경우");
+            log.info("gpt 답변이 RecruitKeyword에 없는 값이라서 null인 경우 -> 멤버 프로필 job으로 대체");
             return RecruitKeyword.getRecruitKeywordFromProfileJob(job);
         }
 
@@ -220,7 +216,7 @@ public class RecruitQueryService {
                 answer -> answer.getQuestion().getTemplate().getTemplateType()));
     }
 
-    // 답변 리스트를 StringBuilder에 추가하고, 추가된 개수를 반환
+    // 기간 데이터를 제외하고 답변 리스트의 content를 StringBuilder에 추가, 추가된 개수를 반환
     private int createChatGptRequestContent(StringBuilder contentBuilder, List<Answer> answers,
         String prefix,
         String excludeContent) {
