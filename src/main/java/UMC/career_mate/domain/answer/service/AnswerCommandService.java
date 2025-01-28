@@ -52,7 +52,7 @@ public class AnswerCommandService {
 
                 existingAnswer.updateContent(answerInfo.content());
 
-                // order 1 sequence 1인 질문은 수정일을 매번 업데이트 -> recruit 조회 로직에서 사용
+                // 질문 order 1의 답변 sequence 1은 수정일을 매번 업데이트 -> recruit 조회 로직에서 사용
                 if (question.getOrder() == 1 && existingAnswer.getSequence() == 1) {
                     existingAnswer.setUpdatedAt();
                 }
