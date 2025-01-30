@@ -1,7 +1,9 @@
 package UMC.career_mate.domain.recruit.converter;
 
+import UMC.career_mate.domain.member.Member;
 import UMC.career_mate.domain.recruit.Recruit;
 import UMC.career_mate.domain.recruit.dto.FilterConditionDTO;
+import UMC.career_mate.domain.recruit.dto.MemberTemplateAnswerDTO;
 import UMC.career_mate.domain.recruit.dto.api.SaraminResponseDTO.Job;
 import UMC.career_mate.domain.recruit.dto.response.RecommendRecruitDTO;
 import UMC.career_mate.domain.recruit.dto.response.RecruitInfoDTO;
@@ -84,6 +86,13 @@ public class RecruitConverter {
         return FilterConditionDTO.builder()
             .recruitKeyword(recruitKeyword)
             .careerYear(careerYear)
+            .build();
+    }
+
+    public static MemberTemplateAnswerDTO toMemberTemplateAnswerDTO(Member member, String content) {
+        return MemberTemplateAnswerDTO.builder()
+            .name("이름 : " + member.getName())
+            .content(content)
             .build();
     }
 

@@ -1,7 +1,7 @@
 package UMC.career_mate.domain.chatgpt.service;
 
 import UMC.career_mate.domain.chatgpt.dto.api.response.ChatCompletionResponse;
-import UMC.career_mate.domain.chatgpt.dto.request.ChatGPTRequestDTO;
+import UMC.career_mate.domain.recruit.dto.MemberTemplateAnswerDTO;
 import UMC.career_mate.domain.chatgpt.dto.api.request.GptRequest;
 import UMC.career_mate.domain.chatgpt.dto.api.request.GptRequest.Message;
 import UMC.career_mate.domain.recruit.enums.RecruitKeyword;
@@ -36,19 +36,18 @@ public class ChatGptService {
 
     private static final String GPT_REQUEST_FORMAT_POSTFIX_FOR_RECRUIT_KEYWORD =
         "이 사람의 직무를 내가 제시한 보기들 중에서 하나만 골라서 답변해줘.\n" +
-            "직무 보기 :'BACKEND', 'BACKEND_SPRING', 'BACKEND_NODE', 'BACKEND_DJANGO', 'FRONTEND', 'DESIGNER', 'PM', "
-            +
+            "직무 보기 :'BACKEND', 'BACKEND_SPRING', 'BACKEND_NODE', 'BACKEND_DJANGO', 'FRONTEND', 'DESIGNER', 'PM', " +
             "이 중에서 적절한 직무가 없다면 'MISMATCH'로 답변해줘.\n" +
             "앞뒤 설명하지 말고 직무만 답변해줘.";
 
-    private static final String GPT_REQUEST_FORMAT_PREFIX_FOR_COMMENT =
-        " = 사용자 이름이고, 다음 이력서 데이터를 기반으로 사용자의 강점을 어필할 수 있고, " +
-            "어떤 포지션이 어울리는지 어떤 경험을 어필하면 좋을지 그런 내용들로 추천 조언 문구를 생성해줘. " +
-            "'~~한 경험이 있는 000님, ~~한 경험을 어필해보면 어때요?', 또는 '~~포지에 지원해보 건 어떨까요? ~~에 강점을 드러낼 수 있을 것 같아요.'"
-            +
-            "와 비슷한 형식이지만 꼭 이런 형식이 아니더라도 너만의 스타일로 문구를 생성해줘." +
-            "말투는 \"입니다\"같은 딱딱말 말투는 사용하지 말고, \"요.\"같이 부드럽게 표현해줘. " +
-            "답변은 문구만 답변해줘. 문구를 생성할 때 이력서 데이터의 회사 이름은 제외해줘. 답변에서 엔터나 - 같은건 빼줘.";
+    private static final String GPT_REQUEST_FORMAT_FOR_COMMENT =
+        "위 경험 데이터를 기반으로 사용자의 이름을 문구에 포함해서 사용자의 강점을 어필할 수 있고, " +
+            "친근한 말투로 어떤 포지션이 어울리는지, 어떤 경험을 어필하면 좋을지와 같은 내용으로 조언 문구를 생성해서 답변해줘. " +
+            "답변은 문구만 답변해줘. 문구를 생성할 때 내용에는 회사 이름은 제외해줘. " +
+            "답변에서 '-'는 빼줘.";
+
+    private static final String GPT_SYSTEM_ROLE = "너는 취업 전문가로서 내가 보낸 경험 데이터를 기반으로 '~~한 경험이 있는 000님, ~~한 경험을 어필해보면 어때요?' 라는 느낌으로 사용자 맞춤형 추천 문구를 작성한다. " +
+        "문구의 말투는 '-니다'체를 사용하는 것이 아니라, '-요'체를 사용한다.";
 
     public int getCareerYear(String chatGptRequestContent) {
         GptRequest gptRequest = createGptRequest(
@@ -69,19 +68,23 @@ public class ChatGptService {
         ObjectMapper om = new ObjectMapper();
         String gptAnswer = getGptAnswer(om, gptRequest);
 
-        log.info("\ngptRequest : {}, gptAnswer : {} ", gptRequest, gptAnswer);
+        log.info("\ngptRequest : {}\ngptAnswer : {} ", gptRequest, gptAnswer);
 
         return RecruitKeyword.getRecruitKeywordFromGptAnswerJob(gptAnswer);
     }
 
-    public String getComment(ChatGPTRequestDTO chatGPTRequestDTO) {
-        GptRequest gptRequest = createGptRequest(
-            chatGPTRequestDTO.name() + GPT_REQUEST_FORMAT_PREFIX_FOR_COMMENT
-                + chatGPTRequestDTO.content());
+    public String getComment(MemberTemplateAnswerDTO memberTemplateAnswerDTO) {
+        GptRequest gptRequest = createGptRequestWithSystemRole(
+            memberTemplateAnswerDTO.name() + "\n" + memberTemplateAnswerDTO.content()
+                + GPT_REQUEST_FORMAT_FOR_COMMENT + memberTemplateAnswerDTO.content());
 
         ObjectMapper om = new ObjectMapper();
 
-        return getGptAnswer(om, gptRequest);
+        String gptAnswer = getGptAnswer(om, gptRequest);
+
+        log.info("\ngptRequest : {}\ngptAnswer : {} ", gptRequest, gptAnswer);
+
+        return gptAnswer;
     }
 
     private GptRequest createGptRequest(String content) {
@@ -94,6 +97,24 @@ public class ChatGptService {
             .model("gpt-3.5-turbo")
             .stream(false)
             .messages(List.of(userMessage))
+            .build();
+    }
+
+    private GptRequest createGptRequestWithSystemRole(String content) {
+        Message systemMessage = Message.builder()
+            .role("system")
+            .content(GPT_SYSTEM_ROLE)
+            .build();
+
+        Message userMessage = Message.builder()
+            .role("user")
+            .content(content)
+            .build();
+
+        return GptRequest.builder()
+            .model("gpt-3.5-turbo")
+            .stream(false)
+            .messages(List.of(systemMessage, userMessage))
             .build();
     }
 
