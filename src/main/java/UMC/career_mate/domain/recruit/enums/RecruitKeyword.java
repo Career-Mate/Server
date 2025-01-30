@@ -1,9 +1,22 @@
 package UMC.career_mate.domain.recruit.enums;
 
+import UMC.career_mate.domain.job.Job;
 import java.util.List;
 
 public enum RecruitKeyword {
 
+    BACKEND {
+        @Override
+        public List<String> getIncludeKeywordList() {
+            return List.of("Back", "Backend", "Back-end", "BACK", "백엔드", "서버", "시스템");
+        }
+
+        @Override
+        public List<String> getExcludeKeywordList() {
+            return null;
+        }
+    }
+    ,
     BACKEND_SPRING {
         @Override
         public List<String> getIncludeKeywordList() {
@@ -75,13 +88,23 @@ public enum RecruitKeyword {
 
     ;
 
-    public static RecruitKeyword getRecruitKeyword(String name) {
+    public static RecruitKeyword getRecruitKeywordFromGptAnswerJob(String name) {
         for (RecruitKeyword recruitKeyword : RecruitKeyword.values()) {
             if (recruitKeyword.toString().equals(name)) {
                 return recruitKeyword;
             }
         }
-        return null; // 일치하는거 없으면 일단 Null 반환 처리
+        return null; // 일치하는거 없으면 null
+    }
+
+    public static RecruitKeyword getRecruitKeywordFromProfileJob(Job job) {
+        return switch (job.getName()) {
+            case "백엔드 개발자" -> BACKEND;
+            case "프론트엔드 개발자" -> FRONTEND;
+            case "PM(Product/Project Manager)" -> PM;
+            case "Designer" -> DESIGNER;
+            default -> throw new RuntimeException("추가 필요한 직무" + job.getName());
+        };
     }
 
 
