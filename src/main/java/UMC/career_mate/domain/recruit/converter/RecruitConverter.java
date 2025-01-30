@@ -6,8 +6,10 @@ import UMC.career_mate.domain.recruit.dto.response.RecommendRecruitDTO;
 import UMC.career_mate.domain.recruit.dto.response.RecruitInfoDTO;
 import UMC.career_mate.domain.recruit.enums.EducationLevel;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -22,7 +24,6 @@ public class RecruitConverter {
         return Recruit.builder()
             .companyName(job.company().detail().name())
             .title(job.position().title())
-            .imageUrl(null)
             .deadLine(LocalDateTime.ofInstant(Instant.ofEpochSecond(job.expirationTimestamp()),
                 ZoneId.systemDefault()))
             .companyInfoUrl(companyInfoUrl)
@@ -46,20 +47,19 @@ public class RecruitConverter {
             .build();
     }
 
-    public static RecommendRecruitDTO toRecommendRecruitDTO(Recruit recruit) {
+    public static RecommendRecruitDTO toRecommendRecruitDTO(Recruit recruit, boolean isScraped) {
         return RecommendRecruitDTO.builder()
             .recruitId(recruit.getId())
             .companyName(recruit.getCompanyName())
-            .imageUrl(recruit.getImageUrl())
             .title(recruit.getTitle())
-            .deadLine(recruit.getDeadLine())
+            .deadLine(formatDeadLine(recruit))
+            .isScraped(isScraped)
             .experienceLevelCode(recruit.getExperienceLevelCode())
             .experienceLevelMin(recruit.getExperienceLevelMin())
             .experienceLevelMax(recruit.getExperienceLevelMax())
             .experienceLevelName(recruit.getExperienceLevelName())
             .educationLevelCode(recruit.getEducationLevelCode())
             .educationLevelName(recruit.getEducationLevelName())
-            .openingDate(recruit.getOpeningDate())
             .postingDate(recruit.getPostingDate())
             .build();
     }
@@ -68,17 +68,25 @@ public class RecruitConverter {
         return RecruitInfoDTO.builder()
             .comment(comment)
             .companyName(recruit.getCompanyName())
-            .title(recruit.getTitle())
-            .industryName(recruit.getIndustryName())
-            .region(recruit.getRegion())
             .employmentName(recruit.getEmploymentName())
             .experienceLevelName(recruit.getExperienceLevelName())
             .educationLevelName(recruit.getEducationLevelName())
             .salaryName(recruit.getSalaryName())
-            .deadLine(recruit.getDeadLine())
-            .jobNames(recruit.getJobNames())
+            .region(recruit.getRegion())
             .companyInfoUrl(recruit.getCompanyInfoUrl())
             .recruitUrl(recruit.getRecruitUrl())
             .build();
+    }
+
+    private static String formatDeadLine(Recruit recruit) {
+        LocalDate today = LocalDate.now();
+        LocalDate targetDate = recruit.getDeadLine().toLocalDate();
+        long daysBetween = ChronoUnit.DAYS.between(today, targetDate);
+
+        if (daysBetween == 0) {
+            return "오늘 마감";
+        }
+
+        return "D-" + daysBetween;
     }
 }

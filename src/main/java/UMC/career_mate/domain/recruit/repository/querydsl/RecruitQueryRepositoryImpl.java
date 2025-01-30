@@ -117,10 +117,7 @@ public class RecruitQueryRepositoryImpl implements RecruitQueryRepository {
     private OrderSpecifier createOrderSpecifier(RecruitSortType recruitSortType) {
         return switch (recruitSortType) {
             case DEADLINE_ASC -> new OrderSpecifier(Order.ASC, recruit.deadLine);
-            case OPENING_ASC -> new OrderSpecifier(Order.ASC, recruit.openingDate);
-            case POSTING_ASC -> new OrderSpecifier(Order.ASC, recruit.postingDate);
             case DEADLINE_DESC -> new OrderSpecifier(Order.DESC, recruit.deadLine);
-            case OPENING_DESC -> new OrderSpecifier(Order.DESC, recruit.openingDate);
             case POSTING_DESC -> new OrderSpecifier(Order.DESC, recruit.postingDate);
         };
     }

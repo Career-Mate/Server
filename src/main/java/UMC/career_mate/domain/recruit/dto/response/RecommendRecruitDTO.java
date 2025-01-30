@@ -7,9 +7,9 @@ import lombok.Builder;
 public record RecommendRecruitDTO(
     Long recruitId,
     String companyName,
-    String imageUrl,
     String title,
-    LocalDateTime deadLine,
+    String deadLine,
+    boolean isScraped,
 
     /**
      * TODO: 아래로는 (필터링, 정렬) 잘 되는지 확인용 데이터, 나중에 삭제 예정
@@ -20,7 +20,6 @@ public record RecommendRecruitDTO(
     String experienceLevelName,
     Integer educationLevelCode, // 학력 코드 0(학력무관), 1(고등학교졸업), 2(대학졸업(2,3년)), 3(대학졸업(4년)), 4(석사졸업), 5(박사졸업) 등
     String educationLevelName,
-    LocalDateTime openingDate,
     LocalDateTime postingDate
 ) {
 
