@@ -50,7 +50,7 @@ public class Planner extends BaseEntity {
     @Column(name = "other_plans")
     private String otherPlans;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
