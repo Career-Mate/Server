@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -44,7 +43,6 @@ public class JwtFilter extends OncePerRequestFilter {
         Cookie[] cookies = request.getCookies();
 
         if (cookies == null) {
-            System.out.println("쿠키가 없음");
             filterChain.doFilter(request, response);
             return;
         }
@@ -56,7 +54,6 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         if (authorization == null) {
-            System.out.println("액세스 토큰이 없음");
             SecurityContextHolder.clearContext();
             handleException(request, response, filterChain, CommonErrorCode.NO_ACCESS_TOKEN);
             return;

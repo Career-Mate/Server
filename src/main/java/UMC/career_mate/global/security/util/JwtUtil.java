@@ -8,7 +8,6 @@ import UMC.career_mate.global.response.exception.code.CommonErrorCode;
 import UMC.career_mate.global.security.dto.user.CustomOAuth2User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -37,6 +36,7 @@ public class JwtUtil {
     private static final String PAYLOAD_MEMBER_ID_KEY = "memberId";
     private static final String PAYLOAD_CLIENT_ID_KEY = "clientId";
     private static final String PAYLOAD_SOCIAL_TYPE = "socialType";
+    private static final String PAYLOAD_TOKEN_TYPE = "tokenType";
 
 
     public JwtUtil(@Value("${spring.jwt.secret}") String secret, MemberService memberService){
@@ -58,6 +58,7 @@ public class JwtUtil {
                 .claim(PAYLOAD_MEMBER_ID_KEY, memberId.toString())
                 .claim(PAYLOAD_CLIENT_ID_KEY, clientId)
                 .claim(PAYLOAD_SOCIAL_TYPE, socialType.toString())
+                .claim(PAYLOAD_TOKEN_TYPE,isAccess.toString())
                 .issuedAt(issuedDate)
                 .expiration(expiredDate)
                 .signWith(secretKey)
