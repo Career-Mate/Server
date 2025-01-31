@@ -41,7 +41,7 @@ public class CookieUtil {
 
         ResponseCookie cookie = ResponseCookie.from(name, value)
                 .path("/")
-                .domain("localhost")
+//                .domain("localhost")
                 .maxAge(maxAge)
                 .httpOnly(true)
                 .build();
