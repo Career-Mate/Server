@@ -21,7 +21,6 @@ public class CookieUtil {
                 .domain(COOKIE_DOMAIN)
                 .maxAge(maxAge)
                 .httpOnly(true)
-                .sameSite("None")
 //                .secure(true)
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
@@ -44,7 +43,6 @@ public class CookieUtil {
                 .domain("localhost")
                 .maxAge(maxAge)
                 .httpOnly(true)
-                .sameSite("None")
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
