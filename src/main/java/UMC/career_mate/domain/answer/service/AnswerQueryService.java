@@ -24,7 +24,7 @@ public class AnswerQueryService {
 
     @Transactional(readOnly = true)
     public List<AnswerInfoListDTO> getAnswersByTemplateType(Member member, TemplateType templateType) {
-        List<Answer> answerList = answerRepository.findByMemberAndTemplateType(member, templateType);
+        List<Answer> answerList = answerRepository.findByMemberAndTemplateType(member, member.getJob(), templateType);
 
         // sequence 기준으로 그룹화
         Map<Long, List<Answer>> groupedAnswers = answerList.stream()
@@ -42,7 +42,7 @@ public class AnswerQueryService {
 
         // TemplateType 값들을 순회하면서 각 템플릿의 완료 여부를 확인
         for (TemplateType templateType : TemplateType.values()) {
-            boolean isCompleted = answerRepository.existsByMemberAndTemplateType(member, templateType);
+            boolean isCompleted = answerRepository.existsByMemberAndTemplateType(member, member.getJob(), templateType);
             answerCompletionStatusInfoDTOList.add(AnswerConverter.toAnswerCompletionStatusInfoDTO(templateType, isCompleted));
 
             // 하나라도 미완료 상태가 있으면 전체 진행 상태는 false

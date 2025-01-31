@@ -15,33 +15,38 @@ import java.util.Optional;
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     @Query("""
-                SELECT a FROM Answer a
-                WHERE a.member = :member AND a.question.template.templateType = :templateType
-        """)
+                    SELECT a FROM Answer a
+                    WHERE a.member = :member
+                    AND a.question.template.job = :job
+                    AND a.question.template.templateType = :templateType
+            """)
     List<Answer> findByMemberAndTemplateType(@Param("member") Member member,
-        @Param("templateType") TemplateType templateType);
+                                             @Param("job") Job job,
+                                             @Param("templateType") TemplateType templateType);
 
-    Optional<Answer> findByMemberAndQuestionAndSequence(Member member, Question question,
-        Long sequence);
+    Optional<Answer> findByMemberAndQuestionAndSequence(Member member, Question question, Long sequence);
 
     @Query("""
-            SELECT COUNT(a) > 0 FROM Answer a
-            WHERE a.member = :member AND a.question.template.templateType = :templateType
-        """)
+                SELECT COUNT(a) > 0 FROM Answer a
+                WHERE a.member = :member
+                AND a.question.template.job = :job
+                AND a.question.template.templateType = :templateType
+            """)
     boolean existsByMemberAndTemplateType(@Param("member") Member member,
-        @Param("templateType") TemplateType templateType);
+                                          @Param("job") Job job,
+                                          @Param("templateType") TemplateType templateType);
 
     @Query("select a from Answer a where a.member = :member and a.question.template.templateType in :templateTypes and a.question.order = :order and a.sequence = :sequence and a.question.template.job = :job")
     List<Answer> findByMemberAndTemplateTypesAndOrderAndJob(@Param("member") Member member,
-        @Param("templateTypes") List<TemplateType> templateTypes, @Param("order") int order,
-        @Param("sequence") int sequence, @Param("job") Job job);
+                                                            @Param("templateTypes") List<TemplateType> templateTypes, @Param("order") int order,
+                                                            @Param("sequence") int sequence, @Param("job") Job job);
 
     @Query("select a from Answer a where a.member = :member and a.question.content = :content and a.question.template.templateType = :templateType and a.question.template.job = :job")
     List<Answer> findAnswersByMemberAndQuestionContentAndTemplateTypeAndJob(
-        @Param("member") Member member, @Param("content") String content,
-        @Param("templateType") TemplateType templateType, @Param("job") Job job);
+            @Param("member") Member member, @Param("content") String content,
+            @Param("templateType") TemplateType templateType, @Param("job") Job job);
 
     @Query("select a from Answer a where a.member = :member and a.question.template.templateType in :templateTypes and a.question.template.job = :job")
     List<Answer> findByMemberAndTemplateTypesAndJob(@Param("member") Member member,
-        @Param("templateTypes") List<TemplateType> templateTypes, @Param("job") Job job);
+                                                    @Param("templateTypes") List<TemplateType> templateTypes, @Param("job") Job job);
 }

@@ -38,8 +38,8 @@ public class AnswerCommandService {
     }
 
     @Transactional
-    public void updateAnswerList(Member member, AnswerCreateOrUpdateDTO request) {
-        for (AnswerList answerList : request.answerList()) {
+    public void updateAnswerList(Member member, AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO) {
+        for (AnswerList answerList : answerCreateOrUpdateDTO.answerList()) {
             for (AnswerInfo answerInfo : answerList.answerInfoList()) {
                 Question question = questionRepository.findById(answerInfo.questionId())
                         .orElseThrow(() -> new GeneralException(CommonErrorCode.NOT_FOUND_QUESTION));
