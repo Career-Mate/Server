@@ -1,4 +1,4 @@
-package UMC.career_mate.domain.chatgpt.dto.response;
+package UMC.career_mate.domain.recruit.dto;
 
 import UMC.career_mate.domain.recruit.enums.RecruitKeyword;
 import lombok.Builder;
