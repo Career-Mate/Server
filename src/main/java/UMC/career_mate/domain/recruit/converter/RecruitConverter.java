@@ -1,10 +1,12 @@
 package UMC.career_mate.domain.recruit.converter;
 
 import UMC.career_mate.domain.recruit.Recruit;
+import UMC.career_mate.domain.recruit.dto.FilterConditionDTO;
 import UMC.career_mate.domain.recruit.dto.api.SaraminResponseDTO.Job;
 import UMC.career_mate.domain.recruit.dto.response.RecommendRecruitDTO;
 import UMC.career_mate.domain.recruit.dto.response.RecruitInfoDTO;
 import UMC.career_mate.domain.recruit.enums.EducationLevel;
+import UMC.career_mate.domain.recruit.enums.RecruitKeyword;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -75,6 +77,13 @@ public class RecruitConverter {
             .region(recruit.getRegion())
             .companyInfoUrl(recruit.getCompanyInfoUrl())
             .recruitUrl(recruit.getRecruitUrl())
+            .build();
+    }
+
+    public static FilterConditionDTO toFilterConditionDTO(RecruitKeyword recruitKeyword, int careerYear) {
+        return FilterConditionDTO.builder()
+            .recruitKeyword(recruitKeyword)
+            .careerYear(careerYear)
             .build();
     }
 

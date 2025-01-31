@@ -46,7 +46,7 @@ public class RecruitController {
         @RequestParam(defaultValue = "6", required = false) int size,
         @RequestParam(defaultValue = "POSTING_DESC", required = false) RecruitSortType recruitSortType,
         @LoginMember Member member
-        ) {
+    ) {
         return ApiResponse.onSuccess(
             recruitQueryService.getRecommendRecruitList(page, size, recruitSortType, member));
     }
@@ -54,11 +54,12 @@ public class RecruitController {
     @Operation(
         summary = "채용 공고 요약 페이지 조회 API",
         description = """
-        채용 공고 요약 페이지를 조회하는 API입니다.\n\n
-        recruitId : 조회하려는 채용 공고 pk 값
-        """)
+            채용 공고 요약 페이지를 조회하는 API입니다.\n\n
+            recruitId : 조회하려는 채용 공고 pk 값
+            """)
     @GetMapping("/{recruitId}")
-    public ResponseEntity<ApiResponse<RecruitInfoDTO>> getRecruitInfo(@PathVariable Long recruitId, @LoginMember Member member) {
+    public ResponseEntity<ApiResponse<RecruitInfoDTO>> getRecruitInfo(@PathVariable Long recruitId,
+        @LoginMember Member member) {
         return ResponseEntity.ok(
             ApiResponse.onSuccess(recruitQueryService.findRecruitInfo(member, recruitId)));
     }

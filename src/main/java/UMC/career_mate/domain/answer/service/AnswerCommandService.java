@@ -49,6 +49,11 @@ public class AnswerCommandService {
                         .orElseThrow(() -> new GeneralException(CommonErrorCode.NOT_FOUND_ANSWER));
 
                 existingAnswer.updateContent(answerInfo.content());
+
+                // 질문 order 1의 답변 sequence 1은 수정일을 매번 업데이트 -> recruit 조회 로직에서 사용
+                if (question.getOrder() == 1 && existingAnswer.getSequence() == 1) {
+                    existingAnswer.setUpdatedAt();
+                }
             }
         }
     }

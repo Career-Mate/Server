@@ -25,7 +25,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private final JwtUtil jwtUtil;
     private final RefreshTokenService refreshTokenService;
 
-    private static final String FRONTEND_BASE_URL = "http://localhost:3000";
+    private static final String FRONTEND_BASE_URL = "http://54.180.29.116:3000";
     private static final String FRONTEND_PROFILE_PATH = "/profile";
 
     private Integer ACCESS_TOKEN_VALIDITY_IN_SECONDS = 30 * 60 + 5 * 60; //쿠키 유효기간 30분 + 재발급 5분
