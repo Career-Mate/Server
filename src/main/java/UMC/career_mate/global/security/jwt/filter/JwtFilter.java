@@ -31,8 +31,14 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorization = null;
 
-        if (request.getHeader("Authorization") != null) {
-            authorization = request.getHeader("Authorization");
+        authorization = request.getHeader("Authorization");
+
+        if (authorization != null) {
+            final Authentication authentication = jwtUtil.getAuthentication(authorization);
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            filterChain.doFilter(request, response);
+            return;
         }
 
         Cookie[] cookies = request.getCookies();
