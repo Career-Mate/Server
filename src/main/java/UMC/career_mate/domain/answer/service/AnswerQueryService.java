@@ -7,10 +7,7 @@ import UMC.career_mate.domain.answer.dto.response.AnswerCompletionStatusInfoList
 import UMC.career_mate.domain.answer.dto.response.AnswerInfoListDTO;
 import UMC.career_mate.domain.answer.repository.AnswerRepository;
 import UMC.career_mate.domain.member.Member;
-import UMC.career_mate.domain.member.repository.MemberRepository;
 import UMC.career_mate.domain.template.enums.TemplateType;
-import UMC.career_mate.global.response.exception.GeneralException;
-import UMC.career_mate.global.response.exception.code.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,13 +21,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AnswerQueryService {
     private final AnswerRepository answerRepository;
-    private final MemberRepository memberRepository;
 
     @Transactional(readOnly = true)
-    public List<AnswerInfoListDTO> getAnswersByTemplateType(Long memberId, TemplateType templateType) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new GeneralException(CommonErrorCode.BAD_REQUEST));
-
+    public List<AnswerInfoListDTO> getAnswersByTemplateType(Member member, TemplateType templateType) {
         List<Answer> answerList = answerRepository.findByMemberAndTemplateType(member, templateType);
 
         // sequence 기준으로 그룹화
