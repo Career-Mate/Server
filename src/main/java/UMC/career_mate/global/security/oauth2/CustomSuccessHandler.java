@@ -52,6 +52,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         } else {
             // 추가 정보가 입력된 경우
+            response.addHeader("Authorization",accessToken);
             response.sendRedirect(FRONTEND_BASE_URL);
         }
     }
