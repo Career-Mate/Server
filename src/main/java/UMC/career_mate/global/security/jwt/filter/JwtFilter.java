@@ -31,9 +31,14 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorization = null;
 
+        if (request.getHeader("Authorization") != null) {
+            authorization = request.getHeader("Authorization");
+        }
+
         Cookie[] cookies = request.getCookies();
 
         if (cookies == null) {
+            System.out.println("쿠키가 없음");
             filterChain.doFilter(request, response);
             return;
         }
@@ -45,6 +50,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         if (authorization == null) {
+            System.out.println("액세스 토큰이 없음");
             SecurityContextHolder.clearContext();
             handleException(request, response, filterChain, CommonErrorCode.NO_ACCESS_TOKEN);
             return;
