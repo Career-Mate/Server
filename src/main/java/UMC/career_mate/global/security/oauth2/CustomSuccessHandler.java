@@ -9,14 +9,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 @Component
 @RequiredArgsConstructor
@@ -25,7 +22,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private final JwtUtil jwtUtil;
     private final RefreshTokenService refreshTokenService;
 
-    private static final String FRONTEND_BASE_URL = "http://localhost:5174";
+    private static final String FRONTEND_BASE_URL = "http://localhost:5173";
     private static final String FRONTEND_PROFILE_PATH = "/profile";
 
     private Integer ACCESS_TOKEN_VALIDITY_IN_SECONDS = 30 * 60 + 5 * 60; //쿠키 유효기간 30분 + 재발급 5분
