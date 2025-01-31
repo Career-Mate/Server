@@ -32,7 +32,7 @@ public class MemberService {
         Job job = jobService.findJobById(request.job());
 
         Member profileMember = findMemberByMemberId(member.getId());
-        //회원 프로필 작성
+        //회원 프로필 작성하기
         profileMember.createProfile(request, job);
         profileMember.completeProfile();
 
