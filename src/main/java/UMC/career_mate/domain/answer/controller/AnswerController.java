@@ -128,9 +128,9 @@ public class AnswerController {
                             4. 보유 기술 (TECHNICAL_SKILLS)\s
                             5. 최종 정리 (SUMMARY)
                             """)
-    public ApiResponse<List<AnswerInfoListDTO>> getAnswerList(@RequestParam Long memberId,
+    public ApiResponse<List<AnswerInfoListDTO>> getAnswerList(@LoginMember Member member,
                                                               @RequestParam("templateType") TemplateType templateType) {
-        return ApiResponse.onSuccess(GET_ANSWER_LIST, answerQueryService.getAnswersByTemplateType(memberId, templateType));
+        return ApiResponse.onSuccess(GET_ANSWER_LIST, answerQueryService.getAnswersByTemplateType(member, templateType));
     }
 
     @PatchMapping

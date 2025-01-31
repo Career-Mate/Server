@@ -7,7 +7,6 @@ import UMC.career_mate.domain.answer.dto.request.AnswerCreateOrUpdateDTO.AnswerI
 import UMC.career_mate.domain.answer.dto.request.AnswerCreateOrUpdateDTO.AnswerList;
 import UMC.career_mate.domain.answer.repository.AnswerRepository;
 import UMC.career_mate.domain.member.Member;
-import UMC.career_mate.domain.member.repository.MemberRepository;
 import UMC.career_mate.domain.question.Question;
 import UMC.career_mate.domain.question.repository.QuestionRepository;
 import UMC.career_mate.global.response.exception.GeneralException;
@@ -21,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class AnswerCommandService {
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
-    private final MemberRepository memberRepository;
 
     @Transactional
     public void saveAnswerList(Member member, AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO) {
@@ -40,8 +38,8 @@ public class AnswerCommandService {
     }
 
     @Transactional
-    public void updateAnswerList(Member member, AnswerCreateOrUpdateDTO request) {
-        for (AnswerList answerList : request.answerList()) {
+    public void updateAnswerList(Member member, AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO) {
+        for (AnswerList answerList : answerCreateOrUpdateDTO.answerList()) {
             for (AnswerInfo answerInfo : answerList.answerInfoList()) {
                 Question question = questionRepository.findById(answerInfo.questionId())
                         .orElseThrow(() -> new GeneralException(CommonErrorCode.NOT_FOUND_QUESTION));
