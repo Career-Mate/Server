@@ -36,6 +36,17 @@ public class CookieUtil {
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
 
+    public static void addCookieLocalHost(HttpServletResponse response, String name, String value, int maxAge) {
+
+        ResponseCookie cookie = ResponseCookie.from(name, value)
+                .path("/")
+                .domain("localhost")
+                .maxAge(maxAge)
+                .httpOnly(true)
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+    }
+
     public static String getCookieValue(HttpServletRequest request, HttpServletResponse response, String name) {
         Cookie cookie = WebUtils.getCookie(request, name);
         return (cookie != null) ? cookie.getValue() : null;
