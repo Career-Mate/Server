@@ -3,7 +3,7 @@ package UMC.career_mate.domain.recruit.service;
 import UMC.career_mate.domain.answer.Answer;
 import UMC.career_mate.domain.answer.repository.AnswerRepository;
 import UMC.career_mate.domain.chatgpt.GptAnswer;
-import UMC.career_mate.domain.chatgpt.dto.request.ChatGPTRequestDTO;
+import UMC.career_mate.domain.recruit.dto.MemberTemplateAnswerDTO;
 import UMC.career_mate.domain.chatgpt.service.GptAnswerCommandService;
 import UMC.career_mate.domain.recruit.dto.FilterConditionDTO;
 import UMC.career_mate.domain.chatgpt.repository.GptAnswerRepository;
@@ -58,6 +58,7 @@ public class RecruitQueryService {
     private final static String INTERN_PREFIX = "인턴 경험 데이터 : ";
     private final static String PROJECT_QUESTION_CONTENT_PERIOD = "기간";
     private final static String INTERN_QUESTION_CONTENT_PERIOD = "근무기간";
+    private final static String TEMPLATE_ANSWER_IS_NULL_OR_EMPTY_COMMENT = "프로젝트 또는 인턴 템플릿에 대해 답변을 작성하고, Chat GPT의 코멘트를 받아보세요!";
 
     public PageResponseDTO<List<RecommendRecruitDTO>> getRecommendRecruitList(int page, int size,
         RecruitSortType recruitSortType, Member member) {
@@ -80,10 +81,7 @@ public class RecruitQueryService {
         Recruit recruit = recruitRepository.findById(recruitId)
             .orElseThrow(() -> new GeneralException(CommonErrorCode.NOT_FOUND_RECRUIT));
 
-        // TODO: db에서 사용자의 템플릿 데이터 가져오는걸로 수정
-        ChatGPTRequestDTO chatGPTRequestDTO = createDummyData(member);
-
-        String comment = chatGptService.getComment(chatGPTRequestDTO);
+        String comment = createComment(member);
 
         return RecruitConverter.toRecruitInfoDTO(comment, recruit);
     }
@@ -204,6 +202,39 @@ public class RecruitQueryService {
         return recruitKeyword;
     }
 
+    private String createComment(Member member) {
+        Job job = member.getJob();
+
+        Map<TemplateType, List<Answer>> templateTypeByAnswers = getTemplateTypeByAnswers(member,
+            job);
+
+        List<Answer> projectAnswers = templateTypeByAnswers.getOrDefault(
+            TemplateType.PROJECT_EXPERIENCE, List.of());
+        List<Answer> internAnswers = templateTypeByAnswers.getOrDefault(
+            TemplateType.INTERN_EXPERIENCE, List.of());
+
+        if (projectAnswers.isEmpty() && internAnswers.isEmpty()) {
+            log.info("(프로젝트, 인턴) 템플릿 답변 없이, 채용 공고 요약 페이지 조회하는 경우 -> answer 생성 안된 경우");
+            return TEMPLATE_ANSWER_IS_NULL_OR_EMPTY_COMMENT;
+        }
+
+        StringBuilder contentBuilder = new StringBuilder();
+        int projectEnterCnt = createChatGptRequestContent(contentBuilder, projectAnswers,
+            PROJECT_PREFIX, PROJECT_QUESTION_CONTENT_PERIOD);
+        int internEnterCnt = createChatGptRequestContent(contentBuilder, internAnswers,
+            INTERN_PREFIX, INTERN_QUESTION_CONTENT_PERIOD);
+
+        if (isEmptyContentBuilder(contentBuilder, projectEnterCnt, internEnterCnt)) {
+            log.info("최종 데이터가 기본 틀 데이터를 제외하고 빈 문자열인 경우");
+            return TEMPLATE_ANSWER_IS_NULL_OR_EMPTY_COMMENT;
+        }
+
+        MemberTemplateAnswerDTO memberTemplateAnswerDTO = RecruitConverter.toMemberTemplateAnswerDTO(
+            member, contentBuilder.toString());
+
+        return chatGptService.getComment(memberTemplateAnswerDTO);
+    }
+
     private Map<TemplateType, List<Answer>> getTemplateTypeByAnswers(Member member, Job job) {
         List<Answer> findAnswers = answerRepository.findByMemberAndTemplateTypesAndJob(member,
             List.of(TemplateType.PROJECT_EXPERIENCE, TemplateType.INTERN_EXPERIENCE), job);
@@ -251,14 +282,6 @@ public class RecruitQueryService {
             .page(page)
             .hasNext(hasNext)
             .result(recommendRecruitDTOList)
-            .build();
-    }
-
-    private ChatGPTRequestDTO createDummyData(Member member) {
-        return ChatGPTRequestDTO.builder()
-            .name(member.getName())
-            .content(
-                "네이버 / 백엔드 개발팀, 백엔드 개발자, 2023.06.01~2023.12.01, Spring 대규모 데이터 처리 및 최적화 과정을 통해 성능 개선의 중요성을 배웠습니다., 사용자 데이터를 기반으로 한 개인화 서비스 개발에 참여하며, 데이터의 가치를 깊이 이해할 수 있었습니다., 대규모 시스템 아키텍처 설계 경험을 통해 기술적인 자신감이 크게 향상되었습니다.")
             .build();
     }
 }
