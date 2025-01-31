@@ -21,7 +21,8 @@ public class CookieUtil {
                 .domain(COOKIE_DOMAIN)
                 .maxAge(maxAge)
                 .httpOnly(true)
-//                .secure(true)
+//                .sameSite("None")
+                .secure(false)
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
