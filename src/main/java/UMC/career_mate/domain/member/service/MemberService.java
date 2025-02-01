@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -30,13 +32,11 @@ public class MemberService {
         Job job = jobService.findJobById(request.job());
 
         Member profileMember = findMemberByMemberId(member.getId());
-        //회원 프로필 작성
+        //회원 프로필 작성하기
         profileMember.createProfile(request, job);
         profileMember.completeProfile();
 
-        //비어있는 플래너 생성
-        CreatePlannerDTO createPlannerDTO = CreatePlannerDTO.builder().build();
-        plannerService.savePlanner(profileMember,createPlannerDTO);
+        plannerService.savePlanner(profileMember);
 
         return profileMember;
     }
