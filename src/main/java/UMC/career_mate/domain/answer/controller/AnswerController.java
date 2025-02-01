@@ -28,7 +28,7 @@ import static UMC.career_mate.global.response.result.code.CommonResultCode.*;
 
 @RestController
 @RequestMapping("/answers")
-@Tag(name = "05. 답변 API", description = "답변 도메인의 API 입니다.")
+@Tag(name = "답변 API", description = "답변 도메인의 API 입니다.")
 @RequiredArgsConstructor
 public class AnswerController {
     private final AnswerCommandService answerCommandService;

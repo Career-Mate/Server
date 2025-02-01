@@ -8,11 +8,13 @@ import UMC.career_mate.global.annotation.LoginMember;
 import UMC.career_mate.global.response.ApiResponse;
 import UMC.career_mate.global.response.result.code.CommonResultCode;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "회원 API", description = "회원 도메인의 API 입니다.")
 @RequestMapping("/member")
 public class MemberController {
 

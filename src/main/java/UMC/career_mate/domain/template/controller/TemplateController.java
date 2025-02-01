@@ -7,6 +7,7 @@ import UMC.career_mate.domain.template.service.TemplateQueryService;
 import UMC.career_mate.global.annotation.LoginMember;
 import UMC.career_mate.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import static UMC.career_mate.global.response.result.code.CommonResultCode.GET_T
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "템플릿 API", description = "템플릿 도메인의 API 입니다.")
 @RequestMapping("/templates")
 public class TemplateController {
     private final TemplateQueryService templateQueryService;
