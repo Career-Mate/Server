@@ -39,6 +39,10 @@ public class PlannerCommandService {
 
     public void editPlanner(Member member, CreatePlannerListDTO createPlannerListDTO){
 
+        if(!plannerRepository.existsByMember(member)){
+            throw new GeneralException(CommonErrorCode.PLANNER_NOT_EXISTS);
+        }
+
         List<Planner> planners = plannerRepository.findByMember(member);
         List<CreatePlannerDTO> plannerDTOs = createPlannerListDTO.planners();
 
@@ -48,6 +52,10 @@ public class PlannerCommandService {
     }
 
     public void deletePlanner(Member member){
+
+        if(!plannerRepository.existsByMember(member)){
+            throw new GeneralException(CommonErrorCode.PLANNER_NOT_EXISTS);
+        }
 
         List<Planner> planners = plannerRepository.findByMember(member);
         plannerRepository.deleteAll(planners);
