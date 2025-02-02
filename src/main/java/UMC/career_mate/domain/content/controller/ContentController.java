@@ -45,31 +45,43 @@ public class ContentController {
         return ApiResponse.onSuccess(contentService.uploadContent(contentRequestDTO));
     }
 
+    @DeleteMapping("/{contentId}")
+    @Operation(
+            summary = "컨텐츠 삭제 API",
+            description = """
+                특정 컨텐츠를 삭제합니다. (관리자용)
+                Path Parameters:
+                - 'contentId': 삭제할 콘텐츠 ID
+                """
+    )
+    public ApiResponse<String> deleteContent(@PathVariable Long contentId) {
+        contentService.deleteContent(contentId);
+        return ApiResponse.onSuccess("컨텐츠 삭제 완료");
+    }
+
     @GetMapping
     @Operation(
-            summary = "직무별 컨텐츠 조회 API",
+            summary = "로그인한 사용자의 직무별 컨텐츠 조회 API",
             description = """
-                특정 직무 ID에 해당하는 컨텐츠를 조회합니다.
+                로그인한 사용자의 직무 ID에 해당하는 컨텐츠를 조회합니다.
                 이때 사용자가 해당 컨텐츠를 스크랩했는지 여부가 담겨 조회됩니다.
                 Query Parameters:
-                - `jobId`: 직무 ID (필수)
                 - `page`: 페이지 번호 (기본값: 1)
                 - `size`: 페이지 크기 (기본값: 10)
                 """
     )
     public ApiResponse<PageResponseDTO<List<ContentResponseDTO>>> getContentsByJobId(
-            @RequestParam Long jobId,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
             @LoginMember Member member) {
-        return ApiResponse.onSuccess(contentService.getContentsByJobId(jobId, page, size, member));
+        return ApiResponse.onSuccess(contentService.getContentsByJobId(page, size, member));
     }
 
     @PostMapping("/{contentId}/scrap")
     @Operation(
             summary = "컨텐츠 스크랩 API",
             description = """
-                    컨텐츠를 스크랩합니다. 
+                    컨텐츠를 스크랩합니다.
                     Path Parameters:
                     - 'contentId': 스크랩할 콘텐츠 ID
                     """

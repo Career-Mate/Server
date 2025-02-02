@@ -1,6 +1,5 @@
 package UMC.career_mate.domain.content.service;
 
-
 import UMC.career_mate.domain.content.Content;
 import UMC.career_mate.domain.content.converter.ContentConverter;
 import UMC.career_mate.domain.content.dto.request.ContentRequestDTO;
@@ -11,6 +10,8 @@ import UMC.career_mate.domain.job.Job;
 import UMC.career_mate.domain.job.Service.JobService;
 import UMC.career_mate.domain.member.Member;
 import UMC.career_mate.global.common.PageResponseDTO;
+import UMC.career_mate.global.response.exception.GeneralException;
+import UMC.career_mate.global.response.exception.code.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,10 +40,22 @@ public class ContentService {
         return ContentConverter.toContentResponseDTO(content);
     }
 
+    public void deleteContent(Long contentId) {
+        // 컨텐츠 존재 여부 확인
+        Content content = contentRepository.findById(contentId)
+                .orElseThrow(() -> new GeneralException(CommonErrorCode.NOT_FOUND_CONTENT));
+
+        contentRepository.delete(content);
+    }
+
     @Transactional(readOnly = true)
-    public PageResponseDTO<List<ContentResponseDTO>> getContentsByJobId(Long jobId, int page, int size, Member member) {
-        // Job ID 유효성 확인
-        jobService.findJobById(jobId);
+    public PageResponseDTO<List<ContentResponseDTO>> getContentsByJobId(int page, int size, Member member) {
+
+        // 로그인한 사용자의 직무 ID 확인
+        Long jobId = member.getJob().getId();
+        if (jobId == null) {
+            throw new GeneralException(CommonErrorCode.NOT_FOUND_BY_JOB_ID);
+        }
 
         PageRequest pageRequest = PageRequest.of(page - 1, size);
         Page<Content> contentPage = contentRepository.findByJobId(jobId, pageRequest);
@@ -59,6 +72,11 @@ public class ContentService {
                 .toList();
 
         boolean hasNext = contentPage.hasNext();
-        return new PageResponseDTO<>(page, hasNext, contentList);
+
+        return PageResponseDTO.<List<ContentResponseDTO>>builder()
+            .page(page)
+            .hasNext(hasNext)
+            .result(contentList)
+            .build();
     }
 }

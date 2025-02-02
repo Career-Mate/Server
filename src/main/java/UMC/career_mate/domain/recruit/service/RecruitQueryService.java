@@ -12,7 +12,7 @@ import UMC.career_mate.domain.job.Job;
 import UMC.career_mate.domain.member.Member;
 import UMC.career_mate.domain.recruit.Recruit;
 import UMC.career_mate.domain.recruit.converter.RecruitConverter;
-import UMC.career_mate.domain.recruit.dto.response.RecommendRecruitDTO;
+import UMC.career_mate.domain.recruit.dto.response.RecommendRecruitsDTO;
 import UMC.career_mate.domain.recruit.dto.response.RecruitInfoDTO;
 import UMC.career_mate.domain.recruit.enums.EducationLevel;
 import UMC.career_mate.domain.recruit.enums.RecruitKeyword;
@@ -60,7 +60,7 @@ public class RecruitQueryService {
     private final static String INTERN_QUESTION_CONTENT_PERIOD = "근무기간";
     private final static String TEMPLATE_ANSWER_IS_NULL_OR_EMPTY_COMMENT = "프로젝트 또는 인턴 템플릿에 대해 답변을 작성하고, Chat GPT의 코멘트를 받아보세요!";
 
-    public PageResponseDTO<List<RecommendRecruitDTO>> getRecommendRecruitList(int page, int size,
+    public PageResponseDTO<RecommendRecruitsDTO> getRecommendRecruitList(int page, int size,
         RecruitSortType recruitSortType, Member member) {
         FilterConditionDTO filterCondition = createFilterCondition(member);
 
@@ -74,7 +74,7 @@ public class RecruitQueryService {
             filterCondition.recruitKeyword(), educationLevel, filterCondition.careerYear(),
             recruitSortType, pageRequest);
 
-        return createPageResponseDTO(page, size, findRecruitPage, member);
+        return createPageResponseDTO(findRecruitPage, member);
     }
 
     public RecruitInfoDTO findRecruitInfo(Member member, Long recruitId) {
@@ -266,22 +266,19 @@ public class RecruitQueryService {
             == PROJECT_PREFIX.length() + projectEnterCnt + INTERN_PREFIX.length() + internEnterCnt;
     }
 
-    private PageResponseDTO<List<RecommendRecruitDTO>> createPageResponseDTO(int page,
-        int size, Page<Recruit> findRecruitPage, Member member) {
+    private PageResponseDTO<RecommendRecruitsDTO> createPageResponseDTO(Page<Recruit> findRecruitPage, Member member) {
         Set<Long> scrapedRecruitIds = recruitScrapRepository.findRecruitIdsByMember(member);
 
-        boolean hasNext = findRecruitPage.getSize() == size + 1;
+        RecommendRecruitsDTO recommendRecruitsDTO = RecruitConverter.toRecommendRecruitsDTO(member,
+            findRecruitPage.stream()
+                .map(recruit -> RecruitConverter.toRecruitThumbNailInfoDTO(recruit,
+                    scrapedRecruitIds.contains(recruit.getId())))
+                .toList());
 
-        List<RecommendRecruitDTO> recommendRecruitDTOList = findRecruitPage.stream()
-            .limit(size)
-            .map(recruit -> RecruitConverter.toRecommendRecruitDTO(recruit,
-                scrapedRecruitIds.contains(recruit.getId())))
-            .toList();
-
-        return PageResponseDTO.<List<RecommendRecruitDTO>>builder()
-            .page(page)
-            .hasNext(hasNext)
-            .result(recommendRecruitDTOList)
+        return PageResponseDTO.<RecommendRecruitsDTO>builder()
+            .page(findRecruitPage.getNumber() + 1)
+            .totalPages(findRecruitPage.getTotalPages())
+            .result(recommendRecruitsDTO)
             .build();
     }
 }

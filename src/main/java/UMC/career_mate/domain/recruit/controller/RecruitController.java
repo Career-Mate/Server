@@ -1,7 +1,7 @@
 package UMC.career_mate.domain.recruit.controller;
 
 import UMC.career_mate.domain.member.Member;
-import UMC.career_mate.domain.recruit.dto.response.RecommendRecruitDTO;
+import UMC.career_mate.domain.recruit.dto.response.RecommendRecruitsDTO;
 import UMC.career_mate.domain.recruit.dto.response.RecruitInfoDTO;
 import UMC.career_mate.domain.recruit.enums.JobCode;
 import UMC.career_mate.domain.recruit.enums.RecruitSortType;
@@ -11,8 +11,6 @@ import UMC.career_mate.global.annotation.LoginMember;
 import UMC.career_mate.global.common.PageResponseDTO;
 import UMC.career_mate.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import java.util.List;
-
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +31,8 @@ public class RecruitController {
     private final RecruitQueryService recruitQueryService;
 
     @Operation(
-        summary = "추천 채용 공고 조회 API",
-        description = """
+            summary = "추천 채용 공고 조회 API",
+            description = """
             추천 채용 공고를 조회하는 API입니다.\n\n
             page의 값은 1부터 시작이고, 기본 값은 1입니다.\n\n
             size의 기본값은 6입니다.\n\n
@@ -44,27 +42,27 @@ public class RecruitController {
             마감 늦은 순 -> DEADLINE_DESC
             """)
     @GetMapping
-    public ApiResponse<PageResponseDTO<List<RecommendRecruitDTO>>> getRecommendRecruitList(
-        @RequestParam(defaultValue = "1", required = false) int page,
-        @RequestParam(defaultValue = "6", required = false) int size,
-        @RequestParam(defaultValue = "POSTING_DESC", required = false) RecruitSortType recruitSortType,
-        @LoginMember Member member
+    public ApiResponse<PageResponseDTO<RecommendRecruitsDTO>> getRecommendRecruitList(
+            @RequestParam(defaultValue = "1", required = false) int page,
+            @RequestParam(defaultValue = "6", required = false) int size,
+            @RequestParam(defaultValue = "POSTING_DESC", required = false) RecruitSortType recruitSortType,
+            @LoginMember Member member
     ) {
         return ApiResponse.onSuccess(
-            recruitQueryService.getRecommendRecruitList(page, size, recruitSortType, member));
+                recruitQueryService.getRecommendRecruitList(page, size, recruitSortType, member));
     }
 
     @Operation(
-        summary = "채용 공고 요약 페이지 조회 API",
-        description = """
+            summary = "채용 공고 요약 페이지 조회 API",
+            description = """
             채용 공고 요약 페이지를 조회하는 API입니다.\n\n
             recruitId : 조회하려는 채용 공고 pk 값
             """)
     @GetMapping("/{recruitId}")
     public ResponseEntity<ApiResponse<RecruitInfoDTO>> getRecruitInfo(@PathVariable Long recruitId,
-        @LoginMember Member member) {
+                                                                      @LoginMember Member member) {
         return ResponseEntity.ok(
-            ApiResponse.onSuccess(recruitQueryService.findRecruitInfo(member, recruitId)));
+                ApiResponse.onSuccess(recruitQueryService.findRecruitInfo(member, recruitId)));
     }
 
     @Deprecated
