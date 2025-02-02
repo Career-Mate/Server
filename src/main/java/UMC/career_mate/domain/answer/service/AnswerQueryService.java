@@ -7,6 +7,7 @@ import UMC.career_mate.domain.answer.dto.response.AnswerCompletionStatusInfoList
 import UMC.career_mate.domain.answer.dto.response.AnswerInfoListDTO;
 import UMC.career_mate.domain.answer.repository.AnswerRepository;
 import UMC.career_mate.domain.member.Member;
+import UMC.career_mate.domain.member.repository.MemberRepository;
 import UMC.career_mate.domain.template.enums.TemplateType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AnswerQueryService {
     private final AnswerRepository answerRepository;
+    private final MemberRepository memberRepository;
 
     @Transactional(readOnly = true)
     public List<AnswerInfoListDTO> getAnswersByTemplateType(Member member, TemplateType templateType) {

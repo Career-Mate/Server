@@ -7,6 +7,7 @@ import UMC.career_mate.domain.answer.dto.request.AnswerCreateOrUpdateDTO.AnswerI
 import UMC.career_mate.domain.answer.dto.request.AnswerCreateOrUpdateDTO.AnswerGroupDTO;
 import UMC.career_mate.domain.answer.repository.AnswerRepository;
 import UMC.career_mate.domain.member.Member;
+import UMC.career_mate.domain.member.repository.MemberRepository;
 import UMC.career_mate.domain.question.Question;
 import UMC.career_mate.domain.question.repository.QuestionRepository;
 import UMC.career_mate.global.response.exception.GeneralException;
@@ -27,6 +28,7 @@ public class AnswerCommandService {
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
     private final S3Uploader s3Uploader;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public void saveAnswerList(Member member, AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO, List<MultipartFile> imageFileList) throws IOException {
@@ -48,6 +50,7 @@ public class AnswerCommandService {
                 Question question = questionRepository.findById(answerInfo.questionId())
                         .orElseThrow(() -> new GeneralException(CommonErrorCode.NOT_FOUND_QUESTION));
 
+                // 특정 질문에 대해서만 이미지 URL 저장
                 String content = (assignedImageUrl != null && question.getId().equals(103L))
                         ? assignedImageUrl
                         : answerInfo.content();
@@ -83,7 +86,7 @@ public class AnswerCommandService {
                 Answer existingAnswer = answerRepository.findByMemberAndQuestionAndSequence(member, question, answerGroupDTO.sequence())
                         .orElseThrow(() -> new GeneralException(CommonErrorCode.NOT_FOUND_ANSWER));
 
-                // 특정 질문 ID(103L)에 대해서만 이미지 URL 저장
+                // 특정 질문에 대해서만 이미지 URL 저장
                 String content = (assignedImageUrl != null && question.getId().equals(103L))
                         ? assignedImageUrl
                         : answerInfoDTO.content();
