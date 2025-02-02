@@ -1,5 +1,7 @@
 package UMC.career_mate.domain.member.service;
 
+import UMC.career_mate.domain.chatgpt.GptAnswer;
+import UMC.career_mate.domain.chatgpt.repository.GptAnswerRepository;
 import UMC.career_mate.domain.job.Job;
 import UMC.career_mate.domain.job.Service.JobService;
 import UMC.career_mate.domain.member.Member;
@@ -8,10 +10,11 @@ import UMC.career_mate.domain.member.dto.request.CreateProfileDTO;
 import UMC.career_mate.domain.member.dto.response.MemberInfoDTO;
 import UMC.career_mate.domain.member.enums.SocialType;
 import UMC.career_mate.domain.member.repository.MemberRepository;
-import UMC.career_mate.domain.planner.dto.request.CreatePlannerDTO;
 import UMC.career_mate.domain.planner.service.PlannerCommandService;
+import UMC.career_mate.domain.recruit.enums.RecruitKeyword;
 import UMC.career_mate.global.response.exception.GeneralException;
 import UMC.career_mate.global.response.exception.code.CommonErrorCode;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +29,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final JobService jobService;
     private final PlannerCommandService plannerService;
+    private final GptAnswerRepository gptAnswerRepository;
 
     @Transactional
     public Member makeProfile(CreateProfileDTO request,Member member) {
@@ -79,6 +83,10 @@ public class MemberService {
         Member member = findMemberByMemberId(memberId);
         Job job = jobService.findJobById(request.job());
         member.createProfile(request, job);
+
+        gptAnswerRepository.findByMember(member).ifPresent(
+            gptAnswer -> gptAnswer.updateData(RecruitKeyword.getRecruitKeywordFromProfileJob(job), 0)
+        );
 
         return member;
     }
