@@ -54,10 +54,16 @@ public class RecruitQueryRepositoryImpl implements RecruitQueryRepository {
             .where(builder)
             .orderBy(createOrderSpecifier(recruitSortType))
             .offset(pageable.getOffset())
-            .limit(pageable.getPageSize() + 1)
+            .limit(pageable.getPageSize())
             .fetch();
 
-        return new PageImpl<>(result);
+        Long total = queryFactory
+            .select(recruit.count())
+            .from(recruit)
+            .where(builder)
+            .fetchOne();
+
+        return new PageImpl<>(result, pageable, total);
     }
 
     private void filterIncludeKeywordList(List<String> includekeywordList, BooleanBuilder builder) {
