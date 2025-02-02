@@ -1,11 +1,10 @@
 package UMC.career_mate.domain.answer.converter;
 
 import UMC.career_mate.domain.answer.Answer;
-import UMC.career_mate.domain.answer.dto.request.AnswerCreateOrUpdateDTO;
 import UMC.career_mate.domain.answer.dto.response.AnswerCompletionStatusInfoDTO;
 import UMC.career_mate.domain.answer.dto.response.AnswerCompletionStatusInfoListDTO;
-import UMC.career_mate.domain.answer.dto.response.AnswerInfoListDTO;
 import UMC.career_mate.domain.answer.dto.response.AnswerInfoDTO;
+import UMC.career_mate.domain.answer.dto.response.AnswerInfoListDTO;
 import UMC.career_mate.domain.member.Member;
 import UMC.career_mate.domain.question.Question;
 import UMC.career_mate.domain.template.enums.TemplateType;
@@ -14,9 +13,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AnswerConverter {
-    public static Answer toAnswer(AnswerCreateOrUpdateDTO.AnswerInfo answerInfo, Member member, Question question, long sequence) {
+    public static Answer toAnswer(String content, Member member, Question question, long sequence) {
         return Answer.builder()
-                .content(answerInfo.content())
+                .content(content)
                 .member(member)
                 .question(question)
                 .sequence(sequence)
@@ -24,7 +23,7 @@ public class AnswerConverter {
     }
 
     public static AnswerInfoDTO toAnswerInfoDTO(Answer answer) {
-        return AnswerInfoDTO.builder()
+        return UMC.career_mate.domain.answer.dto.response.AnswerInfoDTO.builder()
                 .questionId(answer.getQuestion().getId())
                 .questionName(answer.getQuestion().getContent())
                 .content(answer.getContent())
@@ -40,7 +39,7 @@ public class AnswerConverter {
     public static AnswerInfoListDTO toAnswerListResponseDTO(Long sequence, List<Answer> answerList) {
         return AnswerInfoListDTO.builder()
                 .sequence(sequence)
-                .answerList(toAnswerInfoDTOList(answerList))
+                .answerInfoDTOList(toAnswerInfoDTOList(answerList))
                 .build();
     }
 

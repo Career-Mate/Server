@@ -14,14 +14,18 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 import static UMC.career_mate.global.response.result.code.CommonResultCode.*;
@@ -39,23 +43,20 @@ public class AnswerController {
             summary = "커리어 작성 API",
             description =
                     """
-                            커리어를 작성하는 API 입니다.
-                            커리어를 처음 작성할 때, 반드시 2개의  `answerInfoList` 데이터를 요청해야 합니다. 입력하지 않을 경우엔 빈 문자열로 요청을 할 수 있습니다.
+                            커리어를 작성하는 API입니다.
+                            커리어를 처음 작성할 때, 반드시 2개의 `answerInfoList` 데이터를 요청해야 합니다.
+                            입력하지 않을 경우엔 빈 문자열로 요청할 수 있습니다.
                             ## 하나의 커리어만 작성하는 경우
                             ### Example REQUEST JSON:
                             ```json
                             {
-                              "answerList": [
+                              "answerGroupDTOList": [
                                 {
                                   "sequence": 1,
-                                  "answerInfoList": [
-                                    {
-                                      "questionId": 30,
-                                      "content": "삼성전자 / IoT 개발팀"
-                                    },
+                                  "answerInfoDTOList": [
                                     {
                                       "questionId": 31,
-                                      "content": "백엔드 개발자"
+                                      "content": "카카오뱅크 / 대출상품기획팀"
                                     },
                                     {
                                       "questionId": 32,
@@ -63,25 +64,29 @@ public class AnswerController {
                                     },
                                     {
                                       "questionId": 33,
-                                      "content": "IoT 디바이스 통신 프로토콜을 설계하며, 효율적인 데이터 전송 방식에 대해 배웠습니다."
+                                      "content": "회사명 / IoT 디바이스 팀"
                                     },
                                     {
                                       "questionId": 34,
-                                      "content": "스마트 홈 서비스의 핵심 모듈을 개발하며, 사용자 경험 중심의 설계 중요성을 깨달았습니다."
+                                      "content": "IoT 디바이스 통신 프로토콜을 설계하며, 효율적인 데이터 전송 방식에 대해 배웠습니다."
                                     },
                                     {
                                       "questionId": 35,
+                                      "content": "스마트 홈 서비스의 핵심 모듈을 개발하며, 사용자 경험 중심의 설계 중요성을 깨달았습니다."
+                                    },
+                                    {
+                                      "questionId": 36,
                                       "content": "팀원들과의 코드 리뷰를 통해 문제를 다양한 시각으로 바라보는 법을 배웠습니다."
+                                    },
+                                    {
+                                      "questionId": 37,
+                                      "content": "복잡한 문제를 해결하는 과정에서 논리적인 사고력과 협업 능력이 향상되었습니다."
                                     }
                                   ]
                                 },
                                 {
                                   "sequence": 2,
-                                  "answerInfoList": [
-                                    {
-                                      "questionId": 30,
-                                      "content": ""
-                                    },
+                                  "answerInfoDTOList": [
                                     {
                                       "questionId": 31,
                                       "content": ""
@@ -100,6 +105,14 @@ public class AnswerController {
                                     },
                                     {
                                       "questionId": 35,
+                                      "content": ""
+                                    },
+                                    {
+                                      "questionId": 36,
+                                      "content": ""
+                                    },
+                                    {
+                                      "questionId": 37,
                                       "content": ""
                                     }
                                   ]
@@ -110,8 +123,9 @@ public class AnswerController {
                             """
     )
     public ApiResponse<CommonResultCode> saveAnswerList(@LoginMember Member member,
-                                                        @Valid @RequestBody AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO) {
-        answerCommandService.saveAnswerList(member, answerCreateOrUpdateDTO);
+                                                        @RequestPart(value = "data") @Valid AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO,
+                                                        @RequestPart(value = "image", required = false) List<MultipartFile> imageFileList) throws IOException {
+        answerCommandService.saveAnswerList(member, answerCreateOrUpdateDTO, imageFileList);
         return ApiResponse.onSuccess(CREATE_ANSWER_LIST);
     }
 
@@ -143,10 +157,10 @@ public class AnswerController {
                             ### Example REQUEST JSON:
                             ```json
                             {
-                              "answerList": [
+                              "answerListDTOList": [
                                 {
                                   "sequence": 1,
-                                  "answerInfoList": [
+                                  "answerInfoDTOList": [
                                     {
                                       "questionId": 30,
                                       "content": "삼성전자 / IoT 개발팀"
@@ -175,7 +189,7 @@ public class AnswerController {
                                 },
                                 {
                                   "sequence": 2,
-                                  "answerInfoList": [
+                                  "answerInfoDTOList": [
                                     {
                                       "questionId": 30,
                                       "content": "LG CNS / 클라우드 플랫폼 개발팀"
@@ -208,8 +222,9 @@ public class AnswerController {
                             """
     )
     public ApiResponse<CommonResultCode> updateAnswerList(@LoginMember Member member,
-                                                          @Valid @RequestBody AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO) {
-        answerCommandService.updateAnswerList(member, answerCreateOrUpdateDTO);
+                                                          @Valid @RequestPart("answerCreateOrUpdateDTO") AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO,
+                                                          @RequestPart(value = "image", required = false) List<MultipartFile> imageFileList) throws IOException {
+        answerCommandService.updateAnswerList(member, answerCreateOrUpdateDTO, imageFileList);
         return ApiResponse.onSuccess(UPDATE_ANSWER_LIST);
     }
 
@@ -225,7 +240,6 @@ public class AnswerController {
                             3. 기타 활동 (OTHER_ACTIVITIES)\s
                             4. 보유 기술 (TECHNICAL_SKILLS)\s
                             5. 최종 정리 (SUMMARY)
-                            
                             ### Example Response JSON:
                             ```json
                             {

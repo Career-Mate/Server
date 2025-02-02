@@ -3,52 +3,92 @@ package UMC.career_mate.domain.answer.service;
 import UMC.career_mate.domain.answer.Answer;
 import UMC.career_mate.domain.answer.converter.AnswerConverter;
 import UMC.career_mate.domain.answer.dto.request.AnswerCreateOrUpdateDTO;
-import UMC.career_mate.domain.answer.dto.request.AnswerCreateOrUpdateDTO.AnswerInfo;
-import UMC.career_mate.domain.answer.dto.request.AnswerCreateOrUpdateDTO.AnswerList;
+import UMC.career_mate.domain.answer.dto.request.AnswerCreateOrUpdateDTO.AnswerInfoDTO;
+import UMC.career_mate.domain.answer.dto.request.AnswerCreateOrUpdateDTO.AnswerGroupDTO;
 import UMC.career_mate.domain.answer.repository.AnswerRepository;
 import UMC.career_mate.domain.member.Member;
 import UMC.career_mate.domain.question.Question;
 import UMC.career_mate.domain.question.repository.QuestionRepository;
 import UMC.career_mate.global.response.exception.GeneralException;
 import UMC.career_mate.global.response.exception.code.CommonErrorCode;
+import UMC.career_mate.global.s3.service.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class AnswerCommandService {
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
+    private final S3Uploader s3Uploader;
 
     @Transactional
-    public void saveAnswerList(Member member, AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO) {
-        long start_sequence = 1L;
+    public void saveAnswerList(Member member, AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO, List<MultipartFile> imageFileList) throws IOException {
+        // 이미지 업로드 및 URL 저장
+        List<String> imageUrlList = new ArrayList<>();
+        if (imageFileList != null && !imageFileList.isEmpty()) {
+            for (MultipartFile imageFile : imageFileList) {
+                if (!imageFile.isEmpty()) {
+                    imageUrlList.add(s3Uploader.uploadImage(imageFile)); // S3 업로드 후 URL 리스트에 저장
+                }
+            }
+        }
 
-        for (AnswerList answerList : answerCreateOrUpdateDTO.answerList()) {
-            for (AnswerInfo answerInfo : answerList.answerInfoList()) {
+        long sequence = 1L;
+        for (AnswerGroupDTO answerGroupDTO : answerCreateOrUpdateDTO.answerGroupDTOList()) {
+            String assignedImageUrl = (sequence <= imageUrlList.size()) ? imageUrlList.get((int) sequence - 1) : null;
+
+            for (AnswerInfoDTO answerInfo : answerGroupDTO.answerInfoDTOList()) {
                 Question question = questionRepository.findById(answerInfo.questionId())
                         .orElseThrow(() -> new GeneralException(CommonErrorCode.NOT_FOUND_QUESTION));
 
-                Answer answer = AnswerConverter.toAnswer(answerInfo, member, question, start_sequence);
+                String content = (assignedImageUrl != null && question.getId().equals(103L))
+                        ? assignedImageUrl
+                        : answerInfo.content();
+
+                Answer answer = AnswerConverter.toAnswer(content, member, question, sequence);
                 answerRepository.save(answer);
             }
-            start_sequence++;
+            sequence++;
         }
     }
 
     @Transactional
-    public void updateAnswerList(Member member, AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO) {
-        for (AnswerList answerList : answerCreateOrUpdateDTO.answerList()) {
-            for (AnswerInfo answerInfo : answerList.answerInfoList()) {
-                Question question = questionRepository.findById(answerInfo.questionId())
+    public void updateAnswerList(Member member, AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO, List<MultipartFile> imageFileList) throws IOException {
+        // 이미지 업로드 및 URL 저장
+        List<String> imageUrlList = new ArrayList<>();
+        if (imageFileList != null && !imageFileList.isEmpty()) {
+            for (MultipartFile imageFile : imageFileList) {
+                if (!imageFile.isEmpty()) {
+                    imageUrlList.add(s3Uploader.uploadImage(imageFile)); // S3 업로드 후 URL 리스트에 저장
+                }
+            }
+        }
+
+        for (AnswerGroupDTO answerGroupDTO : answerCreateOrUpdateDTO.answerGroupDTOList()) {
+            String assignedImageUrl = (answerGroupDTO.sequence() <= imageUrlList.size())
+                    ? imageUrlList.get((int) (answerGroupDTO.sequence() - 1)) : null;
+
+            for (AnswerInfoDTO answerInfoDTO : answerGroupDTO.answerInfoDTOList()) {
+                Question question = questionRepository.findById(answerInfoDTO.questionId())
                         .orElseThrow(() -> new GeneralException(CommonErrorCode.NOT_FOUND_QUESTION));
 
                 // 해당 회원, 질문, 시퀀스를 기준으로 기존 답변 조회
-                Answer existingAnswer = answerRepository.findByMemberAndQuestionAndSequence(member, question, answerList.sequence())
+                Answer existingAnswer = answerRepository.findByMemberAndQuestionAndSequence(member, question, answerGroupDTO.sequence())
                         .orElseThrow(() -> new GeneralException(CommonErrorCode.NOT_FOUND_ANSWER));
 
-                existingAnswer.updateContent(answerInfo.content());
+                // 특정 질문 ID(103L)에 대해서만 이미지 URL 저장
+                String content = (assignedImageUrl != null && question.getId().equals(103L))
+                        ? assignedImageUrl
+                        : answerInfoDTO.content();
+
+                existingAnswer.updateContent(content);
 
                 // 질문 order 1의 답변 sequence 1은 수정일을 매번 업데이트 -> recruit 조회 로직에서 사용
                 if (question.getOrder() == 1 && existingAnswer.getSequence() == 1) {
@@ -57,4 +97,5 @@ public class AnswerCommandService {
             }
         }
     }
+
 }
