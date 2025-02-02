@@ -4,6 +4,7 @@ import UMC.career_mate.global.response.ApiResponse;
 import UMC.career_mate.global.security.service.RefreshTokenService;
 import UMC.career_mate.global.security.service.SecurityService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "인증 API", description = "인증 도메인의 API 입니다.")
 @RequestMapping("/auth")
 public class SecurityController {
 

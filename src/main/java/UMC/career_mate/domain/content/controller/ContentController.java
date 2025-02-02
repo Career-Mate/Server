@@ -10,6 +10,7 @@ import UMC.career_mate.global.annotation.LoginMember;
 import UMC.career_mate.global.common.PageResponseDTO;
 import UMC.career_mate.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "컨텐츠 API", description = "컨텐츠 도메인의 API 입니다.")
 @RequestMapping("/content")
 public class ContentController {
 

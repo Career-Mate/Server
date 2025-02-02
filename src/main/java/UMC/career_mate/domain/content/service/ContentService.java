@@ -54,7 +54,7 @@ public class ContentService {
         // 로그인한 사용자의 직무 ID 확인
         Long jobId = member.getJob().getId();
         if (jobId == null) {
-            throw new GeneralException(CommonErrorCode.NOT_FOUND_JOB);
+            throw new GeneralException(CommonErrorCode.NOT_FOUND_BY_JOB_ID);
         }
 
         PageRequest pageRequest = PageRequest.of(page - 1, size);

@@ -7,7 +7,7 @@ import java.util.List;
 @Builder
 public record AnswerInfoListDTO(
         Long sequence,
-        List<AnswerInfoDTO> answerList
+        List<AnswerInfoDTO> answerInfoDTOList
 ) {
 
 }

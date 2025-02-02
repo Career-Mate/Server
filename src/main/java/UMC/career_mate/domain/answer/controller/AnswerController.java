@@ -17,18 +17,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 import static UMC.career_mate.global.response.result.code.CommonResultCode.*;
 
 @RestController
 @RequestMapping("/answers")
-@Tag(name = "05. 답변 API", description = "답변 도메인의 API 입니다.")
+@Tag(name = "답변 API", description = "답변 도메인의 API 입니다.")
 @RequiredArgsConstructor
 public class AnswerController {
     private final AnswerCommandService answerCommandService;
@@ -39,23 +41,20 @@ public class AnswerController {
             summary = "커리어 작성 API",
             description =
                     """
-                            커리어를 작성하는 API 입니다.
-                            커리어를 처음 작성할 때, 반드시 2개의  `answerInfoList` 데이터를 요청해야 합니다. 입력하지 않을 경우엔 빈 문자열로 요청을 할 수 있습니다.
+                            커리어를 작성하는 API입니다.
+                            커리어를 처음 작성할 때, 반드시 2개의 `answerInfoList` 데이터를 요청해야 합니다.
+                            입력하지 않을 경우엔 빈 문자열로 요청할 수 있습니다.
                             ## 하나의 커리어만 작성하는 경우
                             ### Example REQUEST JSON:
                             ```json
                             {
-                              "answerList": [
+                              "answerGroupDTOList": [
                                 {
                                   "sequence": 1,
-                                  "answerInfoList": [
-                                    {
-                                      "questionId": 30,
-                                      "content": "삼성전자 / IoT 개발팀"
-                                    },
+                                  "answerInfoDTOList": [
                                     {
                                       "questionId": 31,
-                                      "content": "백엔드 개발자"
+                                      "content": "카카오뱅크 / 대출상품기획팀"
                                     },
                                     {
                                       "questionId": 32,
@@ -63,25 +62,29 @@ public class AnswerController {
                                     },
                                     {
                                       "questionId": 33,
-                                      "content": "IoT 디바이스 통신 프로토콜을 설계하며, 효율적인 데이터 전송 방식에 대해 배웠습니다."
+                                      "content": "회사명 / IoT 디바이스 팀"
                                     },
                                     {
                                       "questionId": 34,
-                                      "content": "스마트 홈 서비스의 핵심 모듈을 개발하며, 사용자 경험 중심의 설계 중요성을 깨달았습니다."
+                                      "content": "IoT 디바이스 통신 프로토콜을 설계하며, 효율적인 데이터 전송 방식에 대해 배웠습니다."
                                     },
                                     {
                                       "questionId": 35,
+                                      "content": "스마트 홈 서비스의 핵심 모듈을 개발하며, 사용자 경험 중심의 설계 중요성을 깨달았습니다."
+                                    },
+                                    {
+                                      "questionId": 36,
                                       "content": "팀원들과의 코드 리뷰를 통해 문제를 다양한 시각으로 바라보는 법을 배웠습니다."
+                                    },
+                                    {
+                                      "questionId": 37,
+                                      "content": "복잡한 문제를 해결하는 과정에서 논리적인 사고력과 협업 능력이 향상되었습니다."
                                     }
                                   ]
                                 },
                                 {
                                   "sequence": 2,
-                                  "answerInfoList": [
-                                    {
-                                      "questionId": 30,
-                                      "content": ""
-                                    },
+                                  "answerInfoDTOList": [
                                     {
                                       "questionId": 31,
                                       "content": ""
@@ -100,6 +103,14 @@ public class AnswerController {
                                     },
                                     {
                                       "questionId": 35,
+                                      "content": ""
+                                    },
+                                    {
+                                      "questionId": 36,
+                                      "content": ""
+                                    },
+                                    {
+                                      "questionId": 37,
                                       "content": ""
                                     }
                                   ]
@@ -110,8 +121,9 @@ public class AnswerController {
                             """
     )
     public ApiResponse<CommonResultCode> saveAnswerList(@LoginMember Member member,
-                                                        @Valid @RequestBody AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO) {
-        answerCommandService.saveAnswerList(member, answerCreateOrUpdateDTO);
+                                                        @RequestPart(value = "data") @Valid AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO,
+                                                        @RequestPart(value = "image", required = false) List<MultipartFile> imageFileList) throws IOException {
+        answerCommandService.saveAnswerList(member, answerCreateOrUpdateDTO, imageFileList);
         return ApiResponse.onSuccess(CREATE_ANSWER_LIST);
     }
 
@@ -143,62 +155,70 @@ public class AnswerController {
                             ### Example REQUEST JSON:
                             ```json
                             {
-                              "answerList": [
+                              "answerGroupDTOList": [
                                 {
                                   "sequence": 1,
-                                  "answerInfoList": [
-                                    {
-                                      "questionId": 30,
-                                      "content": "삼성전자 / IoT 개발팀"
-                                    },
+                                  "answerInfoDTOList": [
                                     {
                                       "questionId": 31,
-                                      "content": "백엔드 개발자"
+                                      "content": "네이버 / 데이터 분석팀"
                                     },
                                     {
                                       "questionId": 32,
-                                      "content": "2022.03.01~2022.08.01"
+                                      "content": "2021.05.01~2022.02.28"
                                     },
                                     {
                                       "questionId": 33,
-                                      "content": "IoT 디바이스 통신 프로토콜을 설계하며, 효율적인 데이터 전송 방식에 대해 배웠습니다."
+                                      "content": "스타트업 / 마케팅 데이터 분석팀"
                                     },
                                     {
                                       "questionId": 34,
-                                      "content": "스마트 홈 서비스의 핵심 모듈을 개발하며, 사용자 경험 중심의 설계 중요성을 깨달았습니다."
+                                      "content": "A/B 테스트를 설계하여 마케팅 캠페인의 효과를 분석하고 최적의 전략을 도출했습니다."
                                     },
                                     {
                                       "questionId": 35,
-                                      "content": "팀원들과의 코드 리뷰를 통해 문제를 다양한 시각으로 바라보는 법을 배웠습니다."
+                                      "content": "데이터 시각화를 통해 인사이트를 제공하며, 의사결정 과정을 지원하는 방법을 배웠습니다."
+                                    },
+                                    {
+                                      "questionId": 36,
+                                      "content": "Python과 SQL을 활용한 데이터 분석 프로젝트를 진행하며, 데이터 처리 및 분석 역량을 키웠습니다."
+                                    },
+                                    {
+                                      "questionId": 37,
+                                      "content": "데이터 기반 의사결정의 중요성을 체감하며, 문제 해결력을 향상시킬 수 있었습니다."
                                     }
                                   ]
                                 },
                                 {
                                   "sequence": 2,
-                                  "answerInfoList": [
-                                    {
-                                      "questionId": 30,
-                                      "content": "LG CNS / 클라우드 플랫폼 개발팀"
-                                    },
+                                  "answerInfoDTOList": [
                                     {
                                       "questionId": 31,
-                                      "content": "풀스택 개발자"
+                                      "content": "쿠팡 / 물류 최적화 팀"
                                     },
                                     {
                                       "questionId": 32,
-                                      "content": "2021.09.01~2022.02.01"
+                                      "content": "2022.06.01~2022.12.31"
                                     },
                                     {
                                       "questionId": 33,
-                                      "content": "클라우드 기반 서비스 배포 자동화를 구현하며 DevOps의 핵심 개념을 익혔습니다."
+                                      "content": "이커머스 기업 / 물류 데이터 분석팀"
                                     },
                                     {
                                       "questionId": 34,
-                                      "content": "대규모 사용자 트래픽을 처리하며 안정적인 시스템 운영 경험을 쌓았습니다."
+                                      "content": "배송 최적화를 위한 데이터 분석을 진행하며, 머신러닝을 활용한 수요 예측 모델을 개발했습니다."
                                     },
                                     {
                                       "questionId": 35,
-                                      "content": "다양한 클라우드 서비스를 연동하며 기술적 시야를 넓힐 수 있었습니다."
+                                      "content": "물류 데이터 분석을 통해 비용 절감과 효율성을 높이는 경험을 했습니다."
+                                    },
+                                    {
+                                      "questionId": 36,
+                                      "content": "팀원들과 협업하여 데이터 기반 개선안을 도출하고, 이를 현업에 적용하는 과정을 배웠습니다."
+                                    },
+                                    {
+                                      "questionId": 37,
+                                      "content": "데이터를 기반으로 문제를 해결하는 과정에서 논리적 사고력과 커뮤니케이션 능력을 키웠습니다."
                                     }
                                   ]
                                 }
@@ -208,8 +228,9 @@ public class AnswerController {
                             """
     )
     public ApiResponse<CommonResultCode> updateAnswerList(@LoginMember Member member,
-                                                          @Valid @RequestBody AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO) {
-        answerCommandService.updateAnswerList(member, answerCreateOrUpdateDTO);
+                                                          @RequestPart("data") @Valid AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO,
+                                                          @RequestPart(value = "image", required = false) List<MultipartFile> imageFileList) throws IOException {
+        answerCommandService.updateAnswerList(member, answerCreateOrUpdateDTO, imageFileList);
         return ApiResponse.onSuccess(UPDATE_ANSWER_LIST);
     }
 
@@ -225,7 +246,6 @@ public class AnswerController {
                             3. 기타 활동 (OTHER_ACTIVITIES)\s
                             4. 보유 기술 (TECHNICAL_SKILLS)\s
                             5. 최종 정리 (SUMMARY)
-                            
                             ### Example Response JSON:
                             ```json
                             {

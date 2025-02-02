@@ -3,8 +3,20 @@ package UMC.career_mate.domain.answer;
 import UMC.career_mate.domain.member.Member;
 import UMC.career_mate.domain.question.Question;
 import UMC.career_mate.global.entity.BaseEntity;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
@@ -24,6 +36,9 @@ public class Answer extends BaseEntity {
     @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false)
+    private Long sequence;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -31,9 +46,6 @@ public class Answer extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     private Question question;
-
-    @Column(nullable = false)
-    private Long sequence;
 
     public void updateContent(String content) {
         this.content = content;

@@ -27,9 +27,6 @@ public enum CommonErrorCode implements ErrorCode {
     // Recruit 도메인
     NOT_FOUND_RECRUIT(400, "ERE000", "해당 채용 공고를 찾을 수 없습니다."),
 
-    // Job 도메인
-    NOT_FOUND_JOB(400, "ERJ000", "해당 직업을 찾을 수 없습니다."),
-
     // Template 도메인
     NOT_FOUND_TEMPLATE(400, "ERT000", "해당 템플릿을 찾을 수 없습니다."),
 

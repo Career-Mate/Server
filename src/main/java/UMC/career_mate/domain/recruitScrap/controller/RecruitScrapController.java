@@ -8,6 +8,8 @@ import UMC.career_mate.global.annotation.LoginMember;
 import UMC.career_mate.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "채용 공고 스크랩 API", description = "채용 공고 스크랩 도메인의 API 입니다.")
 @RequestMapping("/scrap/recruits")
 public class RecruitScrapController {
 
