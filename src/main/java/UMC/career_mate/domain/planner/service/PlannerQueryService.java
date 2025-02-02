@@ -3,6 +3,7 @@ package UMC.career_mate.domain.planner.service;
 import UMC.career_mate.domain.member.Member;
 import UMC.career_mate.domain.planner.Planner;
 import UMC.career_mate.domain.planner.converter.PlannerConverter;
+import UMC.career_mate.domain.planner.dto.response.PlannerListResponseDTO;
 import UMC.career_mate.domain.planner.dto.response.PlannerResponseDTO;
 import UMC.career_mate.domain.planner.repository.PlannerRepository;
 import UMC.career_mate.global.response.exception.GeneralException;
@@ -12,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -20,11 +23,8 @@ public class PlannerQueryService {
 
     private final PlannerRepository plannerRepository;
 
-    public PlannerResponseDTO getPlannerByMember(Member member) {
-        Planner planner = plannerRepository.findPlannerByMember(member).orElseThrow(
-                ()-> new GeneralException(CommonErrorCode.PLANNER_NOT_EXISTS)
-        );
-
-        return PlannerConverter.toPlannerResponseDTO(planner);
+    public PlannerListResponseDTO getPlannerByMember(Member member) {
+        List<Planner> planners = plannerRepository.findByMember(member);
+        return PlannerConverter.toPlannerListResponseDTO(planners);
     }
 }

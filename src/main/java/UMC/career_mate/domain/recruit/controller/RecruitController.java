@@ -1,7 +1,7 @@
 package UMC.career_mate.domain.recruit.controller;
 
 import UMC.career_mate.domain.member.Member;
-import UMC.career_mate.domain.recruit.dto.response.RecommendRecruitDTO;
+import UMC.career_mate.domain.recruit.dto.response.RecommendRecruitsDTO;
 import UMC.career_mate.domain.recruit.dto.response.RecruitInfoDTO;
 import UMC.career_mate.domain.recruit.enums.JobCode;
 import UMC.career_mate.domain.recruit.enums.RecruitSortType;
@@ -11,8 +11,6 @@ import UMC.career_mate.global.annotation.LoginMember;
 import UMC.career_mate.global.common.PageResponseDTO;
 import UMC.career_mate.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import java.util.List;
-
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +42,7 @@ public class RecruitController {
             마감 늦은 순 -> DEADLINE_DESC
             """)
     @GetMapping
-    public ApiResponse<PageResponseDTO<List<RecommendRecruitDTO>>> getRecommendRecruitList(
+    public ApiResponse<PageResponseDTO<RecommendRecruitsDTO>> getRecommendRecruitList(
         @RequestParam(defaultValue = "1", required = false) int page,
         @RequestParam(defaultValue = "6", required = false) int size,
         @RequestParam(defaultValue = "POSTING_DESC", required = false) RecruitSortType recruitSortType,

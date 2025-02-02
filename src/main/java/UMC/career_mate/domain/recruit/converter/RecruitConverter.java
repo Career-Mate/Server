@@ -5,7 +5,8 @@ import UMC.career_mate.domain.recruit.Recruit;
 import UMC.career_mate.domain.recruit.dto.FilterConditionDTO;
 import UMC.career_mate.domain.recruit.dto.MemberTemplateAnswerDTO;
 import UMC.career_mate.domain.recruit.dto.api.SaraminResponseDTO.Job;
-import UMC.career_mate.domain.recruit.dto.response.RecommendRecruitDTO;
+import UMC.career_mate.domain.recruit.dto.response.RecommendRecruitsDTO;
+import UMC.career_mate.domain.recruit.dto.response.RecommendRecruitsDTO.RecruitThumbNailInfoDTO;
 import UMC.career_mate.domain.recruit.dto.response.RecruitInfoDTO;
 import UMC.career_mate.domain.recruit.enums.EducationLevel;
 import UMC.career_mate.domain.recruit.enums.RecruitKeyword;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -51,8 +53,15 @@ public class RecruitConverter {
             .build();
     }
 
-    public static RecommendRecruitDTO toRecommendRecruitDTO(Recruit recruit, boolean isScraped) {
-        return RecommendRecruitDTO.builder()
+    public static RecommendRecruitsDTO toRecommendRecruitsDTO(Member member, List<RecruitThumbNailInfoDTO> recruitThumbNailInfoDTOList) {
+        return RecommendRecruitsDTO.builder()
+            .jobName(member.getJob().getName())
+            .recruitThumbNailInfoDTOList(recruitThumbNailInfoDTOList)
+            .build();
+    }
+
+    public static RecruitThumbNailInfoDTO toRecruitThumbNailInfoDTO(Recruit recruit, boolean isScraped) {
+        return RecruitThumbNailInfoDTO.builder()
             .recruitId(recruit.getId())
             .companyName(recruit.getCompanyName())
             .title(recruit.getTitle())

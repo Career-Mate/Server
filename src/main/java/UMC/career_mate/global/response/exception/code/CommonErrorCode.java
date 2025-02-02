@@ -22,6 +22,7 @@ public enum CommonErrorCode implements ErrorCode {
     //Planner 도메인
     PLANNER_NOT_EXISTS(400, "EPL001","유저의 플래너가 존재하지 않습니다. 먼저 POST로 생성해주세요."),
     PLANNER_EXISTS(400, "EPL002","유저의 플래너가 존재합니다. 프로필 작성 완료시 플래너가 자동 생성되기 때문에,PATCH API를 사용해주시면 되겠습니다"),
+    INVALID_PLANNER_COUNT(400, "EPL003", "플래너는 2개씩 전송해야 합니다."),
 
     // Recruit 도메인
     NOT_FOUND_RECRUIT(400, "ERE000", "해당 채용 공고를 찾을 수 없습니다."),
