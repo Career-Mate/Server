@@ -25,6 +25,11 @@ public class PlannerQueryService {
 
     public PlannerListResponseDTO getPlannerByMember(Member member) {
         List<Planner> planners = plannerRepository.findByMember(member);
+
+        if (planners.isEmpty()) {
+            throw new GeneralException(CommonErrorCode.PLANNER_NOT_EXISTS);
+        }
+
         return PlannerConverter.toPlannerListResponseDTO(planners);
     }
 }

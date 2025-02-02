@@ -6,9 +6,7 @@ import UMC.career_mate.domain.planner.dto.request.CreatePlannerDTO;
 import UMC.career_mate.domain.planner.dto.response.PlannerListResponseDTO;
 import UMC.career_mate.domain.planner.dto.response.PlannerResponseDTO;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PlannerConverter {
 
