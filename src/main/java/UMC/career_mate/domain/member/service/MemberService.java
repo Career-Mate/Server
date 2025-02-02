@@ -81,12 +81,16 @@ public class MemberService {
     @Transactional
     public Member changeProfile(Long memberId, CreateProfileDTO request) {
         Member member = findMemberByMemberId(memberId);
+        Job beforeJob = member.getJob();
         Job job = jobService.findJobById(request.job());
         member.createProfile(request, job);
 
-        gptAnswerRepository.findByMember(member).ifPresent(
-            gptAnswer -> gptAnswer.updateData(RecruitKeyword.getRecruitKeywordFromProfileJob(job), 0)
-        );
+        if (!beforeJob.getId().equals(job.getId())) {
+            gptAnswerRepository.findByMember(member).ifPresent(
+                gptAnswer -> gptAnswer.updateData(
+                    RecruitKeyword.getRecruitKeywordFromProfileJob(job), 0)
+            );
+        }
 
         return member;
     }
