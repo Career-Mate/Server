@@ -28,8 +28,27 @@ public class PlannerConverter {
                     .build();
     }
 
-    public static List<Planner> toPlannerList(Member member, List<CreatePlannerDTO> createPlannerDTOList){
-        return createPlannerDTOList.stream().map(createPlannerDTO -> PlannerConverter.toPlanner(member, createPlannerDTO)).toList();
+    public static Planner toInitialPlanner(Member member){
+        return Planner
+                .builder()
+                .activityName("")
+                .startTime(null)
+                .endTime(null)
+                .specifics("")
+                .measurable("")
+                .achievable("")
+                .relevant("")
+                .timeBound("")
+                .otherPlans("")
+                .member(member)
+                .build();
+    }
+
+    public static List<Planner> toInitialPlannerList(Member member){
+        return List.of(
+                PlannerConverter.toInitialPlanner(member),
+                PlannerConverter.toInitialPlanner(member)
+        );
     }
 
     public static PlannerResponseDTO toPlannerResponseDTO(Planner planner){

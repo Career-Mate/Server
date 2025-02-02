@@ -19,6 +19,20 @@ public class PlannerController {
     private final PlannerCommandService plannerCommandService;
     private final PlannerQueryService plannerQueryService;
 
+    @PostMapping
+    @Operation(
+            summary = "플래너 생성(TEST용)",
+            description = """
+                    [프로필 작성 완료시 플래너가 자동 생성되기 때문에, PATCH API를 사용해주시면 되겠습니다]
+                    요청한 멤버에 해당하는 빈 플래너를 생성합니다.
+                    ```
+                    """)
+
+    public ApiResponse<String> initPlanner(@LoginMember Member member) {
+        plannerCommandService.initPlanner(member);
+        return ApiResponse.onSuccess("플래너 생성 완료");
+    }
+
     @PatchMapping
     @Operation(
             summary = "플래너 수정",
