@@ -28,6 +28,8 @@ public class AnswerCommandService {
     private final QuestionRepository questionRepository;
     private final S3Uploader s3Uploader;
 
+    private static final int MAX_ANSWERS_PER_QUESTION = 2;
+
     @Transactional
     public void saveAnswerList(Member member, AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO, List<MultipartFile> imageFileList) throws IOException {
         // 이미지 업로드 및 URL 저장
@@ -63,14 +65,15 @@ public class AnswerCommandService {
     }
 
     private void validateAnswerLimit(Long questionId) {
-        Integer existingAnswerCount = answerRepository.countByQuestionId(questionId);
-        if (existingAnswerCount >= 2) {
+        Long existingAnswerCount = answerRepository.countByQuestionId(questionId);
+        if (existingAnswerCount >= MAX_ANSWERS_PER_QUESTION) {
             throw new GeneralException(CommonErrorCode.ALREADY_SAVE_ANSWER);
         }
     }
 
     @Transactional
-    public void updateAnswerList(Member member, AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO, List<MultipartFile> imageFileList) throws IOException {
+    public void updateAnswerList(Member member, AnswerCreateOrUpdateDTO
+            answerCreateOrUpdateDTO, List<MultipartFile> imageFileList) throws IOException {
         // 이미지 업로드 및 URL 저장
         List<String> imageUrlList = new ArrayList<>();
         if (imageFileList != null && !imageFileList.isEmpty()) {

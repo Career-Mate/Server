@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
-    Integer countByQuestionId(Long questionId);
+    Long countByQuestionId(Long questionId);
 
     @Query("""
                     SELECT a FROM Answer a
