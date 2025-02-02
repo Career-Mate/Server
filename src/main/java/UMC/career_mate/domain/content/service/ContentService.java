@@ -72,6 +72,11 @@ public class ContentService {
                 .toList();
 
         boolean hasNext = contentPage.hasNext();
-        return new PageResponseDTO<>(page, hasNext, contentList);
+
+        return PageResponseDTO.<List<ContentResponseDTO>>builder()
+            .page(page)
+            .hasNext(hasNext)
+            .result(contentList)
+            .build();
     }
 }
