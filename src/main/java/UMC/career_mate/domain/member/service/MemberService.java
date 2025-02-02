@@ -1,6 +1,5 @@
 package UMC.career_mate.domain.member.service;
 
-import UMC.career_mate.domain.chatgpt.GptAnswer;
 import UMC.career_mate.domain.chatgpt.repository.GptAnswerRepository;
 import UMC.career_mate.domain.job.Job;
 import UMC.career_mate.domain.job.Service.JobService;
@@ -14,12 +13,9 @@ import UMC.career_mate.domain.planner.service.PlannerCommandService;
 import UMC.career_mate.domain.recruit.enums.RecruitKeyword;
 import UMC.career_mate.global.response.exception.GeneralException;
 import UMC.career_mate.global.response.exception.code.CommonErrorCode;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -40,7 +36,7 @@ public class MemberService {
         profileMember.createProfile(request, job);
         profileMember.completeProfile();
 
-        plannerService.savePlanner(profileMember);
+        plannerService.initPlanner(profileMember);
 
         return profileMember;
     }

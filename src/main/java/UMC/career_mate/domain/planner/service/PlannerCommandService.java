@@ -24,21 +24,24 @@ public class PlannerCommandService {
 
     private final PlannerRepository plannerRepository;
 
-    public void savePlanner(Member member){
+    public void initPlanner(Member member){
+
+        if(member == null){
+            throw new GeneralException(CommonErrorCode.NOT_FOUND_BY_MEMBER_ID);
+        }
 
         if(plannerRepository.existsByMember(member)){
             throw new GeneralException(CommonErrorCode.PLANNER_EXISTS);
         }
 
-        List<CreatePlannerDTO> createPlannerDTOList = List.of(
-                CreatePlannerDTO.builder().build(),
-                CreatePlannerDTO.builder().build()
-        );
-
-        plannerRepository.saveAll(PlannerConverter.toPlannerList(member, createPlannerDTOList));
+        plannerRepository.saveAll(PlannerConverter.toInitialPlannerList(member));
     }
 
     public void editPlanner(Member member, CreatePlannerListDTO createPlannerListDTO){
+
+        if(!plannerRepository.existsByMember(member)){
+            throw new GeneralException(CommonErrorCode.PLANNER_NOT_EXISTS);
+        }
 
         List<Planner> planners = plannerRepository.findByMember(member);
         List<CreatePlannerDTO> plannerDTOs = createPlannerListDTO.planners();
@@ -49,6 +52,10 @@ public class PlannerCommandService {
     }
 
     public void deletePlanner(Member member){
+
+        if(!plannerRepository.existsByMember(member)){
+            throw new GeneralException(CommonErrorCode.PLANNER_NOT_EXISTS);
+        }
 
         List<Planner> planners = plannerRepository.findByMember(member);
         plannerRepository.deleteAll(planners);
