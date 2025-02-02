@@ -59,6 +59,10 @@ public class ContentScrapService {
                 .map(ContentScrapConverter::toContentScrapResponseDTO)
                 .toList();
 
-        return new PageResponseDTO<>(page, scraps.hasNext(), contentList);
+        return PageResponseDTO.<List<ContentScrapResponseDTO>>builder()
+            .page(page)
+            .hasNext(scraps.hasNext())
+            .result(contentList)
+            .build();
     }
 }
