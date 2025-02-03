@@ -45,7 +45,7 @@ public enum CommonErrorCode implements ErrorCode {
 
     // Answer 도메인
     NOT_FOUND_ANSWER(400, "EAN000", "해당 답변을 찾을 수 없습니다."),
-    TOO_MANY_ANSWERS(400, "EAN001", "커리어는 두개 이상 작성할 수 없습니다."),
+    ALREADY_SAVE_ANSWER(400, "EAN001", "이미 해당 커리어를 작성했습니다."),
 
     // ContentScrap 도메인
     NOT_FOUND_CONTENT(400, "ESC001", "해당 콘텐츠를 찾을 수 없습니다."),
