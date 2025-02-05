@@ -44,8 +44,7 @@ public class MemberController {
                     """
     )
     public ApiResponse<String> createProfile(@RequestBody CreateProfileDTO request,
-                                             @LoginMember Member member)
-    {
+                                             @LoginMember Member member) {
         Member profile = memberService.makeProfile(request, member);
         return ApiResponse.onSuccess("프로필 설정 완료");
     }
@@ -87,5 +86,14 @@ public class MemberController {
         MemberInfoDTO memberInfo = memberService.getMemberInfo(profile);
 
         return ApiResponse.onSuccess(CommonResultCode.MODIFY_MEMBER_INFO, memberInfo);
+    }
+
+    @PatchMapping("/delete")
+    @Operation(summary = "회원 정보 삭제 API")
+    public ApiResponse<String> deleteProfile(@LoginMember Member member) {
+        String name = member.getName();
+        memberService.deleteProfile(member.getId());
+
+        return ApiResponse.onSuccess(name + "님 탈퇴 완료되었습니다.");
     }
 }
