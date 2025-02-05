@@ -25,7 +25,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private static final String FRONTEND_BASE_URL = "http://localhost:5173";
     private static final String FRONTEND_PROFILE_PATH = "/profile";
 
-    private Integer ACCESS_TOKEN_VALIDITY_IN_SECONDS = 30 * 60 + 5 * 60; //쿠키 유효기간 30분 + 재발급 5분
     private Integer REFRESH_TOKEN_VALIDITY_IN_SECONDS = 86400 ;
 
     private static final String ACCESS_TOKEN = "access-token";
@@ -39,12 +38,10 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         String accessToken = jwtUtil.createJwt(member.getId(), member.getClientId(), member.getSocialType(), true);
         CookieUtil.addCookie(response, ACCESS_TOKEN, accessToken, -1);
-        CookieUtil.addCookieLocalHost(response, ACCESS_TOKEN, accessToken, -1);
 
         String refreshToken = jwtUtil.createJwt(member.getId(), member.getClientId(), member.getSocialType(), false);
         refreshTokenService.saveRefreshToken(member.getId(),refreshToken);
         CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken, REFRESH_TOKEN_VALIDITY_IN_SECONDS);
-        CookieUtil.addCookieLocalHost(response, REFRESH_TOKEN, refreshToken, REFRESH_TOKEN_VALIDITY_IN_SECONDS);
 
         if (!member.getIs_complete()) {
             //추가 정보가 입력되어 있지 않을 경우
