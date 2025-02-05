@@ -17,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -89,5 +91,18 @@ public class MemberService {
         }
 
         return member;
+    }
+
+    @Transactional
+    public void deleteProfile(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(
+                () -> new GeneralException(CommonErrorCode.NOT_FOUND_BY_MEMBER_ID)
+        );
+
+        member.delete();
+    }
+
+    public List<Member> getDeleteMemberList() {
+        return memberRepository.findDeleteMembers();
     }
 }
