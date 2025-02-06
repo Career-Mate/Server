@@ -8,6 +8,6 @@ public record ContentScrapResponseDTO(
         String title,
         String url,
         String photo,
-        boolean isScraped
+        boolean isScrapped
 ) {
 }
