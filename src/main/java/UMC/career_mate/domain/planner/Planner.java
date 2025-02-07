@@ -32,22 +32,22 @@ public class Planner extends BaseEntity {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
-    @Column
+    @Column(length = 1000)
     private String specifics;
 
-    @Column
+    @Column(length = 1000)
     private String measurable;
 
-    @Column
+    @Column(length = 1000)
     private String achievable;
 
-    @Column
+    @Column(length = 1000)
     private String relevant;
 
-    @Column(name = "time_bound")
+    @Column(length = 1000, name = "time_bound")
     private String timeBound;
 
-    @Column(name = "other_plans")
+    @Column(length = 1000, name = "other_plans")
     private String otherPlans;
 
     @ManyToOne
