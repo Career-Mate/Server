@@ -13,7 +13,7 @@ import java.util.Base64;
 
 public class CookieUtil {
 
-    private static final String COOKIE_DOMAIN = "54.180.29.116";
+    private static final String COOKIE_DOMAIN = "54.180.29.116:8080";
 
     public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
         ResponseCookie cookie = ResponseCookie.from(name, value)
@@ -22,7 +22,7 @@ public class CookieUtil {
                 .maxAge(maxAge)
                 .httpOnly(true)
 //                .sameSite("None")
-                .secure(true)
+                .secure(false)
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
