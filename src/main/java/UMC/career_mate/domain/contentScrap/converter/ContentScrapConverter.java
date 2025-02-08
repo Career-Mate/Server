@@ -20,7 +20,7 @@ public class ContentScrapConverter {
                 .title(scrap.getContent().getTitle())
                 .url(scrap.getContent().getUrl())
                 .photo(scrap.getContent().getPhoto())
-                .isScraped(true) //isScraped 값이 참인 것들을 가져옵니다.
+                .isScrapped(true) //isScrapped 값이 참인 것들을 가져옵니다.
                 .build();
     }
 }
