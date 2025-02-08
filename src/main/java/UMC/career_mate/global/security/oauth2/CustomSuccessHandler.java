@@ -22,8 +22,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private final JwtUtil jwtUtil;
     private final RefreshTokenService refreshTokenService;
 
-    private static final String FRONTEND_BASE_URL = "http://localhost:5173";
-    private static final String FRONTEND_PROFILE_PATH = "/profile";
+    private static final String FRONTEND_BASE_URL = "https://www.careermate.site";
+    private static final String FRONTEND_PROFILE_PATH = "/login/success";
 
     private Integer REFRESH_TOKEN_VALIDITY_IN_SECONDS = 86400 ;
 
