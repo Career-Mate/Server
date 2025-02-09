@@ -167,6 +167,11 @@ public class RecruitQueryService {
     private RecruitKeyword calculateRecruitKeyword(Member member) {
         Job job = member.getJob();
 
+        // pm, 디자이너는 gpt 요청 x (상세 직무 나눌 필요 없음)
+        if (job.getName().equals("PM(Product/Project Manager)") || job.getName().equals("Designer")) {
+            return RecruitKeyword.getRecruitKeywordFromProfileJob(job);
+        }
+
         // 프로젝트 템플릿의 답변, 인턴 템플릿의 답변을 가져온다.
         Map<TemplateType, List<Answer>> templateTypeByAnswers = getTemplateTypeByAnswers(
             member, job);
@@ -192,7 +197,7 @@ public class RecruitQueryService {
             return RecruitKeyword.getRecruitKeywordFromProfileJob(job);
         }
 
-        RecruitKeyword recruitKeyword = chatGptService.getRecruitKeyword(contentBuilder.toString());
+        RecruitKeyword recruitKeyword = chatGptService.getRecruitKeyword(contentBuilder.toString(), member.getJob());
 
         if (Objects.isNull(recruitKeyword)) {
             log.info("gpt 답변이 RecruitKeyword에 없는 값이라서 null인 경우 -> 멤버 프로필 job으로 대체");
