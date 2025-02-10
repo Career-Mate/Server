@@ -10,8 +10,6 @@ public record RecruitScrapResponseDTO(
     String title,
     String deadLine,
     boolean isScraped,
-    String companyInfoUrl,
-    String recruitUrl,
     String jobName
 ) {
 
