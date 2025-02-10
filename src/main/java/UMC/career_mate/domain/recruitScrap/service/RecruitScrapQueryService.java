@@ -25,9 +25,7 @@ public class RecruitScrapQueryService {
         }
 
         return recruitScrapList.stream()
-            .map(RecruitScrap::getRecruit)
-            .map(recruit -> RecruitScrapConverter.toRecruitScrapResponseDTO(recruit,
-                member.getJob().getName()))
+            .map(RecruitScrapConverter::toRecruitScrapResponseDTO)
             .toList();
     }
 }

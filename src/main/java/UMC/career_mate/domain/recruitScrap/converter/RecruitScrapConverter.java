@@ -13,19 +13,18 @@ public class RecruitScrapConverter {
         return RecruitScrap.builder()
             .member(member)
             .recruit(recruit)
+            .jobName(member.getJob().getName())
             .build();
     }
 
-    public static RecruitScrapResponseDTO toRecruitScrapResponseDTO(Recruit recruit, String jobName) {
+    public static RecruitScrapResponseDTO toRecruitScrapResponseDTO(RecruitScrap recruitScrap) {
         return RecruitScrapResponseDTO.builder()
-            .recruitId(recruit.getId())
-            .companyName(recruit.getCompanyName())
-            .title(recruit.getTitle())
-            .deadLine(formatDeadLine(recruit))
+            .recruitId(recruitScrap.getRecruit().getId())
+            .companyName(recruitScrap.getRecruit().getCompanyName())
+            .title(recruitScrap.getRecruit().getTitle())
+            .deadLine(formatDeadLine(recruitScrap.getRecruit()))
             .isScraped(true)
-            .companyInfoUrl(recruit.getCompanyInfoUrl())
-            .recruitUrl(recruit.getRecruitUrl())
-            .jobName(jobName)
+            .jobName(recruitScrap.getJobName())
             .build();
     }
 

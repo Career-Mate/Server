@@ -28,4 +28,6 @@ public class RecruitScrap extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recruit_id")
     private Recruit recruit;
+
+    private String jobName;
 }
