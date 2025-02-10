@@ -23,7 +23,7 @@ public class RecruitScrapConverter {
             .companyName(recruitScrap.getRecruit().getCompanyName())
             .title(recruitScrap.getRecruit().getTitle())
             .deadLine(formatDeadLine(recruitScrap.getRecruit()))
-            .isScraped(true)
+            .isScrapped(true)
             .jobName(recruitScrap.getJobName())
             .build();
     }
