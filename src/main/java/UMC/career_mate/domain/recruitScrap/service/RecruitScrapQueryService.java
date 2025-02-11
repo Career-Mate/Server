@@ -1,9 +1,11 @@
 package UMC.career_mate.domain.recruitScrap.service;
 
+import UMC.career_mate.domain.job.Job;
 import UMC.career_mate.domain.member.Member;
 import UMC.career_mate.domain.recruitScrap.RecruitScrap;
 import UMC.career_mate.domain.recruitScrap.converter.RecruitScrapConverter;
 import UMC.career_mate.domain.recruitScrap.dto.response.RecruitScrapResponseDTO;
+import UMC.career_mate.domain.recruitScrap.dto.response.RecruitScrapResponseDTO.RecruitScrapThumbNailInfoDTO;
 import UMC.career_mate.domain.recruitScrap.repository.RecruitScrapRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -17,15 +19,20 @@ public class RecruitScrapQueryService {
 
     private final RecruitScrapRepository recruitScrapRepository;
 
-    public List<RecruitScrapResponseDTO> findRecruitScrapList(Member member) {
-        List<RecruitScrap> recruitScrapList = recruitScrapRepository.findByMember(member);
+    public RecruitScrapResponseDTO findRecruitScrapList(Member member) {
+        Job job = member.getJob();
+        List<RecruitScrap> recruitScrapList = recruitScrapRepository.findByMemberAndJobName(member,
+            job.getName());
 
         if (recruitScrapList.isEmpty()) {
-            return List.of();
+            return RecruitScrapConverter.toEmptyRecruitScrapResponseDTO(job);
         }
 
-        return recruitScrapList.stream()
-            .map(RecruitScrapConverter::toRecruitScrapResponseDTO)
+        List<RecruitScrapThumbNailInfoDTO> recruitScrapThumbNailInfoDTOList = recruitScrapList.stream()
+            .map(RecruitScrapConverter::toRecruitScrapThumbNailInfoDTO)
             .toList();
+
+        return RecruitScrapConverter.toRecruitScrapResponseDTO(job,
+            recruitScrapThumbNailInfoDTOList);
     }
 }

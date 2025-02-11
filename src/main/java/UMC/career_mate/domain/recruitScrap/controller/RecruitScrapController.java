@@ -7,8 +7,6 @@ import UMC.career_mate.domain.recruitScrap.service.RecruitScrapQueryService;
 import UMC.career_mate.global.annotation.LoginMember;
 import UMC.career_mate.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
-import java.util.List;
-
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -60,9 +58,7 @@ public class RecruitScrapController {
             로그인 인증만을 요구합니다.
             """)
     @GetMapping
-    public ApiResponse<List<RecruitScrapResponseDTO>> getRecruitScrapList(
-        @LoginMember Member member) {
+    public ApiResponse<RecruitScrapResponseDTO> getRecruitScrapList(@LoginMember Member member) {
         return ApiResponse.onSuccess(recruitScrapQueryService.findRecruitScrapList(member));
     }
-
 }
