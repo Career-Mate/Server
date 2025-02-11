@@ -7,6 +7,7 @@ import UMC.career_mate.domain.answer.dto.request.AnswerCreateOrUpdateDTO.AnswerG
 import UMC.career_mate.domain.answer.dto.request.AnswerCreateOrUpdateDTO.AnswerInfoDTO;
 import UMC.career_mate.domain.answer.repository.AnswerRepository;
 import UMC.career_mate.domain.member.Member;
+import UMC.career_mate.domain.member.repository.MemberRepository;
 import UMC.career_mate.domain.question.Question;
 import UMC.career_mate.domain.question.repository.QuestionRepository;
 import UMC.career_mate.global.response.exception.GeneralException;
@@ -18,8 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -29,22 +30,22 @@ public class AnswerCommandService {
     private final S3Uploader s3Uploader;
 
     private static final int MAX_ANSWERS_PER_QUESTION = 2;
+    private final MemberRepository memberRepository;
 
     @Transactional
-    public void saveAnswerList(Member member, AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO, List<MultipartFile> imageFileList) throws IOException {
-        // 이미지 업로드 및 URL 저장
-        List<String> imageUrlList = new ArrayList<>();
-        if (imageFileList != null && !imageFileList.isEmpty()) {
-            for (MultipartFile imageFile : imageFileList) {
-                if (!imageFile.isEmpty()) {
-                    imageUrlList.add(s3Uploader.uploadImage(imageFile)); // S3 업로드 후 URL 리스트에 저장
-                }
-            }
+    public void saveAnswerList(Member member, AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO, MultipartFile image1, MultipartFile image2) throws IOException {
+        Map<Long, String> imageMap = new HashMap<>();
+        if (image1 != null && !image1.isEmpty()) {
+            imageMap.put(1L, s3Uploader.uploadImage(image1));
+        }
+
+        if (image2 != null && !image2.isEmpty()) {
+            imageMap.put(2L, s3Uploader.uploadImage(image2));
         }
 
         long sequence = 1L;
         for (AnswerGroupDTO answerGroupDTO : answerCreateOrUpdateDTO.answerGroupDTOList()) {
-            String assignedImageUrl = (sequence <= imageUrlList.size()) ? imageUrlList.get((int) sequence - 1) : null;
+            String assignedImageUrl = imageMap.getOrDefault(sequence, null);
 
             for (AnswerInfoDTO answerInfo : answerGroupDTO.answerInfoDTOList()) {
                 Question question = questionRepository.findById(answerInfo.questionId())
@@ -72,21 +73,18 @@ public class AnswerCommandService {
     }
 
     @Transactional
-    public void updateAnswerList(Member member, AnswerCreateOrUpdateDTO
-            answerCreateOrUpdateDTO, List<MultipartFile> imageFileList) throws IOException {
-        // 이미지 업로드 및 URL 저장
-        List<String> imageUrlList = new ArrayList<>();
-        if (imageFileList != null && !imageFileList.isEmpty()) {
-            for (MultipartFile imageFile : imageFileList) {
-                if (!imageFile.isEmpty()) {
-                    imageUrlList.add(s3Uploader.uploadImage(imageFile)); // S3 업로드 후 URL 리스트에 저장
-                }
-            }
+    public void updateAnswerList(Member member, AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO, MultipartFile image1, MultipartFile image2) throws IOException {
+        Map<Long, String> imageMap = new HashMap<>();
+        if (image1 != null && !image1.isEmpty()) {
+            imageMap.put(1L, s3Uploader.uploadImage(image1));
+        }
+
+        if (image2 != null && !image2.isEmpty()) {
+            imageMap.put(2L, s3Uploader.uploadImage(image2));
         }
 
         for (AnswerGroupDTO answerGroupDTO : answerCreateOrUpdateDTO.answerGroupDTOList()) {
-            String assignedImageUrl = (answerGroupDTO.sequence() <= imageUrlList.size())
-                    ? imageUrlList.get((int) (answerGroupDTO.sequence() - 1)) : null;
+            String assignedImageUrl = imageMap.get(answerGroupDTO.sequence());
 
             for (AnswerInfoDTO answerInfoDTO : answerGroupDTO.answerInfoDTOList()) {
                 Question question = questionRepository.findById(answerInfoDTO.questionId())
