@@ -36,8 +36,7 @@ public class AnswerCommandService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public void saveAnswerList(Long memberId, AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO, MultipartFile image1, MultipartFile image2) throws IOException {
-        Member member = memberRepository.findById(memberId).orElseThrow();
+    public void saveAnswerList(Member member, AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO, MultipartFile image1, MultipartFile image2) throws IOException {
         Map<Long, String> imageMap = uploadImages(image1, image2);
 
         long sequence = 1L;
@@ -70,8 +69,7 @@ public class AnswerCommandService {
     }
 
     @Transactional
-    public void updateAnswerList(Long memberId, AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO, MultipartFile image1, MultipartFile image2) throws IOException {
-        Member member = memberRepository.findById(memberId).orElseThrow();
+    public void updateAnswerList(Member member, AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO, MultipartFile image1, MultipartFile image2) throws IOException {
         Map<Long, String> imageMap = uploadImages(image1, image2);
 
         for (AnswerGroupDTO answerGroupDTO : answerCreateOrUpdateDTO.answerGroupDTOList()) {

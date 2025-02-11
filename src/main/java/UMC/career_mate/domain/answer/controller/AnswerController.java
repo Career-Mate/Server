@@ -120,11 +120,11 @@ public class AnswerController {
                             ```
                             """
     )
-    public ApiResponse<CommonResultCode> saveAnswerList(@RequestParam Long memberId,
+    public ApiResponse<CommonResultCode> saveAnswerList(@LoginMember Member member,
                                                         @RequestPart(value = "data") @Valid AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO,
                                                         @RequestPart(value = "image_1", required = false) MultipartFile image1,
                                                         @RequestPart(value = "image_2", required = false) MultipartFile image2) throws IOException {
-        answerCommandService.saveAnswerList(memberId, answerCreateOrUpdateDTO, image1, image2);
+        answerCommandService.saveAnswerList(member, answerCreateOrUpdateDTO, image1, image2);
         return ApiResponse.onSuccess(CREATE_ANSWER_LIST);
     }
 
@@ -228,11 +228,11 @@ public class AnswerController {
                             ```
                             """
     )
-    public ApiResponse<CommonResultCode> updateAnswerList(@RequestParam Long memberId,
+    public ApiResponse<CommonResultCode> updateAnswerList(@LoginMember Member member,
                                                           @RequestPart("data") @Valid AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO,
                                                           @RequestPart(value = "image_1", required = false) MultipartFile image1,
                                                           @RequestPart(value = "image_2", required = false) MultipartFile image2) throws IOException {
-        answerCommandService.updateAnswerList(memberId, answerCreateOrUpdateDTO, image1, image2);
+        answerCommandService.updateAnswerList(member, answerCreateOrUpdateDTO, image1, image2);
         return ApiResponse.onSuccess(UPDATE_ANSWER_LIST);
     }
 
