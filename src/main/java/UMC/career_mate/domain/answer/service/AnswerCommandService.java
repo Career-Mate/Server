@@ -14,6 +14,8 @@ import UMC.career_mate.global.response.exception.GeneralException;
 import UMC.career_mate.global.response.exception.code.CommonErrorCode;
 import UMC.career_mate.global.s3.service.S3Uploader;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +27,7 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class AnswerCommandService {
+    private static final Logger log = LoggerFactory.getLogger(AnswerCommandService.class);
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
     private final S3Uploader s3Uploader;
@@ -95,14 +98,16 @@ public class AnswerCommandService {
         }
     }
 
-    public Map<Long, String> uploadImages(MultipartFile image1, MultipartFile image2) throws IOException {
+    private Map<Long, String> uploadImages(MultipartFile image1, MultipartFile image2) throws IOException {
         Map<Long, String> imageMap = new HashMap<>();
 
         if (image1 != null && !image1.isEmpty()) {
+            log.info("image_1 Upload");
             imageMap.put(1L, s3Uploader.uploadImage(image1));
         }
 
         if (image2 != null && !image2.isEmpty()) {
+            log.info("image_2 Upload");
             imageMap.put(2L, s3Uploader.uploadImage(image2));
         }
 
