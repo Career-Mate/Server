@@ -60,13 +60,13 @@ public class RecruitConverter {
             .build();
     }
 
-    public static RecruitThumbNailInfoDTO toRecruitThumbNailInfoDTO(Recruit recruit, boolean isScraped) {
+    public static RecruitThumbNailInfoDTO toRecruitThumbNailInfoDTO(Recruit recruit, boolean isScrapped) {
         return RecruitThumbNailInfoDTO.builder()
             .recruitId(recruit.getId())
             .companyName(recruit.getCompanyName())
             .title(recruit.getTitle())
             .deadLine(formatDeadLine(recruit))
-            .isScraped(isScraped)
+            .isScrapped(isScrapped)
             .experienceLevelCode(recruit.getExperienceLevelCode())
             .experienceLevelMin(recruit.getExperienceLevelMin())
             .experienceLevelMax(recruit.getExperienceLevelMax())

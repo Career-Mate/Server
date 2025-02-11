@@ -272,12 +272,12 @@ public class RecruitQueryService {
     }
 
     private PageResponseDTO<RecommendRecruitsDTO> createPageResponseDTO(Page<Recruit> findRecruitPage, Member member) {
-        Set<Long> scrapedRecruitIds = recruitScrapRepository.findRecruitIdsByMember(member);
+        Set<Long> scrappedRecruitIds = recruitScrapRepository.findRecruitIdsByMember(member);
 
         RecommendRecruitsDTO recommendRecruitsDTO = RecruitConverter.toRecommendRecruitsDTO(member,
             findRecruitPage.stream()
                 .map(recruit -> RecruitConverter.toRecruitThumbNailInfoDTO(recruit,
-                    scrapedRecruitIds.contains(recruit.getId())))
+                    scrappedRecruitIds.contains(recruit.getId())))
                 .toList());
 
         return PageResponseDTO.<RecommendRecruitsDTO>builder()

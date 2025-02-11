@@ -1,11 +1,14 @@
 package UMC.career_mate.domain.recruitScrap.converter;
 
+import UMC.career_mate.domain.job.Job;
 import UMC.career_mate.domain.member.Member;
 import UMC.career_mate.domain.recruit.Recruit;
 import UMC.career_mate.domain.recruitScrap.RecruitScrap;
 import UMC.career_mate.domain.recruitScrap.dto.response.RecruitScrapResponseDTO;
+import UMC.career_mate.domain.recruitScrap.dto.response.RecruitScrapResponseDTO.RecruitScrapThumbNailInfoDTO;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 public class RecruitScrapConverter {
 
@@ -13,19 +16,32 @@ public class RecruitScrapConverter {
         return RecruitScrap.builder()
             .member(member)
             .recruit(recruit)
+            .jobName(member.getJob().getName())
             .build();
     }
 
-    public static RecruitScrapResponseDTO toRecruitScrapResponseDTO(Recruit recruit, String jobName) {
+    public static RecruitScrapResponseDTO toRecruitScrapResponseDTO(Job job,
+        List<RecruitScrapThumbNailInfoDTO> recruitScrapThumbNailInfoDTOList) {
         return RecruitScrapResponseDTO.builder()
-            .recruitId(recruit.getId())
-            .companyName(recruit.getCompanyName())
-            .title(recruit.getTitle())
-            .deadLine(formatDeadLine(recruit))
-            .isScraped(true)
-            .companyInfoUrl(recruit.getCompanyInfoUrl())
-            .recruitUrl(recruit.getRecruitUrl())
-            .jobName(jobName)
+            .jobName(job.getName())
+            .recruitScrapThumbNailInfoDTOList(recruitScrapThumbNailInfoDTOList)
+            .build();
+    }
+
+    public static RecruitScrapThumbNailInfoDTO toRecruitScrapThumbNailInfoDTO(RecruitScrap recruitScrap) {
+        return RecruitScrapThumbNailInfoDTO.builder()
+            .recruitId(recruitScrap.getRecruit().getId())
+            .companyName(recruitScrap.getRecruit().getCompanyName())
+            .title(recruitScrap.getRecruit().getTitle())
+            .deadLine(formatDeadLine(recruitScrap.getRecruit()))
+            .isScrapped(true)
+            .build();
+    }
+
+    public static RecruitScrapResponseDTO toEmptyRecruitScrapResponseDTO(Job job) {
+        return RecruitScrapResponseDTO.builder()
+            .jobName(job.getName())
+            .recruitScrapThumbNailInfoDTOList(List.of())
             .build();
     }
 

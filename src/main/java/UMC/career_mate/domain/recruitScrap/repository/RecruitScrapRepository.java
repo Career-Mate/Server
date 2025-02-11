@@ -16,8 +16,8 @@ public interface RecruitScrapRepository extends JpaRepository<RecruitScrap, Long
 
     Optional<RecruitScrap> findByMemberAndRecruitId(Member member, Long recruitId);
 
-    @Query("select rs from RecruitScrap rs join fetch rs.recruit where rs.member = :member")
-    List<RecruitScrap> findByMember(@Param("member") Member member);
+    @Query("select rs from RecruitScrap rs join fetch rs.recruit where rs.member = :member and rs.jobName = :jobName")
+    List<RecruitScrap> findByMemberAndJobName(@Param("member") Member member, @Param("jobName") String jobName);
 
     @Query("select rs.recruit.id from RecruitScrap rs where rs.member = :member")
     Set<Long> findRecruitIdsByMember(@Param("member") Member member);
