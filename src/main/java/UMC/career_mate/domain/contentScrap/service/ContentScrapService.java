@@ -52,8 +52,17 @@ public class ContentScrapService {
 
     @Transactional(readOnly = true)
     public PageResponseDTO<List<ContentScrapResponseDTO>> getScrapContents(Member member, int page, int size) {
+
+        // 로그인한 사용자의 직무 ID 확인
+        Long jobId = member.getJob().getId();
+        if (jobId == null) {
+            throw new GeneralException(CommonErrorCode.NOT_FOUND_BY_JOB_ID);
+        }
+
         PageRequest pageRequest = PageRequest.of(page - 1, size);
-        Page<ContentScrap> scraps = contentScrapRepository.findByMember(member, pageRequest);
+
+        // 로그인한 사용자가 스크랩한 콘텐츠 중 현재 직무 ID와 일치하는 것만 필터링
+        Page<ContentScrap> scraps = contentScrapRepository.findByMemberAndJobId(member, jobId, pageRequest);
 
         List<ContentScrapResponseDTO> contentList = scraps.stream()
                 .map(ContentScrapConverter::toContentScrapResponseDTO)
