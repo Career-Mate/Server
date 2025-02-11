@@ -25,7 +25,7 @@ public enum RecruitKeyword {
 
         @Override
         public List<String> getExcludeKeywordList() {
-            return List.of("Node", "Node.js", "NODE", "javascript", "Python", "Django", "C++", "PHP");
+            return List.of("Node", "Node.js", "NODE", "javascript", "Python", "Django", "C++", "PHP", "C#");
         }
     },
     BACKEND_NODE {
@@ -36,7 +36,7 @@ public enum RecruitKeyword {
 
         @Override
         public List<String> getExcludeKeywordList() {
-            return List.of("java", "JAVA", "spring", "Spring", "SPRING", "Python", "Django", "C++", "PHP");
+            return List.of("java", "JAVA", "spring", "Spring", "SPRING", "Python", "Django", "C++", "PHP", "C#");
         }
     },
     BACKEND_DJANGO {
@@ -48,13 +48,46 @@ public enum RecruitKeyword {
         @Override
         public List<String> getExcludeKeywordList() {
             return List.of("java", "JAVA", "spring", "Spring", "SPRING", "javascript", "Node",
-                "Node.js", "NODE", "C++", "PHP");
+                "Node.js", "NODE", "C++", "PHP", "C#");
         }
     },
     FRONTEND {
         @Override
         public List<String> getIncludeKeywordList() {
             return List.of("Front", "FRONT", "Frontend", "Front-end", "프론트엔드", "프론트");
+        }
+
+        @Override
+        public List<String> getExcludeKeywordList() {
+            return null;
+        }
+    },
+    FRONTEND_REACT {
+        @Override
+        public List<String> getIncludeKeywordList() {
+            return List.of("react");
+        }
+
+        @Override
+        public List<String> getExcludeKeywordList() {
+            return null;
+        }
+    },
+    FRONTEND_IOS {
+        @Override
+        public List<String> getIncludeKeywordList() {
+            return List.of("ios");
+        }
+
+        @Override
+        public List<String> getExcludeKeywordList() {
+            return null;
+        }
+    },
+    FRONTEND_ANDROID {
+        @Override
+        public List<String> getIncludeKeywordList() {
+            return List.of("android");
         }
 
         @Override

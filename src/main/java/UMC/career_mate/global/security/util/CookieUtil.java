@@ -13,7 +13,7 @@ import java.util.Base64;
 
 public class CookieUtil {
 
-    private static final String COOKIE_DOMAIN = "54.180.29.116";
+    private static final String COOKIE_DOMAIN = "careermate.site";
 
     public static void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
         ResponseCookie cookie = ResponseCookie.from(name, value)
@@ -21,21 +21,21 @@ public class CookieUtil {
                 .domain(COOKIE_DOMAIN)
                 .maxAge(maxAge)
                 .httpOnly(true)
-//                .sameSite("None")
-                .secure(false)
+                .sameSite("None")
+                .secure(true)
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
 
-    public static void addCookieNoAge(HttpServletResponse response, String name, String value) {
-        ResponseCookie cookie = ResponseCookie.from(name, value)
-                .path("/")
-                .domain(COOKIE_DOMAIN)
-                .httpOnly(true)
+//    public static void addCookieNoAge(HttpServletResponse response, String name, String value) {
+//        ResponseCookie cookie = ResponseCookie.from(name, value)
+//                .path("/")
+//                .domain(COOKIE_DOMAIN)
+//                .httpOnly(true)
 //                .secure(true)
-                .build();
-        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-    }
+//                .build();
+//        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+//    }
 
     public static String getCookieValue(HttpServletRequest request, HttpServletResponse response, String name) {
         Cookie cookie = WebUtils.getCookie(request, name);

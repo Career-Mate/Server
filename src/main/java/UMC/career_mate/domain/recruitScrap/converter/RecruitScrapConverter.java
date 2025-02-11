@@ -16,13 +16,16 @@ public class RecruitScrapConverter {
             .build();
     }
 
-    public static RecruitScrapResponseDTO toRecruitScrapResponseDTO(Recruit recruit) {
+    public static RecruitScrapResponseDTO toRecruitScrapResponseDTO(Recruit recruit, String jobName) {
         return RecruitScrapResponseDTO.builder()
             .recruitId(recruit.getId())
             .companyName(recruit.getCompanyName())
             .title(recruit.getTitle())
             .deadLine(formatDeadLine(recruit))
             .isScraped(true)
+            .companyInfoUrl(recruit.getCompanyInfoUrl())
+            .recruitUrl(recruit.getRecruitUrl())
+            .jobName(jobName)
             .build();
     }
 

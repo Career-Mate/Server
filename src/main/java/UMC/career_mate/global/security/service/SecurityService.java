@@ -1,6 +1,5 @@
 package UMC.career_mate.global.security.service;
 
-import UMC.career_mate.domain.member.enums.SocialType;
 import UMC.career_mate.global.response.exception.GeneralException;
 import UMC.career_mate.global.response.exception.code.CommonErrorCode;
 import UMC.career_mate.global.security.jwt.repository.RefreshTokenRepository;
@@ -34,7 +33,5 @@ public class SecurityService {
         //쿠키에서 토큰 삭제
         CookieUtil.deleteCookie(request, response, "access-token");
         CookieUtil.deleteCookie(request, response, "refresh-token");
-        //쿠키에서 유저 이름 정보 삭제
-        CookieUtil.deleteCookie(request, response, "name");
     }
 }
