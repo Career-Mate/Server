@@ -34,14 +34,7 @@ public class AnswerCommandService {
 
     @Transactional
     public void saveAnswerList(Member member, AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO, MultipartFile image1, MultipartFile image2) throws IOException {
-        Map<Long, String> imageMap = new HashMap<>();
-        if (image1 != null && !image1.isEmpty()) {
-            imageMap.put(1L, s3Uploader.uploadImage(image1));
-        }
-
-        if (image2 != null && !image2.isEmpty()) {
-            imageMap.put(2L, s3Uploader.uploadImage(image2));
-        }
+        Map<Long, String> imageMap = uploadImages(image1, image2);
 
         long sequence = 1L;
         for (AnswerGroupDTO answerGroupDTO : answerCreateOrUpdateDTO.answerGroupDTOList()) {
@@ -74,14 +67,7 @@ public class AnswerCommandService {
 
     @Transactional
     public void updateAnswerList(Member member, AnswerCreateOrUpdateDTO answerCreateOrUpdateDTO, MultipartFile image1, MultipartFile image2) throws IOException {
-        Map<Long, String> imageMap = new HashMap<>();
-        if (image1 != null && !image1.isEmpty()) {
-            imageMap.put(1L, s3Uploader.uploadImage(image1));
-        }
-
-        if (image2 != null && !image2.isEmpty()) {
-            imageMap.put(2L, s3Uploader.uploadImage(image2));
-        }
+        Map<Long, String> imageMap = uploadImages(image1, image2);
 
         for (AnswerGroupDTO answerGroupDTO : answerCreateOrUpdateDTO.answerGroupDTOList()) {
             String assignedImageUrl = imageMap.get(answerGroupDTO.sequence());
@@ -109,4 +95,17 @@ public class AnswerCommandService {
         }
     }
 
+    public Map<Long, String> uploadImages(MultipartFile image1, MultipartFile image2) throws IOException {
+        Map<Long, String> imageMap = new HashMap<>();
+
+        if (image1 != null && !image1.isEmpty()) {
+            imageMap.put(1L, s3Uploader.uploadImage(image1));
+        }
+
+        if (image2 != null && !image2.isEmpty()) {
+            imageMap.put(2L, s3Uploader.uploadImage(image2));
+        }
+
+        return imageMap;
+    }
 }
