@@ -32,12 +32,17 @@ public class RecruitQueryRepositoryImpl implements RecruitQueryRepository {
         Pageable pageable) {
         BooleanBuilder builder = new BooleanBuilder();
 
-        // includeKeywordList에 있는 키워드 중 하나라도 포함되어야 함
-        filterIncludeKeywordList(recruitKeyword.getIncludeKeywordList(), builder);
+        // includeTitleKeywordList에 있는 키워드 중 하나라도 포함되어야 함
+        filterIncludeTitleKeywordList(recruitKeyword.getIncludeTitleKeywordList(), builder);
 
-        // excludeKeywordList에 있는 키워드가 포함되지 않아야 함
-        if (Objects.nonNull(recruitKeyword.getExcludeKeywordList())) {
-            filterExcludeKeywordList(recruitKeyword.getExcludeKeywordList(), builder);
+        // excludeTitleKeywordList에 있는 키워드가 포함되지 않아야 함
+        if (Objects.nonNull(recruitKeyword.getExcludeTitleKeywordList())) {
+            filterExcludeTitleKeywordList(recruitKeyword.getExcludeTitleKeywordList(), builder);
+        }
+
+        // includeHashtagKeywordList에 있는 키워드 중 하나라도 포함되어야 함
+        if (Objects.nonNull(recruitKeyword.getIncludeHashtagKeywordList())) {
+            filterIncludeHashtagKeywordList(recruitKeyword.getIncludeHashtagKeywordList(), builder);
         }
 
         // 학력 필터링
@@ -66,28 +71,42 @@ public class RecruitQueryRepositoryImpl implements RecruitQueryRepository {
         return new PageImpl<>(result, pageable, total);
     }
 
-    private void filterIncludeKeywordList(List<String> includekeywordList, BooleanBuilder builder) {
-        BooleanBuilder includeBuilder = new BooleanBuilder();
+    private void filterIncludeTitleKeywordList(List<String> includekeywordList, BooleanBuilder builder) {
+        BooleanBuilder includeTitleBuilder = new BooleanBuilder();
         for (String keyword : includekeywordList) {
             if (isEnglish(keyword)) {
-                includeBuilder.or(recruit.title.containsIgnoreCase(keyword));
+                includeTitleBuilder.or(recruit.title.containsIgnoreCase(keyword));
             } else {
-                includeBuilder.or(recruit.title.contains(keyword));
+                includeTitleBuilder.or(recruit.title.contains(keyword));
             }
         }
-        builder.and(includeBuilder);
+        builder.and(includeTitleBuilder);
     }
 
-    private void filterExcludeKeywordList(List<String> excludeKeywordList, BooleanBuilder builder) {
-        BooleanBuilder excludeBuilder = new BooleanBuilder();
+    private void filterExcludeTitleKeywordList(List<String> excludeKeywordList, BooleanBuilder builder) {
+        BooleanBuilder excludeTitleBuilder = new BooleanBuilder();
         for (String keyword : excludeKeywordList) {
             if (isEnglish(keyword)) {
-                excludeBuilder.or(recruit.title.containsIgnoreCase(keyword));
+                excludeTitleBuilder.or(recruit.title.containsIgnoreCase(keyword));
             } else {
-                excludeBuilder.or(recruit.title.contains(keyword));
+                excludeTitleBuilder.or(recruit.title.contains(keyword));
             }
         }
-        builder.and(excludeBuilder.not());
+        builder.and(excludeTitleBuilder.not());
+    }
+
+    private void filterIncludeHashtagKeywordList(List<String> includeHashTagKeywordList,
+        BooleanBuilder builder) {
+        BooleanBuilder includeHashtagBuilder = new BooleanBuilder();
+        for (String keyword : includeHashTagKeywordList) {
+            if (isEnglish(keyword)) {
+                includeHashtagBuilder.or(recruit.hashtags.containsIgnoreCase(keyword));
+            } else {
+                includeHashtagBuilder.or(recruit.hashtags.contains(keyword));
+            }
+        }
+
+        builder.and(includeHashtagBuilder);
     }
 
     private void filterEducation(EducationLevel educationLevel, BooleanBuilder builder) {
