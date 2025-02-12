@@ -20,4 +20,9 @@ public interface ContentScrapRepository extends JpaRepository<ContentScrap, Long
     @Query("SELECT cs FROM ContentScrap cs WHERE cs.member = :member")
     List<ContentScrap> findByMember(@Param("member") Member member);
 
+    @Query("SELECT cs FROM ContentScrap cs " +
+            "JOIN FETCH cs.content c " +
+            "WHERE cs.member = :member AND c.job.id = :jobId")
+    Page<ContentScrap> findByMemberAndJobId(@Param("member") Member member, @Param("jobId") Long jobId, Pageable pageable);
+
 }

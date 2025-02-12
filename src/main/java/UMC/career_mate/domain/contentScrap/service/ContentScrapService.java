@@ -61,18 +61,15 @@ public class ContentScrapService {
 
         PageRequest pageRequest = PageRequest.of(page - 1, size);
 
-        Page<ContentScrap> allScraps = contentScrapRepository.findByMember(member, pageRequest);
+        Page<ContentScrap> scraps = contentScrapRepository.findByMemberAndJobId(member, jobId, pageRequest);
 
-        List<ContentScrapResponseDTO> contentList = allScraps.stream()
-                .filter(scrap -> scrap.getContent().getJob().getId().equals(jobId))
+        List<ContentScrapResponseDTO> contentList = scraps.stream()
                 .map(ContentScrapConverter::toContentScrapResponseDTO)
                 .toList();
 
-        boolean hasNext = allScraps.hasNext();
-
         return PageResponseDTO.<List<ContentScrapResponseDTO>>builder()
                 .page(page)
-                .hasNext(hasNext)
+                .hasNext(scraps.hasNext())
                 .result(contentList)
                 .build();
     }
