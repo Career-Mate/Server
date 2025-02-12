@@ -1,16 +1,12 @@
 package UMC.career_mate.domain.recruit;
 
-import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "recruits")
@@ -45,9 +41,8 @@ public class Recruit {
     private String employmentName; // 고용(근무) 형태 값
     private String salaryName; // 연봉 값
 
-    @Type(JsonType.class)
-    @Column(columnDefinition = "json")
-    private List<String> jobNames; // 직무 키워드
+    @Column(columnDefinition = "TEXT")
+    private String hashtags; // 직무 키워드
 
     private String region; // 근무 지역
     private String industryName; // 산업군
