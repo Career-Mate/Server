@@ -53,25 +53,27 @@ public class ContentScrapService {
     @Transactional(readOnly = true)
     public PageResponseDTO<List<ContentScrapResponseDTO>> getScrapContents(Member member, int page, int size) {
 
-        // 로그인한 사용자의 직무 ID 확인
-        Long jobId = member.getJob().getId();
-        if (jobId == null) {
+        // null 체크 -> jobid가 아니라 job으로 수정
+        if (member.getJob() == null) {
             throw new GeneralException(CommonErrorCode.NOT_FOUND_BY_JOB_ID);
         }
+        Long jobId = member.getJob().getId();
 
         PageRequest pageRequest = PageRequest.of(page - 1, size);
 
-        // 로그인한 사용자가 스크랩한 콘텐츠 중 현재 직무 ID와 일치하는 것만 필터링
-        Page<ContentScrap> scraps = contentScrapRepository.findByMemberAndJobId(member, jobId, pageRequest);
+        Page<ContentScrap> allScraps = contentScrapRepository.findByMember(member, pageRequest);
 
-        List<ContentScrapResponseDTO> contentList = scraps.stream()
+        List<ContentScrapResponseDTO> contentList = allScraps.stream()
+                .filter(scrap -> scrap.getContent().getJob().getId().equals(jobId))
                 .map(ContentScrapConverter::toContentScrapResponseDTO)
                 .toList();
 
+        boolean hasNext = allScraps.hasNext();
+
         return PageResponseDTO.<List<ContentScrapResponseDTO>>builder()
-            .page(page)
-            .hasNext(scraps.hasNext())
-            .result(contentList)
-            .build();
+                .page(page)
+                .hasNext(hasNext)
+                .result(contentList)
+                .build();
     }
 }

@@ -8,6 +8,7 @@ public record ContentScrapResponseDTO(
         String title,
         String url,
         String photo,
+        Long jobId,
         boolean isScrapped
 ) {
 }
