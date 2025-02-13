@@ -109,7 +109,7 @@ public class ContentController {
     @Operation(
             summary = "스크랩한 컨텐츠 조회 API",
             description = """
-                사용자가 스크랩한 컨텐츠를 조회합니다.
+                사용자의 현재 직무 기준 사용자가 스크랩한 컨텐츠를 조회합니다.
                 Query Parameters:
                 - 'page': 페이지 번호 (기본값: 1)
                 - 'size': 페이지 크기 (기본값: 10)
