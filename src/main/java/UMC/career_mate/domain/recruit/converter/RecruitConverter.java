@@ -15,7 +15,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -42,7 +41,7 @@ public class RecruitConverter {
             .educationLevelName(educationLevel.getDescription())
             .employmentName(job.position().jobType().name())
             .salaryName(job.salary().name())
-            .jobNames(Arrays.asList(job.position().jobCode().name()))
+            .hashtags(job.position().jobCode().name())
             .region(StringEscapeUtils.unescapeHtml4(
                 job.position().location().name()))
             .industryName(job.position().industry().name())
@@ -67,13 +66,6 @@ public class RecruitConverter {
             .title(recruit.getTitle())
             .deadLine(formatDeadLine(recruit))
             .isScrapped(isScrapped)
-            .experienceLevelCode(recruit.getExperienceLevelCode())
-            .experienceLevelMin(recruit.getExperienceLevelMin())
-            .experienceLevelMax(recruit.getExperienceLevelMax())
-            .experienceLevelName(recruit.getExperienceLevelName())
-            .educationLevelCode(recruit.getEducationLevelCode())
-            .educationLevelName(recruit.getEducationLevelName())
-            .postingDate(recruit.getPostingDate())
             .build();
     }
 
