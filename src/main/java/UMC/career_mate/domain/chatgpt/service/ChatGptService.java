@@ -52,7 +52,8 @@ public class ChatGptService {
         "위 경험 데이터를 기반으로 사용자의 이름을 문구에 포함해서 사용자의 강점을 어필할 수 있고, " +
             "친근한 말투로 어떤 포지션이 어울리는지, 어떤 경험을 어필하면 좋을지와 같은 내용으로 조언 문구를 생성해서 답변해줘. " +
             "답변은 문구만 답변해줘. 문구를 생성할 때 내용에는 회사 이름은 제외해줘. " +
-            "답변에서 '-'는 빼줘.";
+            "답변에서 '-'는 빼줘." +
+            " 최종 내용을 3줄 요약해주고, 온점을 기준으로 한줄씩 들여쓰기해줘.";
 
     private static final Map<String, String> formatMap = Map.ofEntries(
         Map.entry("백엔드 개발자", GPT_REQUEST_FORMAT_POSTFIX_FOR_RECRUIT_KEYWORD_BACKEND),

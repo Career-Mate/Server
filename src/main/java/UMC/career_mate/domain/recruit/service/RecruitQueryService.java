@@ -58,7 +58,7 @@ public class RecruitQueryService {
     private final static String INTERN_PREFIX = "인턴 경험 데이터 : ";
     private final static String PROJECT_QUESTION_CONTENT_PERIOD = "기간";
     private final static String INTERN_QUESTION_CONTENT_PERIOD = "근무기간";
-    private final static String TEMPLATE_ANSWER_IS_NULL_OR_EMPTY_COMMENT = "프로젝트 또는 인턴 템플릿에 대해 답변을 작성하고, Chat GPT의 코멘트를 받아보세요!";
+    private final static String TEMPLATE_ANSWER_IS_NULL_OR_EMPTY_COMMENT = "인턴 또는 프로젝트 템플릿에 대해 답변을 작성하고," +  "\n" + "Chat GPT의 코멘트를 받아보세요!";
 
     public PageResponseDTO<RecommendRecruitsDTO> getRecommendRecruitList(int page, int size,
         RecruitSortType recruitSortType, Member member) {
