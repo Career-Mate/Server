@@ -14,6 +14,8 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @Component
 @RequiredArgsConstructor
@@ -49,7 +51,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         } else {
             // 추가 정보가 입력된 경우
             String name = member.getName();
-            response.sendRedirect(FRONTEND_BASE_URL + "?name=" + name);
+            String encodedName = URLEncoder.encode(name, StandardCharsets.UTF_8);
+            response.sendRedirect(FRONTEND_BASE_URL + "?name=" + encodedName);
         }
     }
 
