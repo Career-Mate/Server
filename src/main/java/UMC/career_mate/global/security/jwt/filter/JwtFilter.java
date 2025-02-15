@@ -29,6 +29,7 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorization = null;
+        String refresh_check = null;
 
         authorization = request.getHeader("Authorization");
 
@@ -43,21 +44,25 @@ public class JwtFilter extends OncePerRequestFilter {
         Cookie[] cookies = request.getCookies();
 
         if (cookies == null) {
-            response.sendRedirect("https://www.careermate.site/login"); //토큰이 없으면 Login화면으로 리다이렉트
-            filterChain.doFilter(request, response);
+            response.sendRedirect("https://www.careermate.site/login?status=f"); //토큰이 없으면 Login화면으로 리다이렉트
+//            filterChain.doFilter(request, response);
             return;
         }
 
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals("access-token")) {
                 authorization = cookie.getValue();
+            } else if (cookie.getName().equals("refresh-token")) {
+                refresh_check = cookie.getValue();
             }
         }
 
         if (authorization == null) {
             SecurityContextHolder.clearContext();
-            response.sendRedirect("https://www.careermate.site/login");
-            handleException(request, response, filterChain, CommonErrorCode.NO_ACCESS_TOKEN);
+            if (refresh_check == null) {
+                response.sendRedirect("https://www.careermate.site/login?status=f");
+            }
+//            handleException(request, response, filterChain, CommonErrorCode.NO_ACCESS_TOKEN);
             return;
         }
 

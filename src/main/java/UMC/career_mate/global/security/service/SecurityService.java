@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+
 @Service
 @RequiredArgsConstructor
 public class SecurityService {
@@ -19,7 +21,7 @@ public class SecurityService {
     private final RefreshTokenRepository repository;
 
     @Transactional
-    public void logout(HttpServletRequest request, HttpServletResponse response) {
+    public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String refreshToken = CookieUtil.getCookieValue(request, response, "refresh-token");
 
         if (refreshToken != null) {
@@ -27,6 +29,7 @@ public class SecurityService {
             Long memberId = jwtUtil.getMemberId(refreshToken);
             repository.deleteById(memberId);
         } else {
+//            response.sendRedirect("https://www.careermate.site?status=f");
             throw new GeneralException(CommonErrorCode.INVALID_TOKEN);
         }
 

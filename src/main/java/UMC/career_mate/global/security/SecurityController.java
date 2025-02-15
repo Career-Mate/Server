@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "인증 API", description = "인증 도메인의 API 입니다.")
@@ -32,7 +34,7 @@ public class SecurityController {
     }
 
     @PostMapping("/logout")
-    public ApiResponse<String> logout(HttpServletRequest request, HttpServletResponse response) {
+    public ApiResponse<String> logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         securityService.logout(request, response);
         return ApiResponse.onSuccess("Logout Success");
     }
