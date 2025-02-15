@@ -43,6 +43,7 @@ public class JwtFilter extends OncePerRequestFilter {
         Cookie[] cookies = request.getCookies();
 
         if (cookies == null) {
+            response.sendRedirect("https://www.careermate.site/login"); //토큰이 없으면 Login화면으로 리다이렉트
             filterChain.doFilter(request, response);
             return;
         }
@@ -55,6 +56,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if (authorization == null) {
             SecurityContextHolder.clearContext();
+            response.sendRedirect("https://www.careermate.site/login");
             handleException(request, response, filterChain, CommonErrorCode.NO_ACCESS_TOKEN);
             return;
         }
