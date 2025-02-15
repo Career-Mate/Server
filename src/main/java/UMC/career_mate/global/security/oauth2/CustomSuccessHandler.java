@@ -45,8 +45,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         if (!member.getIs_complete()) {
             //추가 정보가 입력되어 있지 않을 경우
-            response.sendRedirect(FRONTEND_BASE_URL + FRONTEND_PROFILE_PATH);
-
+            String name = member.getName();
+            response.sendRedirect(FRONTEND_BASE_URL + FRONTEND_PROFILE_PATH + "?name=" + name);
         } else {
             // 추가 정보가 입력된 경우
             response.sendRedirect(FRONTEND_BASE_URL);
