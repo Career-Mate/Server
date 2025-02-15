@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -44,7 +45,14 @@ public class JwtFilter extends OncePerRequestFilter {
         Cookie[] cookies = request.getCookies();
 
         if (cookies == null) {
-            response.sendRedirect("https://www.careermate.site/login?status=f"); //토큰이 없으면 Login화면으로 리다이렉트
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+
+            PrintWriter writer = response.getWriter();
+            writer.write("{\"status\": \"f\", \"message\": \"토큰이 없습니다. 로그인 필요.\"}");
+            writer.flush();
+//            response.sendRedirect("https://www.careermate.site/login?status=f"); //토큰이 없으면 Login화면으로 리다이렉트
 //            filterChain.doFilter(request, response);
             return;
         }
@@ -60,7 +68,14 @@ public class JwtFilter extends OncePerRequestFilter {
         if (authorization == null) {
             SecurityContextHolder.clearContext();
             if (refresh_check == null) {
-                response.sendRedirect("https://www.careermate.site/login?status=f");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+
+                PrintWriter writer = response.getWriter();
+                writer.write("{\"status\": \"f\", \"message\": \"토큰이 없습니다. 로그인 필요.\"}");
+                writer.flush();
+//                response.sendRedirect("https://www.careermate.site/login?status=f");
             }
 //            handleException(request, response, filterChain, CommonErrorCode.NO_ACCESS_TOKEN);
             return;
