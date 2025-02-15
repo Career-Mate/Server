@@ -66,7 +66,7 @@ public class RecruitController {
     }
 
     @Deprecated
-    @Operation(summary = "채용 공고 db 저장 api", description = "테스트 개발용입니다람쥐")
+    @Operation(summary = "채용 공고 db 저장 api", description = "테스트 개발용입니다람지렁이")
     @PostMapping
     public ApiResponse<String> saveRecruits(@RequestParam JobCode jobCode) {
         recruitCommandService.saveRecruitInfoOfSaramin(jobCode);
