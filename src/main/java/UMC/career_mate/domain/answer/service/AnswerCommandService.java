@@ -47,7 +47,7 @@ public class AnswerCommandService {
                 Question question = questionRepository.findById(answerInfo.questionId())
                         .orElseThrow(() -> new GeneralException(CommonErrorCode.NOT_FOUND_QUESTION));
 
-                validateAnswerLimit(question.getId());
+                validateAnswerLimit(member, question.getId());
 
                 // 특정 질문에 대해서만 이미지 URL 저장
                 String content = (assignedImageUrl != null && question.getId().equals(103L))
@@ -61,8 +61,8 @@ public class AnswerCommandService {
         }
     }
 
-    private void validateAnswerLimit(Long questionId) {
-        Long existingAnswerCount = answerRepository.countByQuestionId(questionId);
+    private void validateAnswerLimit(Member member, Long questionId) {
+        Long existingAnswerCount = answerRepository.countByMemberAndQuestionId(member, questionId);
         if (existingAnswerCount >= MAX_ANSWERS_PER_QUESTION) {
             throw new GeneralException(CommonErrorCode.ALREADY_SAVE_ANSWER);
         }
