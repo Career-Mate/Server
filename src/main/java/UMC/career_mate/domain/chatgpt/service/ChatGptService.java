@@ -48,12 +48,6 @@ public class ChatGptService {
             "이 중에서 적절한 직무를 고르기 애매하면 'FRONTEND'로 답변해줘.\n" +
             "앞뒤 설명하지 말고 직무만 답변해줘.";
 
-    private static final String GPT_REQUEST_FORMAT_FOR_COMMENT =
-        "위 경험 데이터를 기반으로 사용자의 이름을 문구에 포함해서 사용자의 강점을 어필할 수 있고, " +
-            "어떤 포지션이 어울리는지, 어떤 경험을 어필하면 좋을지와 같은 내용으로 조언 문구를 생성해서 200자 내로 답변해줘. " +
-            "답변은 문구만 답변해줘. 문구를 생성할 때 내용에는 회사 이름은 제외해줘. " +
-            "답변에서 '-'는 빼줘.";
-
     private static final Map<String, String> formatMap = Map.ofEntries(
         Map.entry("백엔드 개발자", GPT_REQUEST_FORMAT_POSTFIX_FOR_RECRUIT_KEYWORD_BACKEND),
         Map.entry("프론트엔드 개발자", GPT_REQUEST_FORMAT_POSTFIX_FOR_RECRUIT_KEYWORD_FRONTEND)
@@ -61,8 +55,7 @@ public class ChatGptService {
 
     private static final String GPT_SYSTEM_ROLE =
         "너는 취업 전문가로서 내가 보낸 경험 데이터를 기반으로 '~~한 경험이 있는 000님, ~~한 경험을 어필해보면 어때요?' 라는 느낌으로 사용자 맞춤형 추천 문구를 작성한다. "
-            +
-            "문구의 말투는 '-니다'체를 사용하는 것이 아니라, '-요'체를 사용한다.";
+            + "문구의 말투는 '-니다'체를 사용하는 것이 아니라, '-요'체를 사용한다. 응답은 150자 이내로 답변한다.";
 
     public int getCareerYear(String chatGptRequestContent) {
         GptRequest gptRequest = createGptRequest(
@@ -90,8 +83,7 @@ public class ChatGptService {
 
     public String getComment(MemberTemplateAnswerDTO memberTemplateAnswerDTO) {
         GptRequest gptRequest = createGptRequestWithSystemRole(
-            memberTemplateAnswerDTO.name() + "\n" + memberTemplateAnswerDTO.content()
-                + GPT_REQUEST_FORMAT_FOR_COMMENT + memberTemplateAnswerDTO.content());
+            memberTemplateAnswerDTO.name() + "\n" + memberTemplateAnswerDTO.content() + memberTemplateAnswerDTO.content());
 
         ObjectMapper om = new ObjectMapper();
 
