@@ -8,12 +8,12 @@ public enum RecruitKeyword {
     BACKEND {
         @Override
         public List<String> getIncludeTitleKeywordList() {
-            return List.of("Back", "Backend", "Back-end", "백엔드", "서버", "시스템");
+            return List.of("Back", "Backend", "Back-end", "백엔드", "서버", "시스템", "B/E");
         }
 
         @Override
         public List<String> getExcludeTitleKeywordList() {
-            return null;
+            return List.of("F/E", "장애인", "국비");
         }
 
         @Override
@@ -25,28 +25,28 @@ public enum RecruitKeyword {
     BACKEND_SPRING {
         @Override
         public List<String> getIncludeTitleKeywordList() {
-            return List.of("Back", "Backend", "Back-end", "백엔드", "서버", "시스템");
+            return List.of("Back", "Backend", "Back-end", "백엔드", "서버", "시스템", "B/E");
         }
 
         @Override
         public List<String> getExcludeTitleKeywordList() {
-            return List.of("Node", "Node.js", "javascript", "Python", "Django", "C++", "PHP", "C#");
+            return List.of("Node", "Node.js", "javascript", "Python", "Django", "C++", "PHP", "C#", "F/E", "장애인", "국비");
         }
 
         @Override
         public List<String> getIncludeHashtagKeywordList() {
-            return List.of("Spring", "SpringBoot");
+            return List.of("Spring");
         }
     },
     BACKEND_NODE {
         @Override
         public List<String> getIncludeTitleKeywordList() {
-            return List.of("Back", "Backend", "Back-end", "백엔드", "서버", "시스템");
+            return List.of("Back", "Backend", "Back-end", "백엔드", "서버", "시스템", "B/E");
         }
 
         @Override
         public List<String> getExcludeTitleKeywordList() {
-            return List.of("JAVA", "Spring", "Python", "Django", "C++", "PHP", "C#");
+            return List.of("JAVA", "Spring", "Python", "Django", "C++", "PHP", "C#", "F/E", "장애인", "국비");
         }
 
         @Override
@@ -57,12 +57,12 @@ public enum RecruitKeyword {
     BACKEND_DJANGO {
         @Override
         public List<String> getIncludeTitleKeywordList() {
-            return List.of("Back", "Backend", "Back-end", "백엔드", "서버", "시스템");
+            return List.of("Back", "Backend", "Back-end", "백엔드", "서버", "시스템", "B/E");
         }
 
         @Override
         public List<String> getExcludeTitleKeywordList() {
-            return List.of("JAVA", "Spring", "javascript", "Node", "Node.js", "C++", "PHP", "C#");
+            return List.of("JAVA", "Spring", "javascript", "Node", "Node.js", "C++", "PHP", "C#", "F/E", "장애인", "국비");
         }
 
         @Override
@@ -73,12 +73,12 @@ public enum RecruitKeyword {
     FRONTEND {
         @Override
         public List<String> getIncludeTitleKeywordList() {
-            return List.of("Front", "Frontend", "Front-end", "프론트엔드", "프론트");
+            return List.of("Front", "Frontend", "Front-end", "프론트엔드", "프론트", "F/E");
         }
 
         @Override
         public List<String> getExcludeTitleKeywordList() {
-            return null;
+            return List.of("장애인", "국비");
         }
 
         @Override
@@ -94,7 +94,7 @@ public enum RecruitKeyword {
 
         @Override
         public List<String> getExcludeTitleKeywordList() {
-            return null;
+            return List.of("장애인", "국비");
         }
 
         @Override
@@ -110,7 +110,7 @@ public enum RecruitKeyword {
 
         @Override
         public List<String> getExcludeTitleKeywordList() {
-            return null;
+            return List.of("장애인", "국비");
         }
 
         @Override
@@ -126,7 +126,7 @@ public enum RecruitKeyword {
 
         @Override
         public List<String> getExcludeTitleKeywordList() {
-            return null;
+            return List.of("장애인", "국비");
         }
 
         @Override
@@ -142,7 +142,7 @@ public enum RecruitKeyword {
 
         @Override
         public List<String> getExcludeTitleKeywordList() {
-            return List.of("영상디자인", "영상 디자인");
+            return List.of("영상디자인", "영상 디자인", "장애인", "국비");
         }
 
         @Override
@@ -158,7 +158,7 @@ public enum RecruitKeyword {
 
         @Override
         public List<String> getExcludeTitleKeywordList() {
-            return null;
+            return List.of("장애인", "국비");
         }
 
         @Override
