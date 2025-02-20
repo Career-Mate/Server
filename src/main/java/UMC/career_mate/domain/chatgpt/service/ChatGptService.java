@@ -33,8 +33,8 @@ public class ChatGptService {
     private String serviceKey;
 
     private static final String GPT_REQUEST_FORMAT_POSTFIX_FOR_CAREER_YEAR =
-        "이 사람의 경력을 계산해서 앞뒤 설명 하지말고 정수로만 올바른 답변 예시와 같은 형식으로 답변해줘. " +
-            "올바론 답변 예시) 5, 잘못된 답변 예시 1) 5년, 잘못된 답변 예시 2) 5 years, 잘못된 답변 예시 3) 이 사람의 경력은 5년";
+        "이 사람의 총 근무 기간(년)을 계산해줘. 앞뒤 설명 하지말고 정수로만 올바른 답변 예시와 같은 형식으로 답변해줘. " +
+            "예를 들어 만약 근무 기간이 2020.5.20 ~ 2021.7.10, 2023.08.12 ~ 2024.08.12 이렇게 주어진다면, 올바론 답변 예시) 2, 잘못된 답변 예시 1) 2년, 잘못된 답변 예시 2) 2 years, 잘못된 답변 예시 3) 이 사람의 경력은 2년";
 
     private static final String GPT_REQUEST_FORMAT_POSTFIX_FOR_RECRUIT_KEYWORD_BACKEND =
         "이 사람의 직무를 내가 제시한 보기들 중에서 하나만 골라서 답변해줘.\n" +
@@ -56,6 +56,8 @@ public class ChatGptService {
     private static final String GPT_SYSTEM_ROLE =
         "너는 취업 전문가로서 내가 보낸 경험 데이터를 기반으로 '~~한 경험이 있는 000님, ~~한 경험을 어필해보면 어때요?' 라는 느낌으로 사용자 맞춤형 추천 문구를 작성한다. "
             + "문구의 말투는 '-니다'체를 사용하는 것이 아니라, '-요'체를 사용한다. 응답은 150자 이내로 답변한다.";
+
+    private static final String GPT_MODEL = "gpt-4-turbo";
 
     public int getCareerYear(String chatGptRequestContent) {
         GptRequest gptRequest = createGptRequest(
@@ -101,7 +103,7 @@ public class ChatGptService {
             .build();
 
         return GptRequest.builder()
-            .model("gpt-3.5-turbo")
+            .model(GPT_MODEL)
             .stream(false)
             .messages(List.of(userMessage))
             .build();
@@ -119,7 +121,7 @@ public class ChatGptService {
             .build();
 
         return GptRequest.builder()
-            .model("gpt-3.5-turbo")
+            .model(GPT_MODEL)
             .stream(false)
             .messages(List.of(systemMessage, userMessage))
             .build();

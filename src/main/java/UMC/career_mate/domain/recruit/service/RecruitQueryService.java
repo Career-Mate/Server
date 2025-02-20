@@ -149,19 +149,20 @@ public class RecruitQueryService {
             return NO_INTERN_EXPERIENCE;
         }
 
-        StringBuilder contentBuilder = new StringBuilder();
+        StringBuilder prompt = new StringBuilder();
 
+        prompt.append("근무 기간: ");
         periodAnswerList.forEach(
-            answer -> contentBuilder.append(answer.getContent() + "\n")
+            answer -> prompt.append(answer.getContent() + "\n")
         );
 
-        if (contentBuilder.length() == ONLY_ENTER_LENGTH) {
+        if (prompt.length() == ONLY_ENTER_LENGTH) {
             log.info("인턴 근무 기간이 빈 문자열인 경우 -> 경력 0년 반환");
             return NO_INTERN_EXPERIENCE;
         }
 
         // 근무 기간이 입력되어 있는 경우 -> gpt에게 경력 계산 요청
-        return chatGptService.getCareerYear(contentBuilder.toString());
+        return chatGptService.getCareerYear(prompt.toString());
     }
 
     private RecruitKeyword calculateRecruitKeyword(Member member) {
@@ -186,18 +187,18 @@ public class RecruitQueryService {
             return RecruitKeyword.getRecruitKeywordFromProfileJob(job);
         }
 
-        StringBuilder contentBuilder = new StringBuilder();
-        int projectEnterCnt = createChatGptRequestContent(contentBuilder, projectAnswers,
+        StringBuilder prompt = new StringBuilder();
+        int projectEnterCnt = createChatGptRequestContent(prompt, projectAnswers,
             PROJECT_PREFIX, PROJECT_QUESTION_CONTENT_PERIOD);
-        int internEnterCnt = createChatGptRequestContent(contentBuilder, internAnswers,
+        int internEnterCnt = createChatGptRequestContent(prompt, internAnswers,
             INTERN_PREFIX, INTERN_QUESTION_CONTENT_PERIOD);
 
-        if (isEmptyContentBuilder(contentBuilder, projectEnterCnt, internEnterCnt)) {
+        if (isEmptyContentBuilder(prompt, projectEnterCnt, internEnterCnt)) {
             log.info("최종 데이터가 기본 틀 데이터를 제외하고 빈 문자열인 경우");
             return RecruitKeyword.getRecruitKeywordFromProfileJob(job);
         }
 
-        RecruitKeyword recruitKeyword = chatGptService.getRecruitKeyword(contentBuilder.toString(), member.getJob());
+        RecruitKeyword recruitKeyword = chatGptService.getRecruitKeyword(prompt.toString(), member.getJob());
 
         if (Objects.isNull(recruitKeyword)) {
             log.info("gpt 답변이 RecruitKeyword에 없는 값이라서 null인 경우 -> 멤버 프로필 job으로 대체");
