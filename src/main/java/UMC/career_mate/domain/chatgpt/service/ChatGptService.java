@@ -57,8 +57,7 @@ public class ChatGptService {
         "너는 취업 전문가로서 내가 보낸 경험 데이터를 기반으로 '~~한 경험이 있는 000님, ~~한 경험을 어필해보면 어때요?' 라는 느낌으로 사용자 맞춤형 추천 문구를 작성한다. "
             + "문구의 말투는 '-니다'체를 사용하는 것이 아니라, '-요'체를 사용한다. 응답은 150자 이내로 답변한다.";
 
-    private static final String GPT_MODEL_4 = "gpt-4-turbo";
-    private static final String GPT_MODEL_3 = "gpt-3.5-turbo";
+    private static final String GPT_MODEL = "gpt-4-turbo";
 
     public int getCareerYear(String chatGptRequestContent) {
         GptRequest gptRequest = createGptRequest(
@@ -104,7 +103,7 @@ public class ChatGptService {
             .build();
 
         return GptRequest.builder()
-            .model(GPT_MODEL_4)
+            .model(GPT_MODEL)
             .stream(false)
             .messages(List.of(userMessage))
             .build();
@@ -122,7 +121,7 @@ public class ChatGptService {
             .build();
 
         return GptRequest.builder()
-            .model(GPT_MODEL_3)
+            .model(GPT_MODEL)
             .stream(false)
             .messages(List.of(systemMessage, userMessage))
             .build();
